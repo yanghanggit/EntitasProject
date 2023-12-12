@@ -1,7 +1,7 @@
 /**
  * 
  */
-import { Context } from './Context';
+//import { Context } from './Context';
 import { Scene } from './Scene';
 /**
  * 
@@ -14,7 +14,7 @@ export class Game {
     /**
      * 
      */
-    public context: Context = null;
+    //public context: Context = null;
     /**
      * 
      */
@@ -22,15 +22,15 @@ export class Game {
     /**
      * 
      */
-    constructor(name: string, context: Context) {
+    constructor(name: string) {
         this.name = name;
-        this.context = context;
+       // this.context = context;
     }
     /**
      * 
      */
     public start(scene: Scene) {
-        this.context.init();
+        //this.context.init();
         this.scene = scene;
         this.scene.start();
     }
@@ -38,7 +38,6 @@ export class Game {
      * 
      */
     public update(dt: number) {
-        this.context.update(dt);
         this.scene?.update(dt);
     }
     /**

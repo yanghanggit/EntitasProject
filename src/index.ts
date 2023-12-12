@@ -1,12 +1,12 @@
 
 import { Game } from './Game';
-import { Context } from './Context';
+//import { Context } from './Context';
 import { Scene } from './Scene';
 import { Map } from './Map';
 
 let running = false;  // 用于控制循环是否运行的标志
 let lastTime = 0;     // 上一帧的时间
-let game = new Game("Entitas Game", new Context());
+let game = new Game("Entitas Game");
 
 // 游戏循环函数
 function gameLoop(timestamp: number) {
