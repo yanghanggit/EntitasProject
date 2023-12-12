@@ -6,8 +6,8 @@ import { IComponent } from "../lib/entitas/interfaces/IComponent";
 
 export enum ComponentIds {
     Position,
-    Velocity,
-    TotalComponents = 1024
+    //Velocity,
+    TotalComponents
 }
 
 
@@ -16,10 +16,10 @@ export class PositionComponent implements IComponent {
     public y: number;
 }
 
-export class VelocityComponent implements IComponent {
-    public x: number;
-    public y: number;
-}
+// export class VelocityComponent implements IComponent {
+//     public x: number;
+//     public y: number;
+// }
 
 
 // export enum CoreComponentIds {

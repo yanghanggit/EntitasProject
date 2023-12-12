@@ -340,7 +340,10 @@ export class Pool {
       for (let i = 0, indicesLength = matcher.indices.length; i < indicesLength; i++) {
         const index = matcher.indices[i]
         if (this._groupsForIndex[index] == null) {
-          this._groupsForIndex[index] = new Bag()
+          this._groupsForIndex[index] = new Bag();
+          let bag = this._groupsForIndex[index];
+          let ppp = new Bag();
+          console.log('123 = ' + bag + ", " + ppp);
         }
         this._groupsForIndex[index].add(group)
       }
