@@ -2,10 +2,11 @@
  * 
  */
 import { Map } from './Map';
-//import { Context } from './Context';
-/**
- * 
- */
+import { Systems } from '../lib/entitas/Systems';
+//import { Pools } from './Pools';
+import { Pool } from '../lib/entitas/Pool';
+import { ComponentIds } from './Components';
+
 export class Scene {
     /**
      * 
@@ -15,6 +16,19 @@ export class Scene {
      * 
      */
     public map: Map | null = null;
+    /**
+     * 
+     */
+    systems: Systems;
+    /**
+     * 
+     */
+    pool: Pool;
+
+    /**
+     * 
+     */
+    initialized: boolean = false;
     /**
      * 
      */
@@ -28,12 +42,22 @@ export class Scene {
     public start() {
         console.log("start:" + this.name);
         console.log("start map:" + this.map?.name);
+        this.pool = new Pool(ComponentIds, ComponentIds.TotalComponents, false);
+        this.systems = new Systems();
+        this.map.build(this);
+
     }
+
     /**
      * 
      */
     public update(dt: number) {
         console.log("update:" + this.name);
+        if (!this.initialized) {
+            this.initialized = true;
+            this.systems.initialize();
+        }
+        this.systems.execute();
     }
     /**
      * 

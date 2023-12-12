@@ -1,7 +1,6 @@
 /**
  * 
  */
-//import { Context } from './Context';
 import { Scene } from './Scene';
 /**
  * 
@@ -14,17 +13,12 @@ export class Game {
     /**
      * 
      */
-    //public context: Context = null;
-    /**
-     * 
-     */
     public scene: Scene | null = null;
     /**
      * 
      */
     constructor(name: string) {
         this.name = name;
-       // this.context = context;
     }
     /**
      * 

@@ -1,6 +1,5 @@
 
 import { Game } from './Game';
-//import { Context } from './Context';
 import { Scene } from './Scene';
 import { Map } from './Map';
 
