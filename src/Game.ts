@@ -24,7 +24,6 @@ export class Game {
      * 
      */
     public start(scene: Scene) {
-        //this.context.init();
         this.scene = scene;
         this.scene.start();
     }

@@ -1,4 +1,5 @@
 import { Scene } from "./Scene";
+import { MovementSystem } from "./MovementSystem";
 
 /**
  * 
@@ -14,12 +15,12 @@ export class Map {
     constructor(name: string) {
         this.name = name;
     }
-
-
+    /**
+     * 
+     */
     public build(scene: Scene) {
-        // console.log("start:" + this.name);
-        // console.log("start map:" + this.map?.name);
-        // this.systems = this.createSystems(Pools.pool);
-        // this.systems.initialize();
+        let systems = scene.systems;
+        let pool = scene.pool;
+        systems.add(pool.createSystem(MovementSystem))
     }
 }

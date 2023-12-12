@@ -40,8 +40,9 @@ export class Scene {
      * 
      */
     public start() {
-        console.log("start:" + this.name);
-        console.log("start map:" + this.map?.name);
+        // console.log("start:" + this.name);
+        // console.log("start map:" + this.map?.name);
+        //
         this.pool = new Pool(ComponentIds, ComponentIds.TotalComponents, false);
         this.systems = new Systems();
         this.map.build(this);
