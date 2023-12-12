@@ -1,8 +1,8 @@
 /**
  * 
  */
-import { Pool } from "./entitas/Pool";
-import { VisualDebugging } from "./entitas/viewer/VisualDebugging";
+import { Pool } from "../lib/entitas/Pool";
+import { VisualDebugging } from "../lib/entitas/viewer/VisualDebugging";
 import { ComponentIds } from "./Components";
 
 export class Pools {

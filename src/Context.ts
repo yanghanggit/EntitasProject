@@ -1,8 +1,8 @@
 /**
  * 
  */
-import { Systems } from "./entitas/Systems";
-import { Entity } from "./entitas/Entity";
+import { Systems } from "../lib/entitas/Systems";
+import { Entity } from "../lib/entitas/Entity";
 import { ComponentIds } from "./Components";
 import { Pools } from "./Pools";
 
