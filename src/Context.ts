@@ -2,21 +2,23 @@
  * 
  */
 import { Systems } from "../lib/entitas/Systems";
-import { Entity } from "../lib/entitas/Entity";
-import { ComponentIds } from "./Components";
+// import { Entity } from "../lib/entitas/Entity";
+// import { ComponentIds } from "./Components";
 import { Pools } from "./Pools";
+import { Pool } from "../lib/entitas/Pool";
 
 export class Context {
 
     systems: Systems;
-    
-    start() {
-        Entity.initialize(ComponentIds.TotalComponents, { "entities": 200, "components": 128 });
+
+    init() {
         this.systems = this.createSystems(Pools.pool);
         this.systems.initialize();
     }
 
-    createSystems(pool) {
+
+
+    createSystems(pool: Pool) {
         return new Systems();
         // .add(pool.createSystem(example.MovementSystem))
         // .add(pool.createSystem(example.PlayerInputSystem))

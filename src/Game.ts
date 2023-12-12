@@ -14,7 +14,7 @@ export class Game {
     /**
      * 
      */
-    public context: Context = new Context();
+    public context: Context = null;
     /**
      * 
      */
@@ -30,14 +30,15 @@ export class Game {
      * 
      */
     public start(scene: Scene) {
+        this.context.init();
         this.scene = scene;
-        this.context.start();
         this.scene.start();
     }
     /**
      * 
      */
     public update(dt: number) {
+        this.context.update(dt);
         this.scene?.update(dt);
     }
     /**

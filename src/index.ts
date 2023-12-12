@@ -1,12 +1,3 @@
-// console.log("hello world!");
-// import { Systems } from "./entitas/Systems";
-// let syss = new Systems;
-// syss.initialize();
-
-/**
- * 
- */
-console.log("!!! index.ts !!!");
 
 import { Game } from './Game';
 import { Context } from './Context';
