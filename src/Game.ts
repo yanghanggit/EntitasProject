@@ -31,6 +31,7 @@ export class Game {
      */
     public start(scene: Scene) {
         this.scene = scene;
+        this.context.start();
         this.scene.start();
     }
     /**
