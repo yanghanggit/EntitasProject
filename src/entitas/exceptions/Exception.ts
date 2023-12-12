@@ -1,21 +1,21 @@
-module entitas {
-  "use strict"
+//module entitas {
+"use strict"
 
-  export class Exception {
-    /** @type {string} */
-    public message:string
+export class Exception {
+  /** @type {string} */
+  public message: string
 
-    /**
-     * Base exception class
-     * @constructot
-     * @param message
-     */
-    constructor(message) {
-      this.message = message
-    }
-    /** @return {string} */
-    public toString():string {
-      return this.message
-    }
+  /**
+   * Base exception class
+   * @constructot
+   * @param message
+   */
+  constructor(message) {
+    this.message = message
+  }
+  /** @return {string} */
+  public toString(): string {
+    return this.message
   }
 }
+//}

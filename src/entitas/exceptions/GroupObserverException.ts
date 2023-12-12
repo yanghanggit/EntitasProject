@@ -1,16 +1,16 @@
-module entitas.exceptions {
-  "use strict"
+//module entitas.exceptions {
+"use strict"
 
-  import Exception = entitas.Exception
+import { Exception } from "./Exception";//import Exception = entitas.Exception
 
-  export class GroupObserverException extends Exception {
-    /**
-     * Group Observer Exception
-     * @constructor
-     * @param message
-     */
-    public constructor(message:string) {
-      super(message)
-    }
+export class GroupObserverException extends Exception {
+  /**
+   * Group Observer Exception
+   * @constructor
+   * @param message
+   */
+  public constructor(message: string) {
+    super(message)
   }
 }
+//}

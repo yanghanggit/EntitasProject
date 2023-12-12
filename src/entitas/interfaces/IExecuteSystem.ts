@@ -1,6 +1,10 @@
-module entitas {
-  export interface IExecuteSystem extends ISystem {
-    execute()
-  }
+//module entitas {
+
+
+import { ISystem } from "./ISystem"
+
+export interface IExecuteSystem extends ISystem {
+  execute()
 }
+//}
 

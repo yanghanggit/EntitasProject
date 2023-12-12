@@ -1,8 +1,5 @@
-function greet(message: string): void {
-    console.log(message);
-}
-
-greet("Hello, TypeScript!");
-
-greet("Hello, TypeScript!123132131");
+console.log("hello world!");
+import { Systems } from "./entitas/Systems";
+let syss = new Systems;
+syss.initialize();
 

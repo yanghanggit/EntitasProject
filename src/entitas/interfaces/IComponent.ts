@@ -1,5 +1,5 @@
-module entitas {
-  export interface IComponent {
-  }
+//module entitas {
+export interface IComponent {
 }
+//}
 
