@@ -7,6 +7,8 @@ import { Matcher } from "./Matcher"//import Matcher = entitas.Matcher
 import { IComponent } from "./interfaces/IComponent"//import IComponent = entitas.IComponent
 import { GroupEventType } from "./Matcher"//import GroupEventType = entitas.GroupEventType
 import { GroupObserverException } from "./exceptions/GroupObserverException"//import GroupObserverException = entitas.exceptions.GroupObserverException
+import { GroupChanged } from "./Group"
+
 
 export class GroupObserver {
 
@@ -19,7 +21,7 @@ export class GroupObserver {
   private _collectedEntities = {}
   protected _groups: Array<Group> = null
   protected _eventTypes: Array<GroupEventType> = null
-  protected _addEntityCache: Group.GroupChanged = null
+  protected _addEntityCache:  /*Group.*/GroupChanged = null
 
 
   /**

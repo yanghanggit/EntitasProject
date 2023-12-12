@@ -23,9 +23,9 @@ export enum GroupEventType {
 }
 
 
-export module Matcher {
+// export module Matcher {
 
-}
+// }
 
 export class Matcher implements IAllOfMatcher, IAnyOfMatcher, INoneOfMatcher {
 

@@ -9,49 +9,49 @@ import { Pool } from "./Pool" //import Pool = entitas.Pool
 import { Signal } from "./utils/Signal"//import Signal = entitas.utils.Signal
 import { ISignal } from "./utils/Signal"//import ISignal = entitas.utils.ISignal
 import { IComponent } from "./interfaces/IComponent"//import IComponent = entitas.IComponent
-import EntityChanged = Entity.EntityChanged
-import EntityReleased = Entity.EntityReleased
-import IEntityChanged = Entity.IEntityChanged
-import IEntityReleased = Entity.IEntityReleased
-import ComponentReplaced = Entity.ComponentReplaced
-import IComponentReplaced = Entity.IComponentReplaced
+// import EntityChanged = Entity.EntityChanged
+// import EntityReleased = Entity.EntityReleased
+// import IEntityChanged = Entity.IEntityChanged
+// import IEntityReleased = Entity.IEntityReleased
+// import ComponentReplaced = Entity.ComponentReplaced
+// import IComponentReplaced = Entity.IComponentReplaced
 import { EntityIsNotEnabledException } from "./exceptions/EntityIsNotEnabledException"//import EntityIsNotEnabledException = entitas.exceptions.EntityIsNotEnabledException
 import { EntityIsAlreadyReleasedException } from "./exceptions/EntityIsAlreadyReleasedException"//import EntityIsAlreadyReleasedException = entitas.exceptions.EntityIsAlreadyReleasedException
 import { EntityAlreadyHasComponentException } from "./exceptions/EntityAlreadyHasComponentException"//import EntityAlreadyHasComponentException = entitas.exceptions.EntityAlreadyHasComponentException
 import { EntityDoesNotHaveComponentException } from "./exceptions/EntityDoesNotHaveComponentException"//import EntityDoesNotHaveComponentException = entitas.exceptions.EntityDoesNotHaveComponentException
 
-export module Entity {
+//export module Entity {
 
-  /**
-   * Event EntityReleased
-   *
-   * All references to the entity have been released
-   */
-  export interface EntityReleased { (e: Entity): void; }
-  export interface IEntityReleased<T> extends ISignal<T> {
-    dispatch(e: Entity): void
-  }
-
-  /**
-   * Event EntityChanged
-   *
-   * The entity has been changed
-   **/
-  export interface EntityChanged { (e: Entity, index: number, component: IComponent): void; }
-  export interface IEntityChanged<T> extends ISignal<T> {
-    dispatch(e: Entity, index: number, component: IComponent): void
-  }
-
-  /**
-   * Event ComponentReplaced
-   *
-   * A component was replaced
-   */
-  export interface ComponentReplaced { (e: Entity, index: number, component: IComponent, replacement: IComponent): void; }
-  export interface IComponentReplaced<T> extends ISignal<T> {
-    dispatch(e: Entity, index: number, component: IComponent, replacement: IComponent): void
-  }
+/**
+ * Event EntityReleased
+ *
+ * All references to the entity have been released
+ */
+export interface EntityReleased { (e: Entity): void; }
+export interface IEntityReleased<T> extends ISignal<T> {
+  dispatch(e: Entity): void
 }
+
+/**
+ * Event EntityChanged
+ *
+ * The entity has been changed
+ **/
+export interface EntityChanged { (e: Entity, index: number, component: IComponent): void; }
+export interface IEntityChanged<T> extends ISignal<T> {
+  dispatch(e: Entity, index: number, component: IComponent): void
+}
+
+/**
+ * Event ComponentReplaced
+ *
+ * A component was replaced
+ */
+export interface ComponentReplaced { (e: Entity, index: number, component: IComponent, replacement: IComponent): void; }
+export interface IComponentReplaced<T> extends ISignal<T> {
+  dispatch(e: Entity, index: number, component: IComponent, replacement: IComponent): void
+}
+//}
 
 export class Entity {
 
@@ -94,7 +94,7 @@ export class Entity {
   /**
    * Subscribe to Component Replaced Event
    * @type {entitas.ISignal} */
-  public onComponentReplaced: Entity.IComponentReplaced<ComponentReplaced> = null
+  public onComponentReplaced: /*Entity.*/IComponentReplaced<ComponentReplaced> = null
 
   /**
    * Entity name

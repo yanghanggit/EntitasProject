@@ -6,41 +6,41 @@ import { Signal } from "./utils/Signal"//import Signal = entitas.utils.Signal
 import { ISignal } from "./utils/Signal"//import ISignal = entitas.utils.ISignal
 import { IMatcher } from "./interfaces/IMatcher"//import IMatcher = entitas.IMatcher
 import { IComponent } from "./interfaces/IComponent"//import IComponent = entitas.IComponent
-import GroupChanged = Group.GroupChanged
-import GroupUpdated = Group.GroupUpdated
+// import GroupChanged = Group.GroupChanged
+// import GroupUpdated = Group.GroupUpdated
 import { GroupEventType } from "./Matcher"//import GroupEventType = entitas.GroupEventType
 import { SingleEntityException } from "./exceptions/SingleEntityException"//import SingleEntityException = entitas.exceptions.SingleEntityException
 import { GroupObserver } from "./GroupObserver"
 /**
  * event delegate boilerplate:
  */
-export module Group {
+//export module Group {
 
-  export interface GroupChanged { (group: Group, entity: Entity, index: number, component: IComponent): void; }
-  export interface IGroupChanged<T> extends ISignal<T> {
-    dispatch(group: Group, entity: Entity, index: number, component: IComponent): void
-  }
-
-  export interface GroupUpdated { (group: Group, entity: Entity, index: number, component: IComponent, newComponent: IComponent): void; }
-  export interface IGroupUpdated<T> extends ISignal<T> {
-    dispatch(group: Group, entity: Entity, index: number, component: IComponent, newComponent: IComponent): void
-  }
+export interface GroupChanged { (group: Group, entity: Entity, index: number, component: IComponent): void; }
+export interface IGroupChanged<T> extends ISignal<T> {
+  dispatch(group: Group, entity: Entity, index: number, component: IComponent): void
 }
+
+export interface GroupUpdated { (group: Group, entity: Entity, index: number, component: IComponent, newComponent: IComponent): void; }
+export interface IGroupUpdated<T> extends ISignal<T> {
+  dispatch(group: Group, entity: Entity, index: number, component: IComponent, newComponent: IComponent): void
+}
+//}
 
 export class Group {
 
   /**
    * Subscribe to Entity Addded events
    * @type {entitas.utils.ISignal} */
-  public onEntityAdded: Group.IGroupChanged<GroupChanged> = null
+  public onEntityAdded: /*Group.*/IGroupChanged<GroupChanged> = null
   /**
    * Subscribe to Entity Removed events
    * @type {entitas.utils.ISignal} */
-  public onEntityRemoved: Group.IGroupChanged<GroupChanged> = null
+  public onEntityRemoved:  /*Group.*/IGroupChanged<GroupChanged> = null
   /**
    * Subscribe to Entity Updated events
    * @type {entitas.utils.ISignal} */
-  public onEntityUpdated: Group.IGroupUpdated<GroupUpdated> = null
+  public onEntityUpdated:  /*Group.*/IGroupUpdated<GroupUpdated> = null
 
   /**
    * Count the number of entities in this group

@@ -11,15 +11,18 @@ import { Signal } from "./utils/Signal"//import Signal = entitas.utils.Signal
 import { ISignal } from "./utils/Signal"//import ISignal = entitas.utils.ISignal
 import { IMatcher } from "./interfaces/IMatcher"//import IMatcher = entitas.IMatcher
 import { ISetPool } from "./interfaces/ISystem"//import ISetPool = entitas.ISetPool
-import PoolChanged = Pool.PoolChanged
+//import PoolChanged = Pool.PoolChanged
 import { IComponent } from "./interfaces/IComponent"//import IComponent = entitas.IComponent
-import GroupChanged = Pool.GroupChanged
+//import GroupChanged = Pool.GroupChanged
 import { IReactiveSystem } from "./interfaces/IReactiveSystem"//import IReactiveSystem = entitas.IReactiveSystem
 import { IMultiReactiveSystem } from "./interfaces/IReactiveSystem"//import IMultiReactiveSystem = entitas.IMultiReactiveSystem
 import { EntityIsNotDestroyedException } from "./exceptions/EntityIsNotDestroyedException"//import EntityIsNotDestroyedException = entitas.exceptions.EntityIsNotDestroyedException
 import { PoolDoesNotContainEntityException } from "./exceptions/PoolDoesNotContainEntityException"//import PoolDoesNotContainEntityException = entitas.exceptions.PoolDoesNotContainEntityException
 import { ISystem } from "./interfaces/ISystem"
 import { ReactiveSystem } from "./ReactiveSystem"
+import { EntityChanged } from "./Entity"
+import { ComponentReplaced } from "./Entity"
+import { EntityReleased } from "./Entity"
 
 function as(obj, method1: string) {
   return method1 in obj ? obj : null
@@ -28,28 +31,28 @@ function as(obj, method1: string) {
 /**
  * event delegate boilerplate:
  */
-export module Pool {
+//export module Pool {
 
-  /**
-   * Event PoolChanged
-   *
-   * Pool has changed
-   */
-  export interface PoolChanged { (pool: Pool, entity: Entity): void; }
-  export interface IPoolChanged<T> extends ISignal<T> {
-    dispatch(pool: Pool, entity: Entity): void
-  }
-
-  /**
-   * Event GroupChanged
-   *
-   * Group has changed
-   */
-  export interface GroupChanged { (pool: Pool, group: Group): void; }
-  export interface IGroupChanged<T> extends ISignal<T> {
-    dispatch(pool: Pool, group: Group): void
-  }
+/**
+ * Event PoolChanged
+ *
+ * Pool has changed
+ */
+export interface PoolChanged { (pool: Pool, entity: Entity): void; }
+export interface IPoolChanged<T> extends ISignal<T> {
+  dispatch(pool: Pool, entity: Entity): void
 }
+
+/**
+ * Event GroupChanged
+ *
+ * Group has changed
+ */
+export interface GroupChanged { (pool: Pool, group: Group): void; }
+export interface IGroupChanged<T> extends ISignal<T> {
+  dispatch(pool: Pool, group: Group): void
+}
+//}
 
 /**
  * A cached pool of entities and components.
@@ -84,22 +87,22 @@ export class Pool {
   /**
    * Subscribe to Entity Created Event
    * @type {entitas.utils.ISignal} */
-  public onEntityCreated: Pool.IPoolChanged<PoolChanged> = null
+  public onEntityCreated: /*Pool.*/IPoolChanged<PoolChanged> = null
 
   /**
    * Subscribe to Entity Will Be Destroyed Event
    * @type {entitas.utils.ISignal} */
-  public onEntityWillBeDestroyed: Pool.IPoolChanged<PoolChanged> = null
+  public onEntityWillBeDestroyed:  /*Pool.*/IPoolChanged<PoolChanged> = null
 
   /**
    * Subscribe to Entity Destroyed Event
    * @type {entitas.utils.ISignal} */
-  public onEntityDestroyed: Pool.IPoolChanged<PoolChanged> = null
+  public onEntityDestroyed:  /*Pool.*/IPoolChanged<PoolChanged> = null
 
   /**
    * Subscribe to Group Created Event
    * @type {entitas.utils.ISignal} */
-  public onGroupCreated: Pool.IGroupChanged<GroupChanged> = null
+  public onGroupCreated:  /*Pool.*/IGroupChanged<GroupChanged> = null
 
   /**
    * Entity name for debugging
@@ -131,9 +134,9 @@ export class Pool {
   public _totalComponents: number = 0
   public _creationIndex: number = 0
   public _entitiesCache: Array<Entity> = null
-  public _cachedUpdateGroupsComponentAddedOrRemoved: Entity.EntityChanged
-  public _cachedUpdateGroupsComponentReplaced: Entity.ComponentReplaced
-  public _cachedOnEntityReleased: Entity.EntityReleased
+  public _cachedUpdateGroupsComponentAddedOrRemoved: /*Entity.*/EntityChanged
+  public _cachedUpdateGroupsComponentReplaced: /*Entity.*/ComponentReplaced
+  public _cachedOnEntityReleased: /*Entity.*/EntityReleased
 
   // public getEntities(matcher: IMatcher): Entity[];
   // public getEntities(): Entity[];
