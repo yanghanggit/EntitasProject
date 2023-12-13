@@ -63,7 +63,7 @@ export class Entity {
   /**
    * @static
    * @type {Array<Array<IComponent>>} */
-  public static alloc: Array<Array<IComponent>> = null
+  public static alloc: Array<Array<IComponent | null>> | null = null
 
   /**
    * @static
@@ -79,22 +79,22 @@ export class Entity {
   /**
    * Subscribe to Entity Released Event
    * @type {entitas.ISignal} */
-  public onEntityReleased: IEntityReleased<EntityReleased> = null
+  public onEntityReleased: IEntityReleased<EntityReleased> | null = null
 
   /**
    * Subscribe to Component Added Event
    * @type {entitas.ISignal} */
-  public onComponentAdded: IEntityChanged<EntityChanged> = null
+  public onComponentAdded: IEntityChanged<EntityChanged>  | null = null
 
   /**
    * Subscribe to Component Removed Event
    * @type {entitas.ISignal} */
-  public onComponentRemoved: IEntityChanged<EntityChanged> = null
+  public onComponentRemoved: IEntityChanged<EntityChanged>  | null = null
 
   /**
    * Subscribe to Component Replaced Event
    * @type {entitas.ISignal} */
-  public onComponentReplaced: /*Entity.*/IComponentReplaced<ComponentReplaced> = null
+  public onComponentReplaced: /*Entity.*/IComponentReplaced<ComponentReplaced>  | null = null
 
   /**
    * Entity name
@@ -113,13 +113,13 @@ export class Entity {
 
   public _creationIndex: number = 0
   public _isEnabled: boolean = true
-  public _components: Array<IComponent> = null
+  public _components: Array<IComponent> | null  = null
   public _componentsCache = null
-  public _componentIndicesCache: number[] = null
+  public _componentIndicesCache: number[] | null  = null
   public _toStringCache: string = ''
   public _refCount: number = 0
-  private _pool: Pool = null
-  private _componentsEnum: {} = null
+  private _pool: Pool | null = null
+  private _componentsEnum: {} | null = null
 
   /**
    * The basic game object. Everything is an entity with components that
@@ -129,7 +129,7 @@ export class Entity {
    * @param {number} totalComponents
    * @constructor
    */
-  constructor(componentsEnum, totalComponents: number = 16) {
+  constructor(componentsEnum: {}, totalComponents: number = 16) {
 
     this.onEntityReleased = new Signal<EntityReleased>(this)
     this.onComponentAdded = new Signal<EntityChanged>(this)
@@ -140,7 +140,7 @@ export class Entity {
     this._components = this.initialize(totalComponents)
   }
 
-  public static initialize(totalComponents: number, options) {
+  public static initialize(totalComponents: number, options: any) {
     Entity.size = options.entities || 100
   }
 
