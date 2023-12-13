@@ -3,19 +3,19 @@
 
 import { UUID } from "./utils/UUID"//import UUID = entitas.utils.UUID
 import { Bag } from "./utils/Bag"//import Bag = entitas.utils.Bag
-import { ImmutableBag } from "./utils/ImmutableBag"//import ImmutableBag = entitas.utils.ImmutableBag
+//import { ImmutableBag } from "./utils/ImmutableBag"//import ImmutableBag = entitas.utils.ImmutableBag
 
 import { Group } from "./Group"//import Group = entitas.Group
 import { Entity } from "./Entity"//import Entity = entitas.Entity
 import { Signal } from "./utils/Signal"//import Signal = entitas.utils.Signal
 import { ISignal } from "./utils/Signal"//import ISignal = entitas.utils.ISignal
 import { IMatcher } from "./interfaces/IMatcher"//import IMatcher = entitas.IMatcher
-import { ISetPool } from "./interfaces/ISystem"//import ISetPool = entitas.ISetPool
+//import { ISetPool } from "./interfaces/ISystem"//import ISetPool = entitas.ISetPool
 //import PoolChanged = Pool.PoolChanged
 import { IComponent } from "./interfaces/IComponent"//import IComponent = entitas.IComponent
 //import GroupChanged = Pool.GroupChanged
-import { IReactiveSystem } from "./interfaces/IReactiveSystem"//import IReactiveSystem = entitas.IReactiveSystem
-import { IMultiReactiveSystem } from "./interfaces/IReactiveSystem"//import IMultiReactiveSystem = entitas.IMultiReactiveSystem
+//import { IReactiveSystem } from "./interfaces/IReactiveSystem"//import IReactiveSystem = entitas.IReactiveSystem
+//import { IMultiReactiveSystem } from "./interfaces/IReactiveSystem"//import IMultiReactiveSystem = entitas.IMultiReactiveSystem
 import { EntityIsNotDestroyedException } from "./exceptions/EntityIsNotDestroyedException"//import EntityIsNotDestroyedException = entitas.exceptions.EntityIsNotDestroyedException
 import { PoolDoesNotContainEntityException } from "./exceptions/PoolDoesNotContainEntityException"//import PoolDoesNotContainEntityException = entitas.exceptions.PoolDoesNotContainEntityException
 import { ISystem } from "./interfaces/ISystem"
@@ -127,7 +127,7 @@ export class Pool {
   public _debug: boolean = false
   public _entities = {}
   public _groups = {}
-  public _groupsForIndex: Bag<Bag<Group>> = null
+  public _groupsForIndex: Bag<Bag<Group>> = new Bag<Bag<Group>>();
   public _reusableEntities: Bag<Entity> = new Bag<Entity>()
   public _retainedEntities = {}
   public _componentsEnum: Object = null
@@ -340,7 +340,7 @@ export class Pool {
       for (let i = 0, indicesLength = matcher.indices.length; i < indicesLength; i++) {
         const index = matcher.indices[i]
         if (this._groupsForIndex[index] == null) {
-          this._groupsForIndex[index] = new Bag();
+          this._groupsForIndex[index] = <Bag<Group>>(new Bag());
         }
         this._groupsForIndex[index].add(group)
       }

@@ -2,40 +2,6 @@
 import { Game } from './Game';
 import { Scene } from './Scene';
 import { Map } from './Map';
-//import { Bag } from '../lib/entitas/utils/Bag';
-
-// export interface TestInterface<E> {
-//     size(): number
-// }
-
-// export class TestArrayEX<E> extends Array implements TestInterface<E> {
-//     public size_: number = 0
-//     constructor(capacity: number) {
-//         super();
-//         this.length = capacity
-//     }
-//     add(e: E) {
-//         console.log("e = " + e);
-//     }
-
-//     size() {
-//         return 0;
-//     }
-// }
-// (function () {
-//     let testArrayEX = new TestArrayEX(100);
-//     testArrayEX.add(1);
-// })();
-
-
-
-
-
-
-
-
-
-
 
 let running = false;  // 用于控制循环是否运行的标志
 let lastTime = 0;     // 上一帧的时间
