@@ -53,9 +53,6 @@ export class MovementSystem implements IInitializeSystem, IExecuteSystem, ISetPo
     public setPool(pool: Pool) {
         console.log("MovementSystem setPool");
         this.pool = pool;
-        // let bag123 = new Bag<Group>();
-        // console.log(bag123);
-        //bag123.add();
         this.group = pool.getGroup(Matcher.allOf(ComponentIds.Position));
     }
 }
