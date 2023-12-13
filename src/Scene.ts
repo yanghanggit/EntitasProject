@@ -3,9 +3,8 @@
  */
 import { Map } from './Map';
 import { Systems } from '../lib/entitas/Systems';
-//import { Pools } from './Pools';
 import { Pool } from '../lib/entitas/Pool';
-import { ComponentIds } from './Components';
+import { Components } from './ComponentsPreprocessing';
 
 export class Scene {
     /**
@@ -43,7 +42,7 @@ export class Scene {
         // console.log("start:" + this.name);
         // console.log("start map:" + this.map?.name);
         //
-        this.pool = new Pool(ComponentIds, ComponentIds.TotalComponents, false);
+        this.pool = new Pool({}, Components.length, false);
         this.systems = new Systems();
         this.map.build(this);
 

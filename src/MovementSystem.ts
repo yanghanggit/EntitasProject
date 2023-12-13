@@ -5,8 +5,9 @@ import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { ComponentIds } from "./Components";
+import { CreateEntity, AddComponent, GetComponent, CID } from "./EntitasExtension" 
 import { PositionComponent } from "./Components";
+
 
 export class MovementSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
 
@@ -15,18 +16,17 @@ export class MovementSystem implements IInitializeSystem, IExecuteSystem, ISetPo
 
     public initialize() {
         console.log("MovementSystem initialize");
-
-        let en = this.pool.createEntity('Player');
+        let en = CreateEntity(this.pool, 'Player');
         let p = new PositionComponent;
         p.x = 10; p.y = 20;
-        en.addComponent(ComponentIds.Position, p);
+        AddComponent(PositionComponent, en, p);
     }
 
     public execute() {
         var entities = this.group.getEntities();
         for (var i = 0, l = entities.length; i < l; i++) {
             var e = entities[i];
-            let p = e.getComponent(ComponentIds.Position) as PositionComponent;
+            let p = GetComponent(PositionComponent, e);
             console.log('p.x = ' + p.x);
             console.log('p.x = ' + p.y);
         }
@@ -35,6 +35,9 @@ export class MovementSystem implements IInitializeSystem, IExecuteSystem, ISetPo
     public setPool(pool: Pool) {
         console.log("MovementSystem setPool");
         this.pool = pool;
-        this.group = pool.getGroup(Matcher.allOf(ComponentIds.Position));
+        this.group = pool.getGroup(Matcher.allOf(
+            CID(PositionComponent)
+
+        ));
     }
 }
