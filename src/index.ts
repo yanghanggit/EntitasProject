@@ -3,43 +3,46 @@ import { Game } from './Game';
 import { Scene } from './Scene';
 import { Map } from './Map';
 
-let running = false;  // 用于控制循环是否运行的标志
-let lastTime = 0;     // 上一帧的时间
-let game = new Game("Entitas Game");
+let lastTime = 0;
+let game = null;
+let requestAnimId = 0;
 
-// 游戏循环函数
-function gameLoop(timestamp: number) {
-    if (!running) return;
-
-    // 计算时间差（间隔时间）, 并将其转换为秒
-    const dt = (timestamp - lastTime) / 1000;
-    lastTime = timestamp;
-    game.update(dt);
-    requestAnimationFrame(gameLoop);
-}
-
-document.body.innerHTML += '<p>Hello, this is a message from main.ts!</p>';
+//
+document.body.innerHTML += '<p>Entitas Test</p>';
 
 const buttonStart = document.createElement('button');
-buttonStart.innerText = 'start game';
+buttonStart.innerText = 'START';
 buttonStart.addEventListener('click', () => {
-    if (!running) {
-        running = true;
-        lastTime = performance.now(); // 初始化 lastTime
-        //启动
-        game.start(new Scene("Scene", new Map("Map")));
-        requestAnimationFrame(gameLoop);
+    if (game !== null) {
+        return;
     }
+    game = new Game("Entitas Game");
+    game.start(new Scene("Scene", new Map("Map")));
+
+    ///
+    lastTime = performance.now(); // 初始化 lastTime
+    function gameLoop(timestamp: number) {
+        if (game === null) {
+            return;
+        }
+        const dt = (timestamp - lastTime) / 1000; // 计算时间差（间隔时间）, 并将其转换为秒
+        lastTime = timestamp;
+        game.update(dt);
+        requestAnimId = requestAnimationFrame(gameLoop);
+    }
+    requestAnimId = requestAnimationFrame(gameLoop);
 });
 document.body.appendChild(buttonStart);
 
 const buttonStop = document.createElement('button');
-buttonStop.innerText = 'stop game';
+buttonStop.innerText = 'STOP';
 buttonStop.addEventListener('click', () => {
-    if (running) {
-        game.stop();
-        running = false;
+    if (game === null) {
+        return;
     }
+    game.stop();
+    game = null;
+    cancelAnimationFrame(requestAnimId);
 });
 document.body.appendChild(buttonStop);
 
