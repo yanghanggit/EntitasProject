@@ -3,7 +3,7 @@
  */
 import { Pool } from '../lib/entitas/Pool';
 import { Scene } from './Scene';
-import { COMPONENTS } from './ComponentsPreprocessing';
+import { COMPONENTS } from './Components';
 /**
  * 
  */
