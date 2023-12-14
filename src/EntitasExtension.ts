@@ -11,7 +11,7 @@ export function CID<ComponentClass>(clazz: ComponentClass): number {
 }
 
 export function CreateEntity(pool: Pool, name: string): Entity {
-    let entity = pool.createEntity('name');
+    let entity = pool.createEntity(name);
     return entity;
 }
 
