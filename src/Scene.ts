@@ -17,16 +17,29 @@ export class Scene {
     /**
      * 
      */
-    systems: Systems;
+    systems: Systems = null;
     /**
      * 
      */
-    myPool: MyPool;
+    myPool: MyPool = null;
 
     /**
      * 
      */
     initialized: boolean = false;
+
+    /**
+     * 
+     */
+    startTime: number = 0;
+    /**
+     * 
+     */
+    lastTime: number = 0;
+    /**
+     * 
+     */
+    dt: number = 0;
     /**
      * 
      */
@@ -38,6 +51,11 @@ export class Scene {
      * 
      */
     public start() {
+        //
+        this.startTime = performance.now() / 1000;
+        this.lastTime = 0;
+        this.dt = 0;
+        //
         this.myPool = new MyPool(this.name + "'s Pool", this);
         this.systems = new Systems();
         this.map.build(this);
@@ -47,7 +65,10 @@ export class Scene {
      * 
      */
     public update(dt: number) {
-        console.log("update:" + this.name);
+        //
+        this.dt = dt;
+        this.lastTime += dt;
+        //
         if (!this.initialized) {
             this.initialized = true;
             this.systems.initialize();

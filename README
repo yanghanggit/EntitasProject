@@ -1,16 +1,1 @@
-tree -I '*node_module*' > tree.txt
-
-
-我的目录文件已经调整成如下（忽略node_modules）
-.
-├── README
-├── dist
-├── index.html
-├── package-lock.json
-├── package.json
-├── src
-│   └── index.ts
-└── tsconfig.json
-
-需求1: 请根据实际情况把index.html, index.ts, tsconfig.json 的代码直接发给我
-需求2: 我希望将构建工具换成Rollup，根据需求1的完成结果，为我提供必要的安装Rollup并构建成功的步骤与建议
+~
