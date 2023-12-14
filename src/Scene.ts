@@ -3,8 +3,7 @@
  */
 import { Map } from './Map';
 import { Systems } from '../lib/entitas/Systems';
-import { Pool } from '../lib/entitas/Pool';
-import { Components } from './ComponentsPreprocessing';
+import { MyPool } from './MyPool';
 
 export class Scene {
     /**
@@ -22,7 +21,7 @@ export class Scene {
     /**
      * 
      */
-    pool: Pool;
+    myPool: MyPool;
 
     /**
      * 
@@ -39,15 +38,11 @@ export class Scene {
      * 
      */
     public start() {
-        // console.log("start:" + this.name);
-        // console.log("start map:" + this.map?.name);
-        //
-        this.pool = new Pool({}, Components.length, false);
+        this.myPool = new MyPool(this.name + "'s Pool", this);
         this.systems = new Systems();
         this.map.build(this);
 
     }
-
     /**
      * 
      */

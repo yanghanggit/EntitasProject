@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 import { Scene } from "./Scene";
 import { MyExecuteSystem } from "./MyExecuteSystem";
 import { MyReactiveSystem } from "./MyReactiveSystem";
@@ -20,8 +23,8 @@ export class Map {
      */
     public build(scene: Scene) {
         let systems = scene.systems;
-        let pool = scene.pool;
-        systems.add(pool.createSystem(MyExecuteSystem));
-        systems.add(pool.createSystem(MyReactiveSystem));
+        let myPool = scene.myPool;
+        systems.add(myPool.createSystem(MyExecuteSystem));
+        systems.add(myPool.createSystem(MyReactiveSystem));
     }
 }

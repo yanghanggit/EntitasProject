@@ -16,17 +16,31 @@ import { GroupEventType } from "../lib/entitas/Matcher";
  * 
  */
 export class MyReactiveSystem implements IInitializeSystem, ISetPool, IReactiveSystem {
-
+    /**
+     * 
+     */
     pool: Pool;
+    /**
+     * 
+     */
     group: Group;
+    /**
+     * 
+     */
     trigger: TriggerOnEvent;
-
+    /**
+     * 
+     */
     public initialize() {
     }
-
+    /**
+     * 
+     */
     public execute(entities: Array<Entity>) {
     }
-
+    /**
+     * 
+     */
     public setPool(pool: Pool) {
         this.trigger = new TriggerOnEvent(Matcher.allOf(CID(EmptyComponent)), GroupEventType.OnEntityAdded);
     }
