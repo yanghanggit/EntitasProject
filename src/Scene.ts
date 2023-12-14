@@ -4,7 +4,9 @@
 import { Map } from './Map';
 import { Systems } from '../lib/entitas/Systems';
 import { MyPool } from './MyPool';
-
+/**
+ * 
+ */
 export class Scene {
     /**
      * 

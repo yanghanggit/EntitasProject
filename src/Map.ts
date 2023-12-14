@@ -10,7 +10,7 @@ import { ISetPool } from "../lib/entitas/interfaces/ISystem";
 import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { CreateEntity, AddComponent } from "./EntitasExtension"
-import { AttributesComponent, HeroComponent, MonsterComponent, GoblinComponent } from "./Components";
+import { AttributesComponent, HeroComponent, MonsterComponent, GoblinComponent, PropertiesComponent } from "./Components";
 /**
  * 
  */
@@ -27,26 +27,53 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
      * 
      */
     public initialize() {
-
         let pool = this.pool;
-
         //
         this.map.heros.forEach(function (value) {
             let en = CreateEntity(pool, "hero");
-            AddComponent(AttributesComponent, en, new AttributesComponent);
-            let heroCom = new HeroComponent();
-            heroCom.name = value;
-            AddComponent(HeroComponent, en, heroCom);
+            {
+                let arrComp = new AttributesComponent();
+                arrComp.health = 100;
+                arrComp.mana = 20;
+                AddComponent(AttributesComponent, en, arrComp);
+            }
+            {
+                let propComp = new PropertiesComponent;
+                propComp.strength = 10;
+                propComp.agility = 10;
+                propComp.intelligence = 10;
+                AddComponent(PropertiesComponent, en, propComp);
+
+            }
+            {
+                let heroCom = new HeroComponent();
+                heroCom.name = value;
+                AddComponent(HeroComponent, en, heroCom);
+            }
         });
         //
         this.map.goblins.forEach(function (value) {
             let en = CreateEntity(pool, "monster");
             AddComponent(MonsterComponent, en, new MonsterComponent);
-            AddComponent(AttributesComponent, en, new AttributesComponent);
-            //
-            let goblinComp = new GoblinComponent();
-            goblinComp.name = value;
-            AddComponent(GoblinComponent, en, goblinComp);
+            {
+                let arrComp = new AttributesComponent();
+                arrComp.health = 100;
+                arrComp.mana = 20;
+                AddComponent(AttributesComponent, en, arrComp);
+            }
+            {
+                let propComp = new PropertiesComponent;
+                propComp.strength = 10;
+                propComp.agility = 10;
+                propComp.intelligence = 10;
+                AddComponent(PropertiesComponent, en, propComp);
+
+            }
+            {
+                let goblinComp = new GoblinComponent();
+                goblinComp.name = value;
+                AddComponent(GoblinComponent, en, goblinComp);
+            }
         });
     }
     /**
@@ -56,8 +83,9 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
         this.pool = pool;
     }
 }
-
-
+/**
+ * 
+ */
 export class Map {
     /**
      * 
@@ -66,11 +94,11 @@ export class Map {
     /**
      * 
      */
-    public heros: Array<string> = ['Tom', 'Lily'];
+    public heros: Array<string> = ['[Tom]', '[Lily]'];
     /**
      * 
      */
-    public goblins: Array<string> = ['Guru', 'Waga', 'One-eyed'];
+    public goblins: Array<string> = ['[Guru]', '[Waga]', '[One-eyed]'];
     /**
      * 
      */

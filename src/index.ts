@@ -4,12 +4,11 @@ import { Scene } from './Scene';
 import { Map } from './Map';
 
 let lastTime = 0;
-let game = null;
 let requestAnimId = 0;
-
+let game = null;
 //
 document.body.innerHTML += '<p>Entitas Test</p>';
-
+//
 const buttonStart = document.createElement('button');
 buttonStart.innerText = 'START';
 buttonStart.addEventListener('click', () => {
@@ -20,12 +19,12 @@ buttonStart.addEventListener('click', () => {
     game.startWithScene(new Scene("[First dungon]", new Map("[Goblin's lair]")));
 
     ///
-    lastTime = performance.now(); // 初始化 lastTime
+    lastTime = performance.now();
     function gameLoop(timestamp: number) {
         if (game === null) {
             return;
         }
-        const dt = (timestamp - lastTime) / 1000; // 计算时间差（间隔时间）, 并将其转换为秒
+        const dt = (timestamp - lastTime) / 1000; 
         lastTime = timestamp;
         game.update(dt);
         requestAnimId = requestAnimationFrame(gameLoop);
@@ -33,7 +32,7 @@ buttonStart.addEventListener('click', () => {
     requestAnimId = requestAnimationFrame(gameLoop);
 });
 document.body.appendChild(buttonStart);
-
+//
 const buttonStop = document.createElement('button');
 buttonStop.innerText = 'STOP';
 buttonStop.addEventListener('click', () => {
