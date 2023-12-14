@@ -16,8 +16,8 @@ buttonStart.addEventListener('click', () => {
     if (game !== null) {
         return;
     }
-    game = new Game("Entitas Game");
-    game.start(new Scene("Scene", new Map("Map")));
+    game = new Game("[My D&D Game]");
+    game.startWithScene(new Scene("[First dungon]", new Map("[Goblin's lair]")));
 
     ///
     lastTime = performance.now(); // 初始化 lastTime

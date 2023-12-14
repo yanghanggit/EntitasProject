@@ -23,7 +23,8 @@ export class Game {
     /**
      * 
      */
-    public start(scene: Scene) {
+    public startWithScene(scene: Scene) {
+        console.log("start:" + this.name);
         this.scene = scene;
         this.scene.start();
     }

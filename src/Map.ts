@@ -22,6 +22,7 @@ export class Map {
      * 
      */
     public build(scene: Scene) {
+        console.log("build:" + this.name);
         let systems = scene.systems;
         let myPool = scene.myPool;
         systems.add(myPool.createSystem(MyExecuteSystem));

@@ -51,15 +51,15 @@ export class Scene {
      * 
      */
     public start() {
-        //
-        this.startTime = performance.now() / 1000;
-        this.lastTime = 0;
-        this.dt = 0;
+        console.log("start:" + this.name);
         //
         this.myPool = new MyPool(this.name + "'s Pool", this);
         this.systems = new Systems();
         this.map.build(this);
-
+        //
+        this.startTime = performance.now() / 1000;
+        this.lastTime = 0;
+        this.dt = 0;
     }
     /**
      * 
