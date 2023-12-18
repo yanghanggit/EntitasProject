@@ -7,27 +7,47 @@ import { IComponent } from "../lib/entitas/interfaces/IComponent";
  */
 export class EmptyComponent implements IComponent {
 }
+
 /**
  * 
  */
 export class HeroComponent implements IComponent {
-    name: string;
+    static __UUID__: number = 0;
+    UUID: number;
+    constructor() {
+        this.UUID = ++HeroComponent.__UUID__;
+    }
+}
+/**
+ * 
+ */
+export class WarriorComponent implements IComponent {
+}
+/**
+ * 
+ */
+export class MageComponent implements IComponent {
 }
 /**
  * 
  */
 export class MonsterComponent implements IComponent {
+    static __UUID__: number = 0;
+    UUID: number;
+    constructor() {
+        this.UUID = ++MonsterComponent.__UUID__;
+    }
 }
 /**
  * 
  */
 export class GoblinComponent implements IComponent {
-    name: string;
 }
 /**
  * 
  */
 export class AttributesComponent implements IComponent {
+    name: string;
     health: number = 100;
     mana: number;
     attack: number;
@@ -46,19 +66,20 @@ export class GoblinAIComponent implements IComponent {
 /**
  * 
  */
-export class SkillRequestsQueue implements IComponent {
-    queue: Array<string> = [];
-}
+// export class SkillRequestsQueue implements IComponent {
+//     queue: Array<string> = [];
+// }
 /**
  * 
  */
 export const COMPONENTS: IComponent[] = [
     EmptyComponent,
     HeroComponent,
+    WarriorComponent,
+    MageComponent,
     MonsterComponent,
     GoblinComponent,
     AttributesComponent,
     HeroAIComponent,
     GoblinAIComponent,
-    SkillRequestsQueue,
 ];

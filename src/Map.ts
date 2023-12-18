@@ -10,9 +10,10 @@ import { ISetPool } from "../lib/entitas/interfaces/ISystem";
 import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { CreateEntity, AddComponent } from "./EntitasExtension"
-import { AttributesComponent, HeroComponent, HeroAIComponent, MonsterComponent, GoblinComponent, GoblinAIComponent, SkillRequestsQueue } from "./Components";
+import { AttributesComponent, HeroComponent, HeroAIComponent, MonsterComponent, GoblinComponent, GoblinAIComponent, WarriorComponent, MageComponent } from "./Components";
 import { HeroAISystem } from "./HeroAISystem";
 import { GoblinAISystem } from "./GoblinAISystem";
+import { MyPool } from "./MyPool";
 /**
  * 
  */
@@ -20,7 +21,7 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
     /**
      * 
      */
-    pool: Pool;
+    pool: MyPool;
     /**
      * 
      */
@@ -29,57 +30,72 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
      * 
      */
     initialize() {
+        this.initHeros();
+        this.initMonsters();
+    }
+
+
+    private initHeros() {
         let pool = this.pool;
         //
-        this.map.heros.forEach(function (value) {
+        let heroNames = this.map.heroNames;
+        let heroCareers = this.map.heroCareers;
+        for (let i = 0; i < heroNames.length; ++i) {
             let en = CreateEntity(pool, "hero");
             {
-                let arrComp = new AttributesComponent();
-
-                AddComponent(AttributesComponent, en, arrComp);
-            }
-            {
-                let heroCom = new HeroComponent();
-                heroCom.name = value;
-                AddComponent(HeroComponent, en, heroCom);
-            }
-            {
+                AddComponent(HeroComponent, en, new HeroComponent());
                 AddComponent(HeroAIComponent, en, new HeroAIComponent());
-            }
-            {
-                AddComponent(SkillRequestsQueue, en, new SkillRequestsQueue());
-            }
 
-            
-        });
+            }
+            {
+                let attributesComp = new AttributesComponent();
+                attributesComp.name = heroNames[i];
+                AddComponent(AttributesComponent, en, attributesComp);
+            }
+            let career = heroCareers[i];
+            if (career == '[warrior]') {
+                AddComponent(WarriorComponent, en, new WarriorComponent());
+
+            }
+            else if (career == '[mage]') {
+                AddComponent(MageComponent, en, new MageComponent());
+            }
+            else {
+                console.log("unknown career = " + career)
+            }
+        }
+
+    }
+    /**
+ * 
+ */
+    private initMonsters() {
+        let pool = this.pool;
         //
-        this.map.goblins.forEach(function (value) {
+        let goblinNames = this.map.goblinNames;
+        for (let i = 0; i < goblinNames.length; ++i) {
             let en = CreateEntity(pool, "monster");
-            AddComponent(MonsterComponent, en, new MonsterComponent);
             {
-                let arrComp = new AttributesComponent();
-                arrComp.health = 100;
-                arrComp.mana = 20;
-                AddComponent(AttributesComponent, en, arrComp);
+                AddComponent(MonsterComponent, en, new MonsterComponent);
             }
             {
-                let goblinComp = new GoblinComponent();
-                goblinComp.name = value;
-                AddComponent(GoblinComponent, en, goblinComp);
+                let attributesComp = new AttributesComponent();
+                attributesComp.name = goblinNames[i];
+                AddComponent(AttributesComponent, en, attributesComp);
             }
             {
+                AddComponent(GoblinComponent, en, new GoblinComponent());
                 AddComponent(GoblinAIComponent, en, new GoblinAIComponent());
             }
-            {
-                AddComponent(SkillRequestsQueue, en, new SkillRequestsQueue());
-            }
-        });
+        }
+
     }
+
     /**
      * 
      */
     setPool(pool: Pool) {
-        this.pool = pool;
+        this.pool = pool as MyPool;
     }
 }
 /**
@@ -93,11 +109,12 @@ export class Map {
     /**
      * 
      */
-    heros: Array<string> = ['[Tom]', '[Lily]'];
+    heroNames: Array<string> = ['[Tom]', '[Lily]'];
+    heroCareers: Array<string> = ['[warrior]', '[mage]'];
     /**
      * 
      */
-    goblins: Array<string> = ['[Guru]', '[Waga]', '[One-eyed]'];
+    goblinNames: Array<string> = ['[Guru]', '[Waga]', '[One-eyed]'];
     /**
      * 
      */

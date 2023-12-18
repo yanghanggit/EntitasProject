@@ -25,12 +25,12 @@ export class HeroAISystem implements IInitializeSystem, IExecuteSystem, ISetPool
      * 
      */
     initialize() {
-        var entities = this.group.getEntities();
-        for (let i = 0, l = entities.length; i < l; i++) {
-            let e = entities[i];
-            let com = GetComponent(HeroComponent, e);
-            //console.log("hi, I'm a " + e.name + ", my name is " + com.name + ", he!ya!");
-        }
+        // var entities = this.group.getEntities();
+        // for (let i = 0, l = entities.length; i < l; i++) {
+        //     let e = entities[i];
+        //     let com = GetComponent(HeroComponent, e);
+        //     //console.log("hi, I'm a " + e.name + ", my name is " + com.name + ", he!ya!");
+        // }
     }
     /**
      * 
@@ -43,7 +43,7 @@ export class HeroAISystem implements IInitializeSystem, IExecuteSystem, ISetPool
      */
     setPool(pool: Pool) {
         this.pool = pool;
-        this.group = pool.getGroup(Matcher.anyOf(
+        this.group = pool.getGroup(Matcher.allOf(
             CID(HeroComponent)
         ));
     }

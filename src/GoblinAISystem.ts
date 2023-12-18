@@ -8,7 +8,7 @@ import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
 import { GetComponent, CID } from "./EntitasExtension"
-import { MonsterComponent, GoblinComponent, GoblinAIComponent, HeroComponent, SkillRequestsQueue } from "./Components";
+import { MonsterComponent, GoblinComponent, GoblinAIComponent, HeroComponent, AttributesComponent } from "./Components";
 import { MyPool } from "./MyPool";
 import { Entity } from "../lib/entitas/Entity";
 import { AddComponent, HasComponent } from "./EntitasExtension";
@@ -55,21 +55,16 @@ export class GoblinAISystem implements IInitializeSystem, IExecuteSystem, ISetPo
             return;
         }
         this.attackCooldown = GoblinAISystem.INIT_ATTACK_COOLDOWN;
+
         //
         var entities = this.group1.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
-            let e = entities[i];
-            let goblinComp = GetComponent(GoblinComponent, e);
-            let goblinAIComp = GetComponent(GoblinAIComponent, e);
+            const goblin = entities[i];
+            const goblin_AttributesComp = GetComponent(AttributesComponent, goblin);
             //
             const targetEntity = this.determineAttackTarget();
-            const heroComp = GetComponent(HeroComponent, targetEntity);
-            const skillReqComp = GetComponent(SkillRequestsQueue, targetEntity);
-            const makeReq = `${goblinComp.name} wana punch ${heroComp.name}.`;
-            if (!skillReqComp.queue.includes(makeReq)) {
-                skillReqComp.queue.push(makeReq);
-                console.log(makeReq);
-            }
+            const target_AttributesComp = GetComponent(AttributesComponent, targetEntity);
+            console.log(`${goblin_AttributesComp.name} wana punch ${target_AttributesComp.name}.`);
         }
     }
     /**
@@ -85,14 +80,15 @@ export class GoblinAISystem implements IInitializeSystem, IExecuteSystem, ISetPo
     setPool(pool: Pool) {
         this.pool = pool as MyPool;
         //
-        this.group1 = pool.getGroup(Matcher.anyOf(
+        this.group1 = pool.getGroup(Matcher.allOf(
             CID(MonsterComponent),
             CID(GoblinComponent),
             CID(GoblinAIComponent)
         ));
         //
-        this.group2 = pool.getGroup(Matcher.anyOf(
-            CID(HeroComponent)
+        this.group2 = pool.getGroup(Matcher.allOf(
+            CID(HeroComponent),
+            CID(AttributesComponent)
         ));
     }
     /**

@@ -7,8 +7,8 @@ import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { GetComponent, CID } from "./EntitasExtension"
-import { HeroComponent } from "./Components";
+import { GetComponent, CID, HasComponent } from "./EntitasExtension"
+import { HeroComponent, AttributesComponent, WarriorComponent, MageComponent } from "./Components";
 /**
  * 
  */
@@ -28,8 +28,16 @@ export class HeroSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
         var entities = this.group.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
             let e = entities[i];
-            let com = GetComponent(HeroComponent, e);
-            console.log("hi, I'm a " + e.name + ", my name is " + com.name + ", he!ya!");
+            let heroComponent = GetComponent(HeroComponent, e);
+            let attributesComp = GetComponent(AttributesComponent, e);
+            let careerName = 'unkown career';
+            if (HasComponent(WarriorComponent, e)) {
+                careerName = 'warrior';
+            }
+            else if (HasComponent(MageComponent, e)) {
+                careerName = 'mega';
+            }
+            console.log(`My name is ${attributesComp.name}, I'm a ${careerName}, he!ya!`);
         }
     }
     /**
@@ -43,8 +51,8 @@ export class HeroSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
      */
     setPool(pool: Pool) {
         this.pool = pool;
-        this.group = pool.getGroup(Matcher.anyOf(
-            CID(HeroComponent)
-        ));
+        this.group = pool.getGroup(
+            Matcher.allOf(CID(HeroComponent), CID(AttributesComponent)).anyOf(CID(WarriorComponent), CID(MageComponent))
+        );
     }
 }
