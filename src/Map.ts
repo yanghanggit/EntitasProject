@@ -10,9 +10,9 @@ import { ISetPool } from "../lib/entitas/interfaces/ISystem";
 import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { CreateEntity, AddComponent } from "./EntitasExtension"
-import { AttributesComponent, HeroComponent, MonsterComponent, GoblinComponent } from "./Components";
-
-
+import { AttributesComponent, HeroComponent, HeroAIComponent, MonsterComponent, GoblinComponent, GoblinAIComponent, SkillRequestsQueue } from "./Components";
+import { HeroAISystem } from "./HeroAISystem";
+import { GoblinAISystem } from "./GoblinAISystem";
 /**
  * 
  */
@@ -43,6 +43,14 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
                 heroCom.name = value;
                 AddComponent(HeroComponent, en, heroCom);
             }
+            {
+                AddComponent(HeroAIComponent, en, new HeroAIComponent());
+            }
+            {
+                AddComponent(SkillRequestsQueue, en, new SkillRequestsQueue());
+            }
+
+            
         });
         //
         this.map.goblins.forEach(function (value) {
@@ -58,6 +66,12 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
                 let goblinComp = new GoblinComponent();
                 goblinComp.name = value;
                 AddComponent(GoblinComponent, en, goblinComp);
+            }
+            {
+                AddComponent(GoblinAIComponent, en, new GoblinAIComponent());
+            }
+            {
+                AddComponent(SkillRequestsQueue, en, new SkillRequestsQueue());
             }
         });
     }
@@ -112,5 +126,8 @@ export class Map {
         //
         systems.add(myPool.createSystem(HeroSystem));
         systems.add(myPool.createSystem(GoblinSystem));
+        //
+        systems.add(myPool.createSystem(HeroAISystem));
+        systems.add(myPool.createSystem(GoblinAISystem));
     }
 }
