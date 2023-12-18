@@ -2,10 +2,12 @@
 import { Game } from './Game';
 import { Scene } from './Scene';
 import { Map } from './Map';
+import { DeltaTiming } from "./DeltaTiming";
 
-let lastTime = 0;
 let requestAnimId = 0;
 let game = null;
+let deltaTiming = new DeltaTiming(1000 / 60, 1.0);
+
 //
 document.body.innerHTML += '<p>Entitas Test</p>';
 //
@@ -18,14 +20,13 @@ buttonStart.addEventListener('click', () => {
     game = new Game("[My D&D Game]");
     game.startWithScene(new Scene("[First dungon]", new Map("[Goblin's lair]")));
 
-    ///
-    lastTime = performance.now();
+    //
     function gameLoop(timestamp: number) {
         if (game === null) {
             return;
         }
-        const dt = (timestamp - lastTime) / 1000; 
-        lastTime = timestamp;
+        const dt = deltaTiming.calculate(false);
+        //console.log("dt = " + dt.toFixed(3));
         game.update(dt);
         requestAnimId = requestAnimationFrame(gameLoop);
     }

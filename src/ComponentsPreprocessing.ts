@@ -2,7 +2,7 @@
  * 
  */
 import { Entity } from "../lib/entitas/Entity";
-import { COMPONENTS} from "./Components";
+import { COMPONENTS } from "./Components";
 
 
 Entity.initialize(COMPONENTS.length, { "entities": 200, "components": 128 });

@@ -9,11 +9,11 @@ export class Game {
     /**
      * 
      */
-    public name: string = '';
+    name: string = '';
     /**
      * 
      */
-    public scene: Scene | null = null;
+    scene: Scene | null = null;
     /**
      * 
      */
@@ -23,7 +23,7 @@ export class Game {
     /**
      * 
      */
-    public startWithScene(scene: Scene) {
+    startWithScene(scene: Scene) {
         console.log("start:" + this.name);
         this.scene = scene;
         this.scene.start();
@@ -31,13 +31,13 @@ export class Game {
     /**
      * 
      */
-    public update(dt: number) {
+    update(dt: number) {
         this.scene?.update(dt);
     }
     /**
      * 
      */
-    public stop() {
+    stop() {
         if (this.scene !== null) {
             this.scene.stop();
             this.scene.tearDown();

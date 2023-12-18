@@ -30,18 +30,9 @@ export class GoblinComponent implements IComponent {
 export class AttributesComponent implements IComponent {
     health: number;
     mana: number;
+    attack: number;
+    defense: number;
 }
-/**
- * 
- */
-export class PropertiesComponent implements IComponent {
-    strength: number;
-    agility: number;
-    intelligence: number;
-}
-
-
-
 
 /**
  * 
@@ -52,5 +43,4 @@ export const COMPONENTS: IComponent[] = [
     MonsterComponent,
     GoblinComponent,
     AttributesComponent,
-    PropertiesComponent,
 ];

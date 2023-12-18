@@ -31,17 +31,17 @@ export class MyReactiveSystem implements IInitializeSystem, ISetPool, IReactiveS
     /**
      * 
      */
-    public initialize() {
+    initialize() {
     }
     /**
      * 
      */
-    public execute(entities: Array<Entity>) {
+    execute(entities: Array<Entity>) {
     }
     /**
      * 
      */
-    public setPool(pool: Pool) {
+    setPool(pool: Pool) {
         this.trigger = new TriggerOnEvent(Matcher.allOf(CID(EmptyComponent)), GroupEventType.OnEntityAdded);
     }
 }

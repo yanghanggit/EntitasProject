@@ -24,7 +24,7 @@ export class GoblinSystem implements IInitializeSystem, IExecuteSystem, ISetPool
     /**
      * 
      */
-    public initialize() {
+    initialize() {
         var entities = this.group.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
             let e = entities[i];
@@ -35,12 +35,12 @@ export class GoblinSystem implements IInitializeSystem, IExecuteSystem, ISetPool
     /**
      * 
      */
-    public execute() {
+    execute() {
     }
     /**
      * 
      */
-    public setPool(pool: Pool) {
+    setPool(pool: Pool) {
         this.pool = pool;
         this.group = pool.getGroup(Matcher.anyOf(
             CID(MonsterComponent)

@@ -24,14 +24,14 @@ export class MyExecuteSystem implements IInitializeSystem, IExecuteSystem, ISetP
     /**
      * 
      */
-    public initialize() {
+    initialize() {
         let en = CreateEntity(this.pool, 'Empty');
         AddComponent(EmptyComponent, en, new EmptyComponent);
     }
     /**
      * 
      */
-    public execute() {
+    execute() {
         var entities = this.group.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
             let e = entities[i];
@@ -41,7 +41,7 @@ export class MyExecuteSystem implements IInitializeSystem, IExecuteSystem, ISetP
     /**
      * 
      */
-    public setPool(pool: Pool) {
+    setPool(pool: Pool) {
         this.pool = pool;
         this.group = pool.getGroup(Matcher.allOf(
             CID(EmptyComponent)

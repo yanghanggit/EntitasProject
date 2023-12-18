@@ -11,11 +11,11 @@ export class Scene {
     /**
      * 
      */
-    public name: string = '';
+    name: string = '';
     /**
      * 
      */
-    public map: Map | null = null;
+    map: Map | null = null;
     /**
      * 
      */
@@ -52,7 +52,7 @@ export class Scene {
     /**
      * 
      */
-    public start() {
+    start() {
         console.log("start:" + this.name);
         //
         this.myPool = new MyPool(this.name + "'s Pool", this);
@@ -66,7 +66,7 @@ export class Scene {
     /**
      * 
      */
-    public update(dt: number) {
+    update(dt: number) {
         //
         this.dt = dt;
         this.lastTime += dt;
@@ -80,13 +80,13 @@ export class Scene {
     /**
      * 
      */
-    public stop() {
+    stop() {
         console.log("stop:" + this.name);
     }
     /**
      * 
      */
-    public tearDown() {
+    tearDown() {
         console.log("tearDown:" + this.name);
     }
 }
