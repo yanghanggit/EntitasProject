@@ -66,12 +66,6 @@ export class GoblinAIComponent implements IComponent {
 /**
  * 
  */
-// export class SkillRequestsQueue implements IComponent {
-//     queue: Array<string> = [];
-// }
-/**
- * 
- */
 export const COMPONENTS: IComponent[] = [
     EmptyComponent,
     HeroComponent,
