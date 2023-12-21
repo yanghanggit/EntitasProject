@@ -14,7 +14,7 @@ import { AttributesComponent, HeroComponent, HeroAIComponent, MonsterComponent, 
 import { HeroAISystem } from "./HeroAISystem";
 import { GoblinAISystem } from "./GoblinAISystem";
 import { MyPool } from "./MyPool";
-import { AttackEventSystem } from "./AttackEventSystem";
+import { SkillSystem } from "./SkillSystem";
 import { HeroDeadSystem } from "./HeroDeadSystem";
 /**
  * 
@@ -91,10 +91,14 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
             }
             {
                 AddComponent(GoblinComponent, en, new GoblinComponent());
-                AddComponent(GoblinAIComponent, en, new GoblinAIComponent());
+            }
+            {
+                const goblinAIComp = new GoblinAIComponent();
+                goblinAIComp.maxAttackCooldown = (i + 1) * 1.0;
+                goblinAIComp.attackCooldown = goblinAIComp.maxAttackCooldown;
+                AddComponent(GoblinAIComponent, en, goblinAIComp);
             }
         }
-
     }
 
     /**
@@ -157,7 +161,7 @@ export class Map {
         systems.add(myPool.createSystem(HeroAISystem));
         systems.add(myPool.createSystem(GoblinAISystem));
         //
-        systems.add(myPool.createSystem(AttackEventSystem));
+        systems.add(myPool.createSystem(SkillSystem));
         systems.add(myPool.createSystem(HeroDeadSystem));
     }
 }

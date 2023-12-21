@@ -1,6 +1,7 @@
 /**
  * 
  */
+import { Entity } from "../lib/entitas/Entity";
 import { IComponent } from "../lib/entitas/interfaces/IComponent";
 /**
  * 
@@ -62,11 +63,22 @@ export class HeroAIComponent implements IComponent {
  * 
  */
 export class GoblinAIComponent implements IComponent {
+    maxAttackCooldown: number = 3;
+    attackCooldown: number = this.maxAttackCooldown;
 }
 /**
  * 
  */
 export class DeadComponent implements IComponent {
+}
+
+/**
+ * 
+ */
+export class SkillComponent implements IComponent {
+    story: string = '';
+    src: Entity | null = null;
+    dest: Entity | null = null;
 }
 /**
  * 
@@ -82,4 +94,5 @@ export const COMPONENTS: IComponent[] = [
     HeroAIComponent,
     GoblinAIComponent,
     DeadComponent,
+    SkillComponent,
 ];

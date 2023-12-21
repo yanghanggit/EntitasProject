@@ -7,11 +7,10 @@ import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { GetComponent, CID, HasComponent } from "./EntitasExtension"
-import { MonsterComponent, GoblinComponent, GoblinAIComponent, HeroComponent, AttributesComponent, DeadComponent } from "./Components";
+import { GetComponent, CID, AddComponent, CreateEntity } from "./EntitasExtension"
+import { MonsterComponent, GoblinComponent, GoblinAIComponent, HeroComponent, AttributesComponent, SkillComponent } from "./Components";
 import { MyPool } from "./MyPool";
 import { Entity } from "../lib/entitas/Entity";
-import { AttackEvent } from "./CombatInteraction";
 
 /**
  * 
@@ -32,11 +31,6 @@ export class GoblinAISystem implements IInitializeSystem, IExecuteSystem, ISetPo
     /**
      * 
      */
-    static readonly INIT_ATTACK_COOLDOWN: number = 3;
-    attackCooldown: number = GoblinAISystem.INIT_ATTACK_COOLDOWN;
-    /**
-     * 
-     */
     initialize() {
     }
     /**
@@ -53,22 +47,27 @@ export class GoblinAISystem implements IInitializeSystem, IExecuteSystem, ISetPo
             return;
         }
         const dt = this.pool.scene.dt;
-        this.attackCooldown -= dt;
-        if (this.attackCooldown > 0.0) {
-            return;
-        }
-        this.attackCooldown = GoblinAISystem.INIT_ATTACK_COOLDOWN;
-        //
         const entities = this.group1!.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
             const goblin = entities[i];
-            const goblin_AttributesComp = GetComponent(AttributesComponent, goblin);
+            const goblinAIComp = GetComponent(GoblinAIComponent, goblin);
+            goblinAIComp.attackCooldown -= dt;
+            if (goblinAIComp.attackCooldown > 0) {
+                continue;
+            }
+            goblinAIComp.attackCooldown = goblinAIComp.maxAttackCooldown;
             //
             const targetEntity = this.determineAttackTarget();
             if (targetEntity !== null) {
+                const skillEntity = CreateEntity(this.pool, "skill");
+                const skillComp = new SkillComponent();
+                skillComp.src = goblin;
+                skillComp.dest = targetEntity;
+                //
                 const target_AttributesComp = GetComponent(AttributesComponent, targetEntity);
-                console.log(`${goblin_AttributesComp!.name} wana punch ${target_AttributesComp!.name}.`);
-                this.pool.combatInteraction.events.push(new AttackEvent(goblin, targetEntity));
+                const goblin_AttributesComp = GetComponent(AttributesComponent, goblin);
+                skillComp.story = `${goblin_AttributesComp!.name} wana punch ${target_AttributesComp!.name}.`;
+                AddComponent(SkillComponent, skillEntity, skillComp);
             }
         }
     }
@@ -81,7 +80,7 @@ export class GoblinAISystem implements IInitializeSystem, IExecuteSystem, ISetPo
             return null;
         }
         const target = this.getRandomElementFromArray(entities) as Entity;
-        if (target === null || HasComponent(DeadComponent, target)) {
+        if (target === null) {
             return null;
         }
         return target;

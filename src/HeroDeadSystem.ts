@@ -36,12 +36,12 @@ export class HeroDeadSystem implements IInitializeSystem, IExecuteSystem, ISetPo
             return;
         }
         const entities = this.group.getEntities();
-        for (let i = 0, l = entities.length; i < l; i++) {
-            const e = entities[i];
-            const attributesComp = GetComponent(AttributesComponent, e);
+        entities.forEach(async (en) => {
+            const attributesComp = GetComponent(AttributesComponent, en);
             console.log(`${attributesComp!.name} is dead!`);
-            this.pool.destroyEntity(e);
-        }
+            this.pool.destroyEntity(en);
+        });
+
     }
     /**
      * 

@@ -43,7 +43,7 @@ export class GoblinSystem implements IInitializeSystem, IExecuteSystem, ISetPool
     setPool(pool: Pool) {
         this.pool = pool;
         this.group = pool.getGroup(Matcher.allOf(
-            CID(MonsterComponent), CID(AttributesComponent)
+            CID(MonsterComponent), CID(GoblinComponent), CID(AttributesComponent)
         ));
     }
 }

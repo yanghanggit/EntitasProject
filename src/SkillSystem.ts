@@ -6,15 +6,16 @@ import { ISetPool } from "../lib/entitas/interfaces/ISystem";
 import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
-import { AddComponent, GetComponent, HasComponent } from "./EntitasExtension"
-import { AttributesComponent } from "./Components";
+import { AddComponent, GetComponent, HasComponent, CID } from "./EntitasExtension"
+import { AttributesComponent, SkillComponent } from "./Components";
 import { MyPool } from "./MyPool";
-import { AttackEvent } from "./CombatInteraction";
 import { DeadComponent } from "./Components";
+import { Matcher } from "../lib/entitas/Matcher";
+import { Entity } from "../lib/entitas/Entity";
 /**
  * 
  */
-export class AttackEventSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
+export class SkillSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
     /**
      * 
      */
@@ -32,31 +33,30 @@ export class AttackEventSystem implements IInitializeSystem, IExecuteSystem, ISe
      * 
      */
     execute() {
-        if (this.pool === null || this.pool.scene === null) {
-            return;
+        const entities = this.group!.getEntities();
+        for (let i = 0, l = entities.length; i < l; i++) {
+            const skillEn = entities[i];
+            const skillComp = GetComponent(SkillComponent, skillEn);
+            console.log(skillComp.story);
+            this.handleAttack(skillComp.src, skillComp.dest);
         }
-        const combatInteraction = this.pool.combatInteraction;
-        const events = combatInteraction.events;
-        for (let i = 0, l = events.length; i < l; i++) {
-            const ev = events[i];
-            if (ev.type === 0) {
-                this.handleAttackEvent(ev as AttackEvent);
-            }
-        }
-        combatInteraction.events = [];
+        entities.forEach(async (en) => {
+            this.pool.destroyEntity(en);
+        });
     }
     /**
      * 
      */
     setPool(pool: Pool) {
         this.pool = pool as MyPool;
+        this.group = pool.getGroup(Matcher.allOf(
+            CID(SkillComponent)
+        ));
     }
     /**
      * 
      */
-    private handleAttackEvent(attackEvent: AttackEvent) {
-        const attackerEn = attackEvent.attacker;
-        const targetEn = attackEvent.target;
+    private handleAttack(attackerEn: Entity, targetEn: Entity) {
         if (!HasComponent(AttributesComponent, attackerEn) || !HasComponent(AttributesComponent, targetEn)) {
             return;
         }
@@ -69,7 +69,9 @@ export class AttackEventSystem implements IInitializeSystem, IExecuteSystem, ISe
         attributesComp_targetEn.health -= damage;
         if (attributesComp_targetEn.health < 0) {
             attributesComp_targetEn.health = 0;
-            AddComponent(DeadComponent, targetEn, new DeadComponent());
+            if (!HasComponent(DeadComponent, targetEn)) {
+                AddComponent(DeadComponent, targetEn, new DeadComponent());
+            }
         }
     }
 }
