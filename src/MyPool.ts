@@ -22,7 +22,7 @@ export class MyPool extends Pool {
      * 
      * @param name 
      */
-    impl(_componentsEnum: {}, _totalComponents: number): Entity {
+    override impl(_componentsEnum: {}, _totalComponents: number): Entity {
         return new MyEnity(_componentsEnum, _totalComponents) as Entity;
     }
     /**
