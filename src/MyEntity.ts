@@ -23,4 +23,11 @@ export class MyEnity extends Entity {
         const componentInstance = this.getComponent(CID(componentClass));
         return componentInstance as InstanceType<T>;
     }
+
+    /**
+     * 
+     */
+    HasComponent<T extends new (...args: any[]) => IComponent>(componentClass: T): boolean {
+        return this.hasComponent(CID(componentClass));
+    }
 }

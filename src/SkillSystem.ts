@@ -6,12 +6,11 @@ import { ISetPool } from "../lib/entitas/interfaces/ISystem";
 import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
-import { HasComponent, CID } from "./EntitasExtension"
+import { CID } from "./EntitasExtension"
 import { AttributesComponent, SkillComponent } from "./Components";
 import { MyPool } from "./MyPool";
 import { DeadComponent } from "./Components";
 import { Matcher } from "../lib/entitas/Matcher";
-import { Entity } from "../lib/entitas/Entity";
 import { MyEnity } from "./MyEntity";
 /**
  * 
@@ -58,7 +57,7 @@ export class SkillSystem implements IInitializeSystem, IExecuteSystem, ISetPool 
      * 
      */
     private handleAttack(attackerEn: MyEnity, targetEn: MyEnity) {
-        if (!HasComponent(AttributesComponent, attackerEn) || !HasComponent(AttributesComponent, targetEn)) {
+        if (!attackerEn.HasComponent(AttributesComponent) || !targetEn.HasComponent(AttributesComponent)) {
             return;
         }
         const attributesComp_attackerEn = attackerEn.GetComponent(AttributesComponent);
@@ -70,7 +69,7 @@ export class SkillSystem implements IInitializeSystem, IExecuteSystem, ISetPool 
         attributesComp_targetEn.health -= damage;
         if (attributesComp_targetEn.health < 0) {
             attributesComp_targetEn.health = 0;
-            if (!HasComponent(DeadComponent, targetEn)) {
+            if (!targetEn.HasComponent(DeadComponent)) {
                 targetEn.AddComponent(DeadComponent);
             }
         }

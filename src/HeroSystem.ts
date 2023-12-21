@@ -7,7 +7,7 @@ import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { CID, HasComponent } from "./EntitasExtension"
+import { CID } from "./EntitasExtension"
 import { HeroComponent, AttributesComponent, WarriorComponent, MageComponent } from "./Components";
 import { MyEnity } from "./MyEntity";
 /**
@@ -34,10 +34,10 @@ export class HeroSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
             const e = entities[i] as MyEnity;
             const attributesComp = e.GetComponent(AttributesComponent);
             let careerName = 'unkown career';
-            if (HasComponent(WarriorComponent, e)) {
+            if (e.HasComponent(WarriorComponent)) {
                 careerName = 'warrior';
             }
-            else if (HasComponent(MageComponent, e)) {
+            else if (e.HasComponent(MageComponent)) {
                 careerName = 'mega';
             }
             console.log(`My name is ${attributesComp!.name}, I'm a ${careerName}, he!ya!`);

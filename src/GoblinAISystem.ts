@@ -10,7 +10,6 @@ import { Matcher } from "../lib/entitas/Matcher";
 import { CID } from "./EntitasExtension"
 import { MonsterComponent, GoblinComponent, GoblinAIComponent, HeroComponent, AttributesComponent, SkillComponent } from "./Components";
 import { MyPool } from "./MyPool";
-import { Entity } from "../lib/entitas/Entity";
 import { MyEnity } from "./MyEntity";
 
 /**
