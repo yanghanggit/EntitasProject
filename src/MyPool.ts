@@ -4,6 +4,8 @@
 import { Pool } from '../lib/entitas/Pool';
 import { Scene } from './Scene';
 import { COMPONENTS } from './Components';
+import { Entity } from '../lib/entitas/Entity';
+import { MyEnity } from './MyEntity';
 /**
  * 
  */
@@ -16,6 +18,14 @@ export class MyPool extends Pool {
      * 
      */
     scene: Scene | null = null;
+    /**
+     * 
+     * @param name 
+     */
+    impl(_componentsEnum: {}, _totalComponents: number): Entity {
+        console.log('new MyEnity');
+        return new MyEnity(_componentsEnum, _totalComponents) as Entity;
+    }
     /**
      * 
      */

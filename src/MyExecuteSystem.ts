@@ -7,8 +7,9 @@ import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { CreateEntity, AddComponent, GetComponent, CID } from "./EntitasExtension"
+import { GetComponent, CID } from "./EntitasExtension"
 import { EmptyComponent } from "./Components";
+import { MyEnity } from "./MyEntity";
 /**
  * 
  */
@@ -26,8 +27,9 @@ export class MyExecuteSystem implements IInitializeSystem, IExecuteSystem, ISetP
      */
     initialize() {
         if (this.pool !== null) {
-            let en = CreateEntity(this.pool, 'Empty');
-            AddComponent(EmptyComponent, en, new EmptyComponent);
+            const en = this.pool.createEntity('Empty') as MyEnity;
+            en.AddComponent(EmptyComponent);
+            
         }
     }
     /**

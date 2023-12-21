@@ -9,24 +9,7 @@ import { COMPONENT_ID_PROPERTY } from "./ComponentsPreprocessing";
  * 
  */
 export function CID<ComponentClass>(clazz: ComponentClass): number {
-    return (clazz as any)[COMPONENT_ID_PROPERTY];
-}
-/**
- * 
- */
-export function CreateEntity(pool: Pool, name: string): Entity {
-    let entity = pool.createEntity(name);
-    return entity;
-}
-/**
- * 
- */
-export function AddComponent<ComponentClass>(componentClass: ComponentClass,
-    en: Entity,
-    com: IComponent
-): Entity {
-    en.addComponent((componentClass as any)[COMPONENT_ID_PROPERTY] as number, com);
-    return en;
+    return (clazz as any)[COMPONENT_ID_PROPERTY] as number;
 }
 /**
  * 

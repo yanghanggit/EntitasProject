@@ -7,10 +7,11 @@ import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { GetComponent, CID, AddComponent, CreateEntity } from "./EntitasExtension"
+import { GetComponent, CID } from "./EntitasExtension"
 import { MonsterComponent, GoblinComponent, GoblinAIComponent, HeroComponent, AttributesComponent, SkillComponent } from "./Components";
 import { MyPool } from "./MyPool";
 import { Entity } from "../lib/entitas/Entity";
+import { MyEnity } from "./MyEntity";
 
 /**
  * 
@@ -49,7 +50,7 @@ export class GoblinAISystem implements IInitializeSystem, IExecuteSystem, ISetPo
         const dt = this.pool.scene.dt;
         const entities = this.group1!.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
-            const goblin = entities[i];
+            const goblin = entities[i] as MyEnity;
             const goblinAIComp = GetComponent(GoblinAIComponent, goblin);
             goblinAIComp.attackCooldown -= dt;
             if (goblinAIComp.attackCooldown > 0) {
@@ -59,27 +60,26 @@ export class GoblinAISystem implements IInitializeSystem, IExecuteSystem, ISetPo
             //
             const targetEntity = this.determineAttackTarget();
             if (targetEntity !== null) {
-                const skillEntity = CreateEntity(this.pool, "skill");
-                const skillComp = new SkillComponent();
+                const skillEntity = this.pool.createEntity('skill') as MyEnity;
+                const skillComp = skillEntity.AddComponent(SkillComponent);//new SkillComponent();
                 skillComp.src = goblin;
                 skillComp.dest = targetEntity;
                 //
                 const target_AttributesComp = GetComponent(AttributesComponent, targetEntity);
                 const goblin_AttributesComp = GetComponent(AttributesComponent, goblin);
                 skillComp.story = `${goblin_AttributesComp!.name} wana punch ${target_AttributesComp!.name}.`;
-                AddComponent(SkillComponent, skillEntity, skillComp);
             }
         }
     }
     /**
      * 
      */
-    private determineAttackTarget(): Entity | null {
+    private determineAttackTarget(): MyEnity | null {
         const entities = this.group2!.getEntities();
         if (entities === null || entities.length === 0) {
             return null;
         }
-        const target = this.getRandomElementFromArray(entities) as Entity;
+        const target = this.getRandomElementFromArray(entities) as MyEnity;
         if (target === null) {
             return null;
         }

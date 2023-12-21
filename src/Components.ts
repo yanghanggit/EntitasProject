@@ -3,6 +3,7 @@
  */
 import { Entity } from "../lib/entitas/Entity";
 import { IComponent } from "../lib/entitas/interfaces/IComponent";
+import { MyEnity } from "./MyEntity";
 /**
  * 
  */
@@ -13,11 +14,11 @@ export class EmptyComponent implements IComponent {
  * 
  */
 export class HeroComponent implements IComponent {
-    static __UUID__: number = 0;
-    UUID: number;
-    constructor() {
-        this.UUID = ++HeroComponent.__UUID__;
-    }
+    // static __UUID__: number = 0;
+    // UUID: number;
+    // constructor() {
+    //     this.UUID = ++HeroComponent.__UUID__;
+    // }
 }
 /**
  * 
@@ -33,11 +34,11 @@ export class MageComponent implements IComponent {
  * 
  */
 export class MonsterComponent implements IComponent {
-    static __UUID__: number = 0;
-    UUID: number;
-    constructor() {
-        this.UUID = ++MonsterComponent.__UUID__;
-    }
+    // static __UUID__: number = 0;
+    // UUID: number;
+    // constructor() {
+    //     this.UUID = ++MonsterComponent.__UUID__;
+    // }
 }
 /**
  * 
@@ -77,8 +78,8 @@ export class DeadComponent implements IComponent {
  */
 export class SkillComponent implements IComponent {
     story: string = '';
-    src: Entity | null = null;
-    dest: Entity | null = null;
+    src: MyEnity | null = null;
+    dest: MyEnity | null = null;
 }
 /**
  * 

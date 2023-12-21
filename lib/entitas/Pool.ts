@@ -180,7 +180,13 @@ export class Pool {
     this._cachedOnEntityReleased = this.onEntityReleased
     Pool.componentsEnum = components
     Pool.totalComponents = totalComponents
-
+  }
+  /**
+   * 
+   * @param name 
+   */
+  protected impl(_componentsEnum: {}, _totalComponents: number): Entity {
+    return new Entity(_componentsEnum, _totalComponents);
   }
 
   /**
@@ -189,7 +195,7 @@ export class Pool {
    * @returns {entitas.Entity}
    */
   public createEntity(name: string): Entity {
-    const entity = this._reusableEntities.size() > 0 ? this._reusableEntities.removeLast() : new Entity(this._componentsEnum, this._totalComponents)
+    const entity = this._reusableEntities.size() > 0 ? this._reusableEntities.removeLast() : this.impl(this._componentsEnum, this._totalComponents)/*new Entity(this._componentsEnum, this._totalComponents)*/
     entity._isEnabled = true
     entity.name = name
     entity._creationIndex = this._creationIndex++

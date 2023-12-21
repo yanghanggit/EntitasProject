@@ -9,13 +9,13 @@ import { GoblinSystem } from "./GoblinSystem";
 import { ISetPool } from "../lib/entitas/interfaces/ISystem";
 import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
-import { CreateEntity, AddComponent } from "./EntitasExtension"
 import { AttributesComponent, HeroComponent, HeroAIComponent, MonsterComponent, GoblinComponent, GoblinAIComponent, WarriorComponent, MageComponent } from "./Components";
 import { HeroAISystem } from "./HeroAISystem";
 import { GoblinAISystem } from "./GoblinAISystem";
 import { MyPool } from "./MyPool";
 import { SkillSystem } from "./SkillSystem";
 import { HeroDeadSystem } from "./HeroDeadSystem";
+import { MyEnity } from "./MyEntity";
 /**
  * 
  */
@@ -45,24 +45,22 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
         const heroNames = this.map.heroNames;
         const heroCareers = this.map.heroCareers;
         for (let i = 0; i < heroNames.length; ++i) {
-            const en = CreateEntity(pool, "hero");
+            const en = pool.createEntity("hero") as MyEnity;
             {
-                AddComponent(HeroComponent, en, new HeroComponent());
-                AddComponent(HeroAIComponent, en, new HeroAIComponent());
-
+                en.AddComponent(HeroComponent);
+                en.AddComponent(HeroAIComponent);
             }
             {
-                const attributesComp = new AttributesComponent();
+                const attributesComp = en.AddComponent(AttributesComponent);
                 attributesComp.name = heroNames[i];
-                AddComponent(AttributesComponent, en, attributesComp);
             }
             const career = heroCareers[i];
             if (career == '[warrior]') {
-                AddComponent(WarriorComponent, en, new WarriorComponent());
+                en.AddComponent(WarriorComponent);
 
             }
             else if (career == '[mage]') {
-                AddComponent(MageComponent, en, new MageComponent());
+                en.AddComponent(MageComponent);
             }
             else {
                 console.log("unknown career = " + career)
@@ -80,23 +78,21 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
         const pool = this.pool;
         const goblinNames = this.map.goblinNames;
         for (let i = 0; i < goblinNames.length; ++i) {
-            const en = CreateEntity(pool, "monster");
+            const en = pool.createEntity("monster") as MyEnity;
             {
-                AddComponent(MonsterComponent, en, new MonsterComponent);
+                en.AddComponent(MonsterComponent);
             }
             {
-                const attributesComp = new AttributesComponent();
+                const attributesComp = en.AddComponent(AttributesComponent);
                 attributesComp.name = goblinNames[i];
-                AddComponent(AttributesComponent, en, attributesComp);
             }
             {
-                AddComponent(GoblinComponent, en, new GoblinComponent());
+                en.AddComponent(GoblinComponent);
             }
             {
-                const goblinAIComp = new GoblinAIComponent();
+                const goblinAIComp = en.AddComponent(GoblinAIComponent);
                 goblinAIComp.maxAttackCooldown = (i + 1) * 1.0;
                 goblinAIComp.attackCooldown = goblinAIComp.maxAttackCooldown;
-                AddComponent(GoblinAIComponent, en, goblinAIComp);
             }
         }
     }
