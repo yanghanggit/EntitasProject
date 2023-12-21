@@ -7,8 +7,9 @@ import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { GetComponent, CID, HasComponent } from "./EntitasExtension"
+import { CID, HasComponent } from "./EntitasExtension"
 import { HeroComponent, AttributesComponent, WarriorComponent, MageComponent } from "./Components";
+import { MyEnity } from "./MyEntity";
 /**
  * 
  */
@@ -30,8 +31,8 @@ export class HeroSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
         }
         const entities = this.group.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
-            const e = entities[i];
-            const attributesComp = GetComponent(AttributesComponent, e);
+            const e = entities[i] as MyEnity;
+            const attributesComp = e.GetComponent(AttributesComponent);
             let careerName = 'unkown career';
             if (HasComponent(WarriorComponent, e)) {
                 careerName = 'warrior';

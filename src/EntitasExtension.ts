@@ -14,12 +14,6 @@ export function CID<ComponentClass>(clazz: ComponentClass): number {
 /**
  * 
  */
-export function GetComponent<ComponentClass>(componentClass: { new(): ComponentClass }, en: Entity,): ComponentClass | null {
-    return en.getComponent((componentClass as any)[COMPONENT_ID_PROPERTY]) as ComponentClass;
-}
-/**
- * 
- */
 export function HasComponent<ComponentClass>(componentClass: { new(): ComponentClass }, en: Entity,): ComponentClass | null {
     return en.hasComponent((componentClass as any)[COMPONENT_ID_PROPERTY]) as ComponentClass;
 }

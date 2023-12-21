@@ -7,7 +7,7 @@ import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { GetComponent, CID } from "./EntitasExtension"
+import { CID } from "./EntitasExtension"
 import { MonsterComponent, GoblinComponent, GoblinAIComponent, HeroComponent, AttributesComponent, SkillComponent } from "./Components";
 import { MyPool } from "./MyPool";
 import { Entity } from "../lib/entitas/Entity";
@@ -51,7 +51,7 @@ export class GoblinAISystem implements IInitializeSystem, IExecuteSystem, ISetPo
         const entities = this.group1!.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
             const goblin = entities[i] as MyEnity;
-            const goblinAIComp = GetComponent(GoblinAIComponent, goblin);
+            const goblinAIComp = goblin.GetComponent(GoblinAIComponent);//GetComponent(GoblinAIComponent, goblin);
             goblinAIComp.attackCooldown -= dt;
             if (goblinAIComp.attackCooldown > 0) {
                 continue;
@@ -65,8 +65,8 @@ export class GoblinAISystem implements IInitializeSystem, IExecuteSystem, ISetPo
                 skillComp.src = goblin;
                 skillComp.dest = targetEntity;
                 //
-                const target_AttributesComp = GetComponent(AttributesComponent, targetEntity);
-                const goblin_AttributesComp = GetComponent(AttributesComponent, goblin);
+                const target_AttributesComp = targetEntity.GetComponent(AttributesComponent);
+                const goblin_AttributesComp = goblin.GetComponent(AttributesComponent);
                 skillComp.story = `${goblin_AttributesComp!.name} wana punch ${target_AttributesComp!.name}.`;
             }
         }

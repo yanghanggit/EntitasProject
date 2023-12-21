@@ -7,8 +7,9 @@ import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { GetComponent, CID } from "./EntitasExtension"
+import { CID } from "./EntitasExtension"
 import { MonsterComponent, GoblinComponent, AttributesComponent } from "./Components";
+import { MyEnity } from "./MyEntity";
 /**
  * 
  */
@@ -27,8 +28,8 @@ export class GoblinSystem implements IInitializeSystem, IExecuteSystem, ISetPool
     initialize() {
         var entities = this.group!.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
-            let e = entities[i];
-            let attributesComp = GetComponent(AttributesComponent, e);
+            let e = entities[i] as MyEnity;
+            let attributesComp = e.GetComponent(AttributesComponent);
             console.log("yaha!, I'm a " + e.name + "-goblin" + ", my name is " + attributesComp!.name + ", woooo!");
         }
     }

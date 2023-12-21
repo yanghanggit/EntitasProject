@@ -7,7 +7,7 @@ import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { GetComponent, CID } from "./EntitasExtension"
+import { CID } from "./EntitasExtension"
 import { EmptyComponent } from "./Components";
 import { MyEnity } from "./MyEntity";
 /**
@@ -39,8 +39,8 @@ export class MyExecuteSystem implements IInitializeSystem, IExecuteSystem, ISetP
         if (this.group !== null) {
             var entities = this.group.getEntities();
             for (let i = 0, l = entities.length; i < l; i++) {
-                let e = entities[i];
-                let com = GetComponent(EmptyComponent, e);
+                let e = entities[i] as MyEnity;
+                let com = e.GetComponent(EmptyComponent);
             }
         }
     }
