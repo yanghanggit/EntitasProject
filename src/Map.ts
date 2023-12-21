@@ -16,6 +16,7 @@ import { MyPool } from "./MyPool";
 import { SkillSystem } from "./SkillSystem";
 import { HeroDeadSystem } from "./HeroDeadSystem";
 import { MyEnity } from "./MyEntity";
+import { MyUtil } from "./MyUtil";
 /**
  * 
  */
@@ -57,7 +58,6 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
             const career = heroCareers[i];
             if (career == '[warrior]') {
                 en.AddComponent(WarriorComponent);
-
             }
             else if (career == '[mage]') {
                 en.AddComponent(MageComponent);
@@ -91,7 +91,7 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
             }
             {
                 const goblinAIComp = en.AddComponent(GoblinAIComponent);
-                goblinAIComp.maxAttackCooldown = (i + 1) * 1.0;
+                goblinAIComp.maxAttackCooldown = MyUtil.randomRange(1.0, 3.0);
                 goblinAIComp.attackCooldown = goblinAIComp.maxAttackCooldown;
             }
         }

@@ -11,6 +11,7 @@ import { CID } from "./EntitasExtension"
 import { MonsterComponent, GoblinComponent, GoblinAIComponent, HeroComponent, AttributesComponent, SkillComponent } from "./Components";
 import { MyPool } from "./MyPool";
 import { MyEnity } from "./MyEntity";
+import { MyUtil } from "./MyUtil";
 
 /**
  * 
@@ -78,7 +79,7 @@ export class GoblinAISystem implements IInitializeSystem, IExecuteSystem, ISetPo
         if (entities === null || entities.length === 0) {
             return null;
         }
-        const target = this.getRandomElementFromArray(entities) as MyEnity;
+        const target = MyUtil.randomElementFromArray(entities) as MyEnity;
         if (target === null) {
             return null;
         }
@@ -100,15 +101,5 @@ export class GoblinAISystem implements IInitializeSystem, IExecuteSystem, ISetPo
             CID(HeroComponent),
             CID(AttributesComponent)
         ));
-    }
-    /**
-     * 
-     */
-    getRandomElementFromArray<T>(arr: T[]): T | undefined {
-        if (arr.length === 0) {
-            return undefined;
-        }
-        const randomIndex = Math.floor(Math.random() * arr.length);
-        return arr[randomIndex];
     }
 }
