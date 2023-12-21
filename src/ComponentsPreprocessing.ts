@@ -15,6 +15,13 @@ export const COMPONENT_ID_PROPERTY: string = 'component_id';
     }
 })();
 
+/**
+ * 
+ */
+export function CID<ComponentClass>(clazz: ComponentClass): number {
+    return (clazz as any)[COMPONENT_ID_PROPERTY] as number;
+}
+
 
 
 

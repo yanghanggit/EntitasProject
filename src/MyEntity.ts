@@ -3,7 +3,7 @@
  */
 import { Entity } from '../lib/entitas/Entity';
 import { IComponent } from '../lib/entitas/interfaces/IComponent';
-import { CID } from './EntitasExtension';
+import { CID } from './ComponentsPreprocessing';
 /**
  * 
  */
