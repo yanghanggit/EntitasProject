@@ -23,7 +23,15 @@ export class HeroDeadSystem implements IInitializeSystem, IExecuteSystem, ISetPo
     /**
      * 
      */
-    group: Group | null = null;
+    group1: Group | null = null;
+    /**
+    * 
+    */
+    group2: Group | null = null;
+    /**
+    * 
+    */
+    allHerosAreDead: boolean;
     /**
      * 
      */
@@ -33,15 +41,23 @@ export class HeroDeadSystem implements IInitializeSystem, IExecuteSystem, ISetPo
      * 
      */
     execute() {
-        if (this.group === null) {
-            return;
+        if (this.group1 !== null) {
+            const entities = this.group1.getEntities();
+            entities.forEach((en: MyEnity) => {
+                const attributesComp = en.GetComponent(AttributesComponent);
+                console.log(`${attributesComp!.name} is dead!`);
+                this.pool.destroyEntity(en);
+            });
         }
-        const entities = this.group.getEntities();
-        entities.forEach((en: MyEnity) => {
-            const attributesComp = en.GetComponent(AttributesComponent);
-            console.log(`${attributesComp!.name} is dead!`);
-            this.pool.destroyEntity(en);
-        });
+        if (!this.allHerosAreDead) {
+            if (this.group2 !== null) {
+                const entities = this.group2.getEntities();
+                if (entities.length === 0) {
+                    console.log('all heros are dead!!! game over!');
+                    this.allHerosAreDead = true;
+                }
+            }
+        }
 
     }
     /**
@@ -49,8 +65,11 @@ export class HeroDeadSystem implements IInitializeSystem, IExecuteSystem, ISetPo
      */
     setPool(pool: Pool) {
         this.pool = pool as MyPool;
-        this.group = pool.getGroup(
+        this.group1 = pool.getGroup(
             Matcher.allOf(CID(HeroComponent), CID(AttributesComponent), CID(DeadComponent))
+        );
+        this.group2 = pool.getGroup(
+            Matcher.allOf(CID(HeroComponent))
         );
     }
 }

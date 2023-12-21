@@ -23,7 +23,6 @@ export class MyPool extends Pool {
      * @param name 
      */
     impl(_componentsEnum: {}, _totalComponents: number): Entity {
-        console.log('new MyEnity');
         return new MyEnity(_componentsEnum, _totalComponents) as Entity;
     }
     /**
