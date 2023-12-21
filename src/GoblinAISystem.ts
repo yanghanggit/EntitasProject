@@ -7,11 +7,11 @@ import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { GetComponent, CID } from "./EntitasExtension"
-import { MonsterComponent, GoblinComponent, GoblinAIComponent, HeroComponent, AttributesComponent } from "./Components";
+import { GetComponent, CID, HasComponent } from "./EntitasExtension"
+import { MonsterComponent, GoblinComponent, GoblinAIComponent, HeroComponent, AttributesComponent, DeadComponent } from "./Components";
 import { MyPool } from "./MyPool";
 import { Entity } from "../lib/entitas/Entity";
-import { AddComponent, HasComponent } from "./EntitasExtension";
+import { AttackEvent } from "./CombatInteraction";
 
 /**
  * 
@@ -58,7 +58,6 @@ export class GoblinAISystem implements IInitializeSystem, IExecuteSystem, ISetPo
             return;
         }
         this.attackCooldown = GoblinAISystem.INIT_ATTACK_COOLDOWN;
-
         //
         const entities = this.group1!.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
@@ -66,16 +65,26 @@ export class GoblinAISystem implements IInitializeSystem, IExecuteSystem, ISetPo
             const goblin_AttributesComp = GetComponent(AttributesComponent, goblin);
             //
             const targetEntity = this.determineAttackTarget();
-            const target_AttributesComp = GetComponent(AttributesComponent, targetEntity);
-            console.log(`${goblin_AttributesComp!.name} wana punch ${target_AttributesComp!.name}.`);
+            if (targetEntity !== null) {
+                const target_AttributesComp = GetComponent(AttributesComponent, targetEntity);
+                console.log(`${goblin_AttributesComp!.name} wana punch ${target_AttributesComp!.name}.`);
+                this.pool.combatInteraction.events.push(new AttackEvent(goblin, targetEntity));
+            }
         }
     }
     /**
      * 
      */
-    private determineAttackTarget(): Entity {
-        var entities = this.group2!.getEntities();
-        return this.getRandomElementFromArray(entities) as Entity;
+    private determineAttackTarget(): Entity | null {
+        const entities = this.group2!.getEntities();
+        if (entities === null || entities.length === 0) {
+            return null;
+        }
+        const target = this.getRandomElementFromArray(entities) as Entity;
+        if (target === null || HasComponent(DeadComponent, target)) {
+            return null;
+        }
+        return target;
     }
     /**
      * 

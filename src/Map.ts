@@ -14,6 +14,8 @@ import { AttributesComponent, HeroComponent, HeroAIComponent, MonsterComponent, 
 import { HeroAISystem } from "./HeroAISystem";
 import { GoblinAISystem } from "./GoblinAISystem";
 import { MyPool } from "./MyPool";
+import { AttackEventSystem } from "./AttackEventSystem";
+import { HeroDeadSystem } from "./HeroDeadSystem";
 /**
  * 
  */
@@ -154,5 +156,8 @@ export class Map {
         //
         systems.add(myPool.createSystem(HeroAISystem));
         systems.add(myPool.createSystem(GoblinAISystem));
+        //
+        systems.add(myPool.createSystem(AttackEventSystem));
+        systems.add(myPool.createSystem(HeroDeadSystem));
     }
 }

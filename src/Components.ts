@@ -48,10 +48,10 @@ export class GoblinComponent implements IComponent {
  */
 export class AttributesComponent implements IComponent {
     name: string = '';
-    health: number = 0;
-    mana: number = 0;
-    attack: number = 0;
-    defense: number = 0;
+    health: number = 100;
+    mana: number = 50;
+    attack: number = 30;
+    defense: number = 10;
 }
 /**
  * 
@@ -66,6 +66,11 @@ export class GoblinAIComponent implements IComponent {
 /**
  * 
  */
+export class DeadComponent implements IComponent {
+}
+/**
+ * 
+ */
 export const COMPONENTS: IComponent[] = [
     EmptyComponent,
     HeroComponent,
@@ -76,4 +81,5 @@ export const COMPONENTS: IComponent[] = [
     AttributesComponent,
     HeroAIComponent,
     GoblinAIComponent,
+    DeadComponent,
 ];

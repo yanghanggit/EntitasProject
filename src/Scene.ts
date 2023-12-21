@@ -24,7 +24,6 @@ export class Scene {
      * 
      */
     myPool: MyPool | null = null;
-
     /**
      * 
      */
@@ -90,5 +89,6 @@ export class Scene {
      */
     tearDown() {
         console.log("tearDown:" + this.name);
+        //this.myPool.combatInteraction.events = [];
     }
 }
