@@ -16,20 +16,22 @@ export class HeroSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
     /**
      * 
      */
-    pool: Pool;
+    pool: Pool | null = null;
     /**
      * 
      */
-    group: Group;
+    group: Group | null = null;
     /**
      * 
      */
     initialize() {
-        var entities = this.group.getEntities();
+        if (this.group === null) {
+            return;
+        }
+        const entities = this.group.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
-            let e = entities[i];
-            let heroComponent = GetComponent(HeroComponent, e);
-            let attributesComp = GetComponent(AttributesComponent, e);
+            const e = entities[i];
+            const attributesComp = GetComponent(AttributesComponent, e);
             let careerName = 'unkown career';
             if (HasComponent(WarriorComponent, e)) {
                 careerName = 'warrior';
@@ -37,7 +39,7 @@ export class HeroSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
             else if (HasComponent(MageComponent, e)) {
                 careerName = 'mega';
             }
-            console.log(`My name is ${attributesComp.name}, I'm a ${careerName}, he!ya!`);
+            console.log(`My name is ${attributesComp!.name}, I'm a ${careerName}, he!ya!`);
         }
     }
     /**

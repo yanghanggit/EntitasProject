@@ -9,15 +9,15 @@ export class DeltaTiming {
     /**
      * 
      */
-    fixedTime: boolean;
+    fixedTime: boolean = false;
     /**
      * 
      */
-    startTime: number;
+    startTime: number = 0;
     /**
      * 
      */
-    deltaTime: number;
+    deltaTime: number = 0;
     /**
      * 
      */

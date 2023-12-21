@@ -21,11 +21,11 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
     /**
      * 
      */
-    pool: MyPool;
+    pool: MyPool | null = null;
     /**
      * 
      */
-    map: Map;
+    map: Map | null = null;
     /**
      * 
      */
@@ -36,23 +36,25 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
 
 
     private initHeros() {
-        let pool = this.pool;
-        //
-        let heroNames = this.map.heroNames;
-        let heroCareers = this.map.heroCareers;
+        if (this.map === null || this.pool == null) {
+            return;
+        }
+        const pool = this.pool;
+        const heroNames = this.map.heroNames;
+        const heroCareers = this.map.heroCareers;
         for (let i = 0; i < heroNames.length; ++i) {
-            let en = CreateEntity(pool, "hero");
+            const en = CreateEntity(pool, "hero");
             {
                 AddComponent(HeroComponent, en, new HeroComponent());
                 AddComponent(HeroAIComponent, en, new HeroAIComponent());
 
             }
             {
-                let attributesComp = new AttributesComponent();
+                const attributesComp = new AttributesComponent();
                 attributesComp.name = heroNames[i];
                 AddComponent(AttributesComponent, en, attributesComp);
             }
-            let career = heroCareers[i];
+            const career = heroCareers[i];
             if (career == '[warrior]') {
                 AddComponent(WarriorComponent, en, new WarriorComponent());
 
@@ -67,19 +69,21 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
 
     }
     /**
- * 
- */
+     * 
+     */
     private initMonsters() {
-        let pool = this.pool;
-        //
-        let goblinNames = this.map.goblinNames;
+        if (this.map === null || this.pool == null) {
+            return;
+        }
+        const pool = this.pool;
+        const goblinNames = this.map.goblinNames;
         for (let i = 0; i < goblinNames.length; ++i) {
-            let en = CreateEntity(pool, "monster");
+            const en = CreateEntity(pool, "monster");
             {
                 AddComponent(MonsterComponent, en, new MonsterComponent);
             }
             {
-                let attributesComp = new AttributesComponent();
+                const attributesComp = new AttributesComponent();
                 attributesComp.name = goblinNames[i];
                 AddComponent(AttributesComponent, en, attributesComp);
             }
@@ -132,8 +136,12 @@ export class Map {
      * 
      */
     buildSystems(scene: Scene) {
-        let systems = scene.systems;
-        let myPool = scene.myPool;
+        if (scene.systems === null || scene.myPool === null) {
+            return;
+        }
+        const systems = scene.systems;
+        const myPool = scene.myPool;
+        //
         systems.add(myPool.createSystem(MyExecuteSystem));
         systems.add(myPool.createSystem(MyReactiveSystem));
         //

@@ -5,7 +5,7 @@ import { Map } from './Map';
 import { DeltaTiming } from "./DeltaTiming";
 
 let requestAnimId = 0;
-let game = null;
+let game: Game | null = null;
 let deltaTiming = new DeltaTiming(1000 / 60, 1.0);
 
 //

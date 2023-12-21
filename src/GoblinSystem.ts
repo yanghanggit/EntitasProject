@@ -16,20 +16,20 @@ export class GoblinSystem implements IInitializeSystem, IExecuteSystem, ISetPool
     /**
      * 
      */
-    pool: Pool;
+    pool: Pool | null = null;
     /**
      * 
      */
-    group: Group;
+    group: Group | null = null;
     /**
      * 
      */
     initialize() {
-        var entities = this.group.getEntities();
+        var entities = this.group!.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
             let e = entities[i];
             let attributesComp = GetComponent(AttributesComponent, e);
-            console.log("yaha!, I'm a " + e.name + "-goblin" + ", my name is " + attributesComp.name + ", woooo!");
+            console.log("yaha!, I'm a " + e.name + "-goblin" + ", my name is " + attributesComp!.name + ", woooo!");
         }
     }
     /**

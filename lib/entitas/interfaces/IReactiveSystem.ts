@@ -14,7 +14,7 @@ export interface IMultiReactiveSystem extends IReactiveExecuteSystem {
 }
 
 export interface IReactiveSystem extends IReactiveExecuteSystem {
-  trigger: TriggerOnEvent
+  trigger?: TriggerOnEvent
 }
 
 export interface IEnsureComponents {

@@ -20,15 +20,15 @@ export class GoblinAISystem implements IInitializeSystem, IExecuteSystem, ISetPo
     /**
      * 
      */
-    pool: MyPool;
+    pool: MyPool | null = null;
     /**
      * 
      */
-    group1: Group;
+    group1: Group | null = null;
     /**
      * 
      */
-    group2: Group;
+    group2: Group | null = null;
     /**
      * 
      */
@@ -49,6 +49,9 @@ export class GoblinAISystem implements IInitializeSystem, IExecuteSystem, ISetPo
      * 
      */
     private attack() {
+        if (this.pool === null || this.pool.scene === null) {
+            return;
+        }
         const dt = this.pool.scene.dt;
         this.attackCooldown -= dt;
         if (this.attackCooldown > 0.0) {
@@ -57,22 +60,22 @@ export class GoblinAISystem implements IInitializeSystem, IExecuteSystem, ISetPo
         this.attackCooldown = GoblinAISystem.INIT_ATTACK_COOLDOWN;
 
         //
-        var entities = this.group1.getEntities();
+        const entities = this.group1!.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
             const goblin = entities[i];
             const goblin_AttributesComp = GetComponent(AttributesComponent, goblin);
             //
             const targetEntity = this.determineAttackTarget();
             const target_AttributesComp = GetComponent(AttributesComponent, targetEntity);
-            console.log(`${goblin_AttributesComp.name} wana punch ${target_AttributesComp.name}.`);
+            console.log(`${goblin_AttributesComp!.name} wana punch ${target_AttributesComp!.name}.`);
         }
     }
     /**
      * 
      */
     private determineAttackTarget(): Entity {
-        var entities = this.group2.getEntities();
-        return this.getRandomElementFromArray(entities);
+        var entities = this.group2!.getEntities();
+        return this.getRandomElementFromArray(entities) as Entity;
     }
     /**
      * 

@@ -9,7 +9,7 @@ import { COMPONENT_ID_PROPERTY } from "./ComponentsPreprocessing";
  * 
  */
 export function CID<ComponentClass>(clazz: ComponentClass): number {
-    return clazz[COMPONENT_ID_PROPERTY];
+    return (clazz as any)[COMPONENT_ID_PROPERTY];
 }
 /**
  * 
@@ -25,19 +25,19 @@ export function AddComponent<ComponentClass>(componentClass: ComponentClass,
     en: Entity,
     com: IComponent
 ): Entity {
-    en.addComponent(componentClass[COMPONENT_ID_PROPERTY] as number, com);
+    en.addComponent((componentClass as any)[COMPONENT_ID_PROPERTY] as number, com);
     return en;
 }
 /**
  * 
  */
 export function GetComponent<ComponentClass>(componentClass: { new(): ComponentClass }, en: Entity,): ComponentClass | null {
-    return en.getComponent(componentClass[COMPONENT_ID_PROPERTY]) as ComponentClass;
+    return en.getComponent((componentClass as any)[COMPONENT_ID_PROPERTY]) as ComponentClass;
 }
 /**
  * 
  */
 export function HasComponent<ComponentClass>(componentClass: { new(): ComponentClass }, en: Entity,): ComponentClass | null {
-    return en.hasComponent(componentClass[COMPONENT_ID_PROPERTY]) as ComponentClass;
+    return en.hasComponent((componentClass as any)[COMPONENT_ID_PROPERTY]) as ComponentClass;
 }
 

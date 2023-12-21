@@ -47,11 +47,11 @@ export class GoblinComponent implements IComponent {
  * 
  */
 export class AttributesComponent implements IComponent {
-    name: string;
-    health: number = 100;
-    mana: number;
-    attack: number;
-    defense: number;
+    name: string = '';
+    health: number = 0;
+    mana: number = 0;
+    attack: number = 0;
+    defense: number = 0;
 }
 /**
  * 

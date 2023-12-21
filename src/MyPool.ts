@@ -12,15 +12,15 @@ export class MyPool extends Pool {
     /**
      * 
      */
-    name: string;
+    name: string = '';
     /**
      * 
      */
-    scene: Scene;
+    scene: Scene | null = null;
     /**
      * 
      */
-    combatInteraction: CombatInteraction;
+    combatInteraction: CombatInteraction | null = null;
     /**
      * 
      */

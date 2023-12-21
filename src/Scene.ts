@@ -19,11 +19,11 @@ export class Scene {
     /**
      * 
      */
-    systems: Systems = null;
+    systems: Systems | null = null;
     /**
      * 
      */
-    myPool: MyPool = null;
+    myPool: MyPool | null = null;
 
     /**
      * 
@@ -57,7 +57,7 @@ export class Scene {
         //
         this.myPool = new MyPool(this.name + "'s Pool", this);
         this.systems = new Systems();
-        this.map.build(this);
+        this.map?.build(this);
         //
         this.startTime = performance.now() / 1000;
         this.lastTime = 0;
@@ -70,12 +70,14 @@ export class Scene {
         //
         this.dt = dt;
         this.lastTime += dt;
-        //
-        if (!this.initialized) {
-            this.initialized = true;
-            this.systems.initialize();
+        if (this.systems !== null) {
+            if (!this.initialized) {
+                this.initialized = true;
+                this.systems.initialize();
+            }
+            this.systems.execute();
         }
-        this.systems.execute();
+
     }
     /**
      * 

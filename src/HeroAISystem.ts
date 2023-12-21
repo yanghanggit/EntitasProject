@@ -16,11 +16,11 @@ export class HeroAISystem implements IInitializeSystem, IExecuteSystem, ISetPool
     /**
      * 
      */
-    pool: Pool;
+    pool: Pool | null = null;
     /**
      * 
      */
-    group: Group;
+    group: Group | null = null;
     /**
      * 
      */

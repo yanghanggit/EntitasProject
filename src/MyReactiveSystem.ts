@@ -19,15 +19,15 @@ export class MyReactiveSystem implements IInitializeSystem, ISetPool, IReactiveS
     /**
      * 
      */
-    pool: Pool;
+    pool: Pool | null = null;
     /**
      * 
      */
-    group: Group;
+    group: Group | null = null;
     /**
      * 
      */
-    trigger: TriggerOnEvent;
+    trigger?: TriggerOnEvent;
     /**
      * 
      */

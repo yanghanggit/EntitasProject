@@ -16,26 +16,30 @@ export class MyExecuteSystem implements IInitializeSystem, IExecuteSystem, ISetP
     /**
      * 
      */
-    protected pool: Pool;
+    pool: Pool | null = null;
     /**
      * 
      */
-    protected group: Group;
+    group: Group | null = null;
     /**
      * 
      */
     initialize() {
-        let en = CreateEntity(this.pool, 'Empty');
-        AddComponent(EmptyComponent, en, new EmptyComponent);
+        if (this.pool !== null) {
+            let en = CreateEntity(this.pool, 'Empty');
+            AddComponent(EmptyComponent, en, new EmptyComponent);
+        }
     }
     /**
      * 
      */
     execute() {
-        var entities = this.group.getEntities();
-        for (let i = 0, l = entities.length; i < l; i++) {
-            let e = entities[i];
-            let com = GetComponent(EmptyComponent, e);
+        if (this.group !== null) {
+            var entities = this.group.getEntities();
+            for (let i = 0, l = entities.length; i < l; i++) {
+                let e = entities[i];
+                let com = GetComponent(EmptyComponent, e);
+            }
         }
     }
     /**
