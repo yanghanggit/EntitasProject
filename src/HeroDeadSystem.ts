@@ -31,7 +31,7 @@ export class HeroDeadSystem implements IInitializeSystem, IExecuteSystem, ISetPo
     /**
     * 
     */
-    allHerosAreDead: boolean;
+    allHerosAreDead: boolean = false;
     /**
      * 
      */
@@ -43,10 +43,10 @@ export class HeroDeadSystem implements IInitializeSystem, IExecuteSystem, ISetPo
     execute() {
         if (this.group1 !== null) {
             const entities = this.group1.getEntities();
-            entities.forEach((en: MyEnity) => {
-                const attributesComp = en.GetComponent(AttributesComponent);
+            entities.forEach((en) => {
+                const attributesComp = (en as MyEnity).GetComponent(AttributesComponent);
                 console.log(`${attributesComp!.name} is dead!`);
-                this.pool.destroyEntity(en);
+                this.pool!.destroyEntity(en);
             });
         }
         if (!this.allHerosAreDead) {

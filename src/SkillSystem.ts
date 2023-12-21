@@ -38,10 +38,10 @@ export class SkillSystem implements IInitializeSystem, IExecuteSystem, ISetPool 
             const skillEn = entities[i] as MyEnity;
             const skillComp = skillEn.GetComponent(SkillComponent);
             console.log(skillComp.story);
-            this.handleAttack(skillComp.src, skillComp.dest);
+            this.handleAttack(skillComp.src!, skillComp.dest!);
         }
         entities.forEach(async (en) => {
-            this.pool.destroyEntity(en);
+            this.pool!.destroyEntity(en);
         });
     }
     /**
