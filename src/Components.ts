@@ -6,37 +6,50 @@ import { MyEnity } from "./MyEntity";
 /**
  * 
  */
-export class EmptyComponent implements IComponent {
+export const components_collector: Array<Function> = [];
+function component(constructor: Function) {
+    components_collector.push(constructor);
 }
-
 /**
  * 
  */
+@component
+export class EmptyComponent implements IComponent {
+}
+/**
+ * 
+ */
+@component
 export class HeroComponent implements IComponent {
 }
 /**
  * 
  */
+@component
 export class WarriorComponent implements IComponent {
 }
 /**
  * 
  */
+@component
 export class MageComponent implements IComponent {
 }
 /**
  * 
  */
+@component
 export class MonsterComponent implements IComponent {
 }
 /**
  * 
  */
+@component
 export class GoblinComponent implements IComponent {
 }
 /**
  * 
  */
+@component
 export class AttributesComponent implements IComponent {
     name: string = '';
     health: number = 100;
@@ -47,11 +60,13 @@ export class AttributesComponent implements IComponent {
 /**
  * 
  */
+@component
 export class HeroAIComponent implements IComponent {
 }
 /**
  * 
  */
+@component
 export class GoblinAIComponent implements IComponent {
     maxAttackCooldown: number = 3;
     attackCooldown: number = this.maxAttackCooldown;
@@ -59,30 +74,16 @@ export class GoblinAIComponent implements IComponent {
 /**
  * 
  */
+@component
 export class DeadComponent implements IComponent {
 }
-
 /**
  * 
  */
+@component
 export class SkillComponent implements IComponent {
     story: string = '';
     src: MyEnity | null = null;
     dest: MyEnity | null = null;
 }
-/**
- * 
- */
-export const COMPONENTS: IComponent[] = [
-    EmptyComponent,
-    HeroComponent,
-    WarriorComponent,
-    MageComponent,
-    MonsterComponent,
-    GoblinComponent,
-    AttributesComponent,
-    HeroAIComponent,
-    GoblinAIComponent,
-    DeadComponent,
-    SkillComponent,
-];
+
