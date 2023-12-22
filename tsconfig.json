@@ -9,7 +9,8 @@
       "forceConsistentCasingInFileNames": true,
       "moduleResolution": "node",
       "outDir": "./dist",
-      "sourceMap": true
+      "sourceMap": true,
+      "experimentalDecorators": true
   },
   "include": ["src/**/*", "lib/entitas"]
 }

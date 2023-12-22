@@ -2,6 +2,7 @@
  * 
  */
 import { Scene } from './Scene';
+import { MyDecorators } from './MyDecorators';
 /**
  * 
  */
@@ -19,6 +20,10 @@ export class Game {
      */
     constructor(name: string) {
         this.name = name;
+
+        const dec = new MyDecorators("I'am ", "decorator");
+        dec.name = "decorator?"
+        console.log(dec.greet());
     }
     /**
      * 
