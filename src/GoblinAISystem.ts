@@ -51,7 +51,7 @@ export class GoblinAISystem implements IInitializeSystem, IExecuteSystem, ISetPo
         const entities = this.group1!.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
             const goblin = entities[i] as MyEnity;
-            const goblinAIComp = goblin.GetComponent(GoblinAIComponent);//GetComponent(GoblinAIComponent, goblin);
+            const goblinAIComp = goblin.GetComponent(GoblinAIComponent);
             goblinAIComp.attackCooldown -= dt;
             if (goblinAIComp.attackCooldown > 0) {
                 continue;
@@ -61,7 +61,7 @@ export class GoblinAISystem implements IInitializeSystem, IExecuteSystem, ISetPo
             const targetEntity = this.determineAttackTarget();
             if (targetEntity !== null) {
                 const skillEntity = this.pool.createEntity('skill') as MyEnity;
-                const skillComp = skillEntity.AddComponent(SkillComponent);//new SkillComponent();
+                const skillComp = skillEntity.AddComponent(SkillComponent);
                 skillComp.src = goblin;
                 skillComp.dest = targetEntity;
                 //

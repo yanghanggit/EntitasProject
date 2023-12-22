@@ -26,7 +26,6 @@ buttonStart.addEventListener('click', () => {
             return;
         }
         const dt = deltaTiming.calculate(false);
-        //console.log("dt = " + dt.toFixed(3));
         game.update(dt);
         requestAnimId = requestAnimationFrame(gameLoop);
     }

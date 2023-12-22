@@ -5,7 +5,7 @@
 //module entitas {
 "use strict"
 
-import { Pool } from "./Pool" //import Pool = entitas.Pool
+//import { Pool } from "./Pool" //import Pool = entitas.Pool
 import { Signal } from "./utils/Signal"//import Signal = entitas.utils.Signal
 import { ISignal } from "./utils/Signal"//import ISignal = entitas.utils.ISignal
 import { IComponent } from "./interfaces/IComponent"//import IComponent = entitas.IComponent
@@ -84,17 +84,17 @@ export class Entity {
   /**
    * Subscribe to Component Added Event
    * @type {entitas.ISignal} */
-  public onComponentAdded: IEntityChanged<EntityChanged>  | null = null
+  public onComponentAdded: IEntityChanged<EntityChanged> | null = null
 
   /**
    * Subscribe to Component Removed Event
    * @type {entitas.ISignal} */
-  public onComponentRemoved: IEntityChanged<EntityChanged>  | null = null
+  public onComponentRemoved: IEntityChanged<EntityChanged> | null = null
 
   /**
    * Subscribe to Component Replaced Event
    * @type {entitas.ISignal} */
-  public onComponentReplaced: /*Entity.*/IComponentReplaced<ComponentReplaced>  | null = null
+  public onComponentReplaced: /*Entity.*/IComponentReplaced<ComponentReplaced> | null = null
 
   /**
    * Entity name
@@ -113,13 +113,13 @@ export class Entity {
 
   public _creationIndex: number = 0
   public _isEnabled: boolean = true
-  public _components: Array<IComponent> | null  = null
+  public _components: Array<IComponent> | null = null
   public _componentsCache = null
-  public _componentIndicesCache: number[] | null  = null
+  public _componentIndicesCache: number[] | null = null
   public _toStringCache: string = ''
   public _refCount: number = 0
-  private _pool: Pool | null = null
-  private _componentsEnum: {} | null = null
+  // private _pool: Pool | null = null
+  // private _componentsEnum: {} | null = null
 
   /**
    * The basic game object. Everything is an entity with components that
@@ -135,9 +135,9 @@ export class Entity {
     this.onComponentAdded = new Signal<EntityChanged>(this)
     this.onComponentRemoved = new Signal<EntityChanged>(this)
     this.onComponentReplaced = new Signal<ComponentReplaced>(this)
-    this._componentsEnum = componentsEnum
-    this._pool = Pool.instance;//entitas.Pool.instance
-    this._components = this.initialize(totalComponents)
+    // this._componentsEnum = componentsEnum
+    // this._pool = Pool.instance;//entitas.Pool.instance
+    this._components = this.initialize(totalComponents);
   }
 
   public static initialize(totalComponents: number, options: any) {
@@ -151,6 +151,8 @@ export class Entity {
    * @param size max number of entities
    */
   public static dim(count: number, size: number): void {
+    Entity.alloc = Array.from({ length: size }, () => new Array(count).fill(null));
+    /*
     Entity.alloc = new Array(size)
     for (let e = 0; e < size; e++) {
       Entity.alloc[e] = new Array(count)
@@ -158,6 +160,7 @@ export class Entity {
         Entity.alloc[e][k] = null
       }
     }
+    */
   }
 
   /**
@@ -167,7 +170,24 @@ export class Entity {
    * @param {number} totalComponents
    * @returns {Array<entitas.IComponent>}
    */
-  public initialize(totalComponents: number): Array<IComponent> {
+  public initialize(totalComponents: number): Array<IComponent | null> {
+    const size = Entity.size;
+    if (Entity.alloc === null) {
+      Entity.dim(totalComponents, size);
+    }
+    if (Entity.alloc === null) {
+      return [];
+    }
+    this.instanceIndex = Entity.instanceIndex++;
+    if (Entity.alloc[this.instanceIndex] !== null) {
+      return Entity.alloc[this.instanceIndex];
+    }
+    Entity.alloc = [
+      ...Entity.alloc,
+      ...Array.from({ length: size - Entity.alloc.length }, () => new Array(totalComponents).fill(null)),
+    ];
+    return Entity.alloc[this.instanceIndex];
+    /*
     let mem
     const size = Entity.size
 
@@ -186,6 +206,7 @@ export class Entity {
     }
     mem = alloc[this.instanceIndex]
     return mem
+    */
   }
   /**
    * AddComponent
@@ -205,7 +226,7 @@ export class Entity {
     this._components[index] = component
     this._componentsCache = null
     this._componentIndicesCache = null
-    this._toStringCache = null
+    this._toStringCache = ''
     const onComponentAdded: any = this.onComponentAdded
     if (onComponentAdded.active) onComponentAdded.dispatch(this, index, component)
 
@@ -265,7 +286,7 @@ export class Entity {
         //delete components[index]
         components[index] = null
         this._componentIndicesCache = null
-        this._toStringCache = null
+        this._toStringCache = ''
         const onComponentRemoved: any = this.onComponentRemoved
         if (onComponentRemoved.active) onComponentRemoved.dispatch(this, index, previousComponent)
 
@@ -383,7 +404,7 @@ export class Entity {
    *
    */
   public removeAllComponents() {
-    this._toStringCache = null
+    this._toStringCache = ''
     const _components = this._components
     for (let i = 0, componentsLength = _components.length; i < componentsLength; i++) {
       if (_components[i] != null) {
@@ -398,9 +419,9 @@ export class Entity {
    */
   public destroy() {
     this.removeAllComponents()
-    this.onComponentAdded.clear()
-    this.onComponentReplaced.clear()
-    this.onComponentRemoved.clear()
+    this.onComponentAdded?.clear()
+    this.onComponentReplaced?.clear()
+    this.onComponentRemoved?.clear()
     this._isEnabled = false
 
   }
@@ -411,7 +432,7 @@ export class Entity {
    * @returns {string}
    */
   public toString() {
-    if (this._toStringCache == null) {
+    if (this._toStringCache === '') {
       const sb = []
       const seperator = ", "
       const components = this.getComponents()
