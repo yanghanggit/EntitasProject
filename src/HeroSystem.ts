@@ -32,16 +32,22 @@ export class HeroSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
         const entities = this.group.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
             const e = entities[i] as MyEnity;
-            const attributesComp = e.GetComponent(AttributesComponent);
-            let careerName = 'unkown career';
-            if (e.HasComponent(WarriorComponent)) {
-                careerName = 'warrior';
-            }
-            else if (e.HasComponent(MageComponent)) {
-                careerName = 'mega';
-            }
-            console.log(`My name is ${attributesComp!.name}, I'm a ${careerName}, he!ya!`);
+            this.sayhi(e);
         }
+    }
+    /**
+     * 
+     */
+    private sayhi(entity: MyEnity) {
+        const attributesComp = entity.GetComponent(AttributesComponent);
+        let careerName = 'unkown career';
+        if (entity.HasComponent(WarriorComponent)) {
+            careerName = 'warrior';
+        }
+        else if (entity.HasComponent(MageComponent)) {
+            careerName = 'mega';
+        }
+        console.log(`My name is ${attributesComp!.name}, I'm a ${careerName}, he!ya!`);
     }
     /**
      * 

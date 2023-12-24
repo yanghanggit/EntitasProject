@@ -45,6 +45,8 @@ export class MonsterComponent implements IComponent {
  */
 @component
 export class GoblinComponent implements IComponent {
+    attackCooldownMax: number = 3;
+    attackCooldown: number = 0;
 }
 /**
  * 
@@ -56,20 +58,6 @@ export class AttributesComponent implements IComponent {
     mana: number = 50;
     attack: number = 30;
     defense: number = 10;
-}
-/**
- * 
- */
-@component
-export class HeroAIComponent implements IComponent {
-}
-/**
- * 
- */
-@component
-export class GoblinAIComponent implements IComponent {
-    maxAttackCooldown: number = 3;
-    attackCooldown: number = this.maxAttackCooldown;
 }
 /**
  * 

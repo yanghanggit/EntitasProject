@@ -29,7 +29,7 @@ export class MyExecuteSystem implements IInitializeSystem, IExecuteSystem, ISetP
         if (this.pool !== null) {
             const en = this.pool.createEntity('Empty') as MyEnity;
             en.AddComponent(EmptyComponent);
-            
+
         }
     }
     /**
@@ -39,8 +39,10 @@ export class MyExecuteSystem implements IInitializeSystem, IExecuteSystem, ISetP
         if (this.group !== null) {
             var entities = this.group.getEntities();
             for (let i = 0, l = entities.length; i < l; i++) {
-                let e = entities[i] as MyEnity;
-                let com = e.GetComponent(EmptyComponent);
+                const e = entities[i] as MyEnity;
+                const com = e.GetComponent(EmptyComponent);
+                if (com !== null) {
+                }
             }
         }
     }
