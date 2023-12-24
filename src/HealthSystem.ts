@@ -35,11 +35,10 @@ export class HealthSystem implements IInitializeSystem, IExecuteSystem, ISetPool
         entities.forEach((en) => {
             const me = en as MyEntity;
             const __AttributesComponent = me.GetComponent(AttributesComponent);
-            if (__AttributesComponent.health <= 0 && !me.HasComponent(DeadComponent)) {
+            if (__AttributesComponent.health <= 0) {
                 me.AddComponent(DeadComponent);
             }
         });
-
     }
     /**
      * 
@@ -47,7 +46,7 @@ export class HealthSystem implements IInitializeSystem, IExecuteSystem, ISetPool
     setPool(pool: Pool) {
         this.pool = pool;
         this.group = pool.getGroup(
-            Matcher.allOf(CID(AttributesComponent))
+            Matcher.allOf(CID(AttributesComponent)).noneOf(CID(DeadComponent))
         );
     }
 }

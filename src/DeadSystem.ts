@@ -7,7 +7,7 @@ import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { CID } from "./ComponentsPreprocessing"
-import { AttributesComponent, DestroyComponent } from "./Components";
+import { AttributesComponent, DestroyComponent, HeroComponent, MonsterComponent } from "./Components";
 import { MyPool } from "./MyPool";
 import { DeadComponent } from "./Components";
 import { Matcher } from "../lib/entitas/Matcher";
@@ -79,7 +79,7 @@ export class DeadSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
     setPool(pool: Pool) {
         this.pool = pool as MyPool;
         this.group1 = pool.getGroup(
-            Matcher.allOf(CID(DeadComponent), CID(AttributesComponent))
+            Matcher.allOf(CID(DeadComponent), CID(AttributesComponent)).anyOf(CID(HeroComponent), CID(MonsterComponent))
         );
     }
 }

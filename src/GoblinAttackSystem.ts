@@ -7,7 +7,7 @@ import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
 import { CID } from "./ComponentsPreprocessing"
-import { AttributesComponent, GoblinAttackComponent } from "./Components";
+import { AttributesComponent, GoblinAttackComponent, GoblinComponent } from "./Components";
 import { IReactiveSystem } from "../lib/entitas/interfaces/IReactiveSystem";
 import { TriggerOnEvent } from "../lib/entitas/TriggerOnEvent";
 import { Entity } from "../lib/entitas/Entity";
@@ -58,14 +58,9 @@ export class GoblinAttackSystem implements IInitializeSystem, ISetPool, IReactiv
         const goblin__AttributesComponent = goblin.GetComponent(AttributesComponent);
         console.log(`${goblin__AttributesComponent!.name} wana punch ${hero__AttributesComponent!.name}.`);
         //
-        let damage = goblin__AttributesComponent.attack - hero__AttributesComponent.defense;
-        if (damage < 0) {
-            damage = 0;
-        }
+        const damage = Math.max(0, goblin__AttributesComponent.attack - hero__AttributesComponent.defense);
         hero__AttributesComponent.health -= damage;
-        if (hero__AttributesComponent.health < 0) {
-            hero__AttributesComponent.health = 0;
-        }
+        hero__AttributesComponent.health = Math.max(0, hero__AttributesComponent.health);
     }
     /**
      * 
