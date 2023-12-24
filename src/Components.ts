@@ -20,6 +20,12 @@ export class EmptyComponent implements IComponent {
  * 
  */
 @component
+export class DestoryComponent implements IComponent {
+}
+/**
+ * 
+ */
+@component
 export class HeroComponent implements IComponent {
 }
 /**
@@ -74,4 +80,9 @@ export class SkillComponent implements IComponent {
     src: MyEnity | null = null;
     dest: MyEnity | null = null;
 }
+
+
+
+
+
 

@@ -7,8 +7,9 @@ import { MyReactiveSystem } from "./MyReactiveSystem";
 import { HeroSystem } from "./HeroSystem";
 import { GoblinSystem } from "./GoblinSystem";
 import { SkillSystem } from "./SkillSystem";
-import { HeroDeadSystem } from "./HeroDeadSystem";
+import { DeadSystem } from "./DeadSystem";
 import { MapBuildSystem } from "./MapBuildSystem";
+import { DestroyEntitySystem } from "./DestroyEntitySystem";
 /**
  * 
  */
@@ -60,6 +61,8 @@ export class Map {
         systems.add(myPool.createSystem(GoblinSystem));
         //
         systems.add(myPool.createSystem(SkillSystem));
-        systems.add(myPool.createSystem(HeroDeadSystem));
+        systems.add(myPool.createSystem(DeadSystem));
+
+        systems.add(myPool.createSystem(DestroyEntitySystem));        
     }
 }

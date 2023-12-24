@@ -28,7 +28,6 @@ export class Scene {
      * 
      */
     initialized: boolean = false;
-
     /**
      * 
      */
