@@ -9,7 +9,7 @@ import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
 import { CID } from "./ComponentsPreprocessing"
 import { HeroComponent, AttributesComponent, WarriorComponent, MageComponent } from "./Components";
-import { MyEnity } from "./MyEntity";
+import { MyEntity } from "./MyEntity";
 /**
  * 
  */
@@ -31,14 +31,14 @@ export class HeroSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
         }
         const entities = this.group.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
-            const e = entities[i] as MyEnity;
+            const e = entities[i] as MyEntity;
             this.sayhi(e);
         }
     }
     /**
      * 
      */
-    private sayhi(entity: MyEnity) {
+    private sayhi(entity: MyEntity) {
         const attributesComp = entity.GetComponent(AttributesComponent);
         let careerName = 'unkown career';
         if (entity.HasComponent(WarriorComponent)) {

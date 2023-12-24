@@ -8,12 +8,12 @@ import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
 import { CID } from "./ComponentsPreprocessing"
-import { EmptyComponent } from "./Components";
+import { AttributesComponent, DeadComponent } from "./Components";
 import { MyEntity } from "./MyEntity";
 /**
  * 
  */
-export class MyExecuteSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
+export class HealthSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
     /**
      * 
      */
@@ -26,33 +26,28 @@ export class MyExecuteSystem implements IInitializeSystem, IExecuteSystem, ISetP
      * 
      */
     initialize() {
-        if (this.pool !== null) {
-            const en = this.pool.createEntity('Empty') as MyEntity;
-            en.AddComponent(EmptyComponent);
-
-        }
     }
     /**
      * 
      */
     execute() {
-        if (this.group !== null) {
-            var entities = this.group.getEntities();
-            for (let i = 0, l = entities.length; i < l; i++) {
-                const e = entities[i] as MyEntity;
-                const com = e.GetComponent(EmptyComponent);
-                if (com !== null) {
-                }
+        const entities = this.group.getEntities();
+        entities.forEach((en) => {
+            const me = en as MyEntity;
+            const __AttributesComponent = me.GetComponent(AttributesComponent);
+            if (__AttributesComponent.health <= 0 && !me.HasComponent(DeadComponent)) {
+                me.AddComponent(DeadComponent);
             }
-        }
+        });
+
     }
     /**
      * 
      */
     setPool(pool: Pool) {
         this.pool = pool;
-        this.group = pool.getGroup(Matcher.allOf(
-            CID(EmptyComponent)
-        ));
+        this.group = pool.getGroup(
+            Matcher.allOf(CID(AttributesComponent))
+        );
     }
 }

@@ -2,7 +2,6 @@
  * 
  */
 import { IComponent } from "../lib/entitas/interfaces/IComponent";
-import { MyEnity } from "./MyEntity";
 /**
  * 
  */
@@ -20,7 +19,7 @@ export class EmptyComponent implements IComponent {
  * 
  */
 @component
-export class DestoryComponent implements IComponent {
+export class DestroyComponent implements IComponent {
 }
 /**
  * 
@@ -75,10 +74,8 @@ export class DeadComponent implements IComponent {
  * 
  */
 @component
-export class SkillComponent implements IComponent {
-    story: string = '';
-    src: MyEnity | null = null;
-    dest: MyEnity | null = null;
+export class GoblinAttackComponent implements IComponent {
+    destEntityId: string = '';
 }
 
 

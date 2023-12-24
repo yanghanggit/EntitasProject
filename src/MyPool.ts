@@ -5,7 +5,7 @@ import { Pool } from '../lib/entitas/Pool';
 import { Scene } from './Scene';
 import { COMPONENTS } from './ComponentsPreprocessing';
 import { Entity } from '../lib/entitas/Entity';
-import { MyEnity } from './MyEntity';
+import { MyEntity } from './MyEntity';
 /**
  * 
  */
@@ -23,7 +23,7 @@ export class MyPool extends Pool {
      * @param name 
      */
     override impl(_componentsEnum: {}, _totalComponents: number): Entity {
-        return new MyEnity(_componentsEnum, _totalComponents) as Entity;
+        return new MyEntity(_componentsEnum, _totalComponents) as Entity;
     }
     /**
      * 
@@ -32,5 +32,11 @@ export class MyPool extends Pool {
         super({}, COMPONENTS.length, false);
         this.name = name;
         this.scene = scene;
+    }
+    /**
+     * 
+     */
+    public getEntity(entityId: string): MyEntity {
+        return this._entities[entityId] as MyEntity;
     }
 }

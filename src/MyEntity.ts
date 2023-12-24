@@ -7,7 +7,7 @@ import { CID } from './ComponentsPreprocessing';
 /**
  * 
  */
-export class MyEnity extends Entity {
+export class MyEntity extends Entity {
     /**
      * 
      */
@@ -23,11 +23,18 @@ export class MyEnity extends Entity {
         const componentInstance = this.getComponent(CID(componentClass));
         return componentInstance as InstanceType<T>;
     }
-
     /**
      * 
      */
     HasComponent<T extends new (...args: any[]) => IComponent>(componentClass: T): boolean {
         return this.hasComponent(CID(componentClass));
+    }
+    /**
+     * 
+     */
+    RemoveComponent<T extends new (...args: any[]) => IComponent>(componentClass: T): MyEntity {
+        const componentInstance = new componentClass() as InstanceType<T>;
+        return this.removeComponent(CID(componentClass)) as MyEntity;
+
     }
 }

@@ -6,7 +6,7 @@ import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { AttributesComponent, HeroComponent, MonsterComponent, GoblinComponent, WarriorComponent, MageComponent } from "./Components";
 import { MyPool } from "./MyPool";
-import { MyEnity } from "./MyEntity";
+import { MyEntity } from "./MyEntity";
 import { MyUtil } from "./MyUtil";
 import { Map } from "./Map";
 /**
@@ -39,7 +39,7 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
         const heroNames = this.map.heroNames;
         const heroCareers = this.map.heroCareers;
         for (let i = 0; i < heroNames.length; ++i) {
-            const en = pool.createEntity("hero") as MyEnity;
+            const en = pool.createEntity("hero") as MyEntity;
             {
                 en.AddComponent(HeroComponent);
             }
@@ -69,7 +69,7 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
         const pool = this.pool;
         const goblinNames = this.map.goblinNames;
         for (let i = 0; i < goblinNames.length; ++i) {
-            const en = pool.createEntity("monster") as MyEnity;
+            const en = pool.createEntity("monster") as MyEntity;
             {
                 en.AddComponent(MonsterComponent);
             }
