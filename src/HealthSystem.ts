@@ -3,7 +3,6 @@
  */
 import { IExecuteSystem } from "../lib/entitas/interfaces/IExecuteSystem";
 import { ISetPool } from "../lib/entitas/interfaces/ISystem";
-import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
@@ -13,7 +12,7 @@ import { MyEntity } from "./MyEntity";
 /**
  * 
  */
-export class HealthSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
+export class HealthSystem implements IExecuteSystem, ISetPool {
     /**
      * 
      */
@@ -22,11 +21,6 @@ export class HealthSystem implements IInitializeSystem, IExecuteSystem, ISetPool
      * 
      */
     group: Group | null = null;
-    /**
-     * 
-     */
-    initialize() {
-    }
     /**
      * 
      */

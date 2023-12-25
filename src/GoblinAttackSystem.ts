@@ -18,7 +18,7 @@ import { MyUtil } from "./MyUtil";
 /**
  * 
  */
-export class GoblinAttackSystem implements IInitializeSystem, ISetPool, IReactiveSystem {
+export class GoblinAttackSystem implements ISetPool, IReactiveSystem {
     /**
      * 
      */
@@ -31,11 +31,6 @@ export class GoblinAttackSystem implements IInitializeSystem, ISetPool, IReactiv
      * 
      */
     trigger?: TriggerOnEvent;
-    /**
-     * 
-     */
-    initialize() {
-    }
     /**
      * 
      */

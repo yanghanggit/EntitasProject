@@ -15,7 +15,7 @@ import { MyEntity } from "./MyEntity";
 /**
  * 
  */
-export class DeadSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
+export class DeadSystem implements IExecuteSystem, ISetPool {
     /**
      * 
      */
@@ -36,11 +36,6 @@ export class DeadSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
      * 
      */
     allHerosAreDeadAlert: boolean = false;
-    /**
-     * 
-     */
-    initialize() {
-    }
     /**
      * 
      */

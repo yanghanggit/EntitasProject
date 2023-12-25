@@ -12,7 +12,7 @@ import { HeroComponent, AttributesComponent, WarriorComponent, MageComponent } f
 /**
  * 
  */
-export class HeroSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
+export class HeroSystem implements IExecuteSystem, ISetPool {
     /**
      * 
      */
@@ -25,11 +25,6 @@ export class HeroSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
     * 
     */
     allHerosAreDeadAlert: boolean = false;
-    /**
-     * 
-     */
-    initialize() {
-    }
     /**
      * 
      */
