@@ -14,7 +14,7 @@ export class EntityBehavior {
    *
    * @param obj
    */
-  constructor(protected obj) {
+  constructor(protected obj: any) {
     if (this.obj.name) {
       this._name = this.obj.name
     } else {

@@ -28,7 +28,7 @@ export class PoolObserver {
    *
    * @param _pool
    */
-  constructor(protected _pool) {
+  constructor(protected _pool: any) {
     this._groups = this._pool._groups
   }
 }

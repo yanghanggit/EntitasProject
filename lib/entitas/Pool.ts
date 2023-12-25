@@ -125,8 +125,8 @@ export class Pool {
   public static instance: Pool | null = null
 
   public _debug: boolean = false
-  public _entities = {}
-  public _groups = {}
+  public _entities: { [key: string]: Entity } = {};// = {}
+  public _groups: { [key: string]: Group } = {};// = {}
   public _groupsForIndex: Bag<Bag<Group>> = new Bag<Bag<Group>>();
   public _reusableEntities: Bag<Entity> = new Bag<Entity>()
   public _retainedEntities: { [key: string]: Entity } = {};//{}
@@ -196,6 +196,9 @@ export class Pool {
    */
   public createEntity(name: string): Entity {
     const entity = this._reusableEntities.size() > 0 ? this._reusableEntities.removeLast() : this.impl(this._componentsEnum, this._totalComponents)/*new Entity(this._componentsEnum, this._totalComponents)*/
+    if (entity === null) {
+      throw new Error("entity === null");
+    }
     entity._isEnabled = true
     entity.name = name
     entity._creationIndex = this._creationIndex++
@@ -203,10 +206,10 @@ export class Pool {
     entity.addRef()
     this._entities[entity.id] = entity
     this._entitiesCache = null
-    entity.onComponentAdded.add(this._cachedUpdateGroupsComponentAddedOrRemoved)
-    entity.onComponentRemoved.add(this._cachedUpdateGroupsComponentAddedOrRemoved)
-    entity.onComponentReplaced.add(this._cachedUpdateGroupsComponentReplaced)
-    entity.onEntityReleased.add(this._cachedOnEntityReleased)
+    entity.onComponentAdded?.add(this._cachedUpdateGroupsComponentAddedOrRemoved)
+    entity.onComponentRemoved?.add(this._cachedUpdateGroupsComponentAddedOrRemoved)
+    entity.onComponentReplaced?.add(this._cachedUpdateGroupsComponentReplaced)
+    entity.onEntityReleased?.add(this._cachedOnEntityReleased)
 
     const onEntityCreated: any = this.onEntityCreated
     if (onEntityCreated.active) onEntityCreated.dispatch(this, entity)
@@ -232,7 +235,7 @@ export class Pool {
     if (onEntityDestroyed.active) onEntityDestroyed.dispatch(this, entity)
 
     if (entity._refCount === 1) {
-      entity.onEntityReleased.remove(this._cachedOnEntityReleased)
+      entity.onEntityReleased?.remove(this._cachedOnEntityReleased)
       this._reusableEntities.add(entity)
     } else {
       this._retainedEntities[entity.id] = entity
@@ -330,7 +333,11 @@ export class Pool {
    * @returns {entitas.Group}
    */
   public getGroup(matcher: IMatcher): Group {
-    let group: Group
+    if (this._groups === null) {
+      throw new Error("this._groups === null");
+    }
+
+    let group: Group | null = null;
 
     if (matcher.id in this._groups) {
       group = this._groups[matcher.id]

@@ -13,7 +13,7 @@ export interface ISignal<T> {
 
 export class Signal<T> implements ISignal<T> {
   public _listeners: Bag<T>
-  private _context
+  private _context: any
   private _alloc: number
   public active: boolean
 
@@ -23,7 +23,7 @@ export class Signal<T> implements ISignal<T> {
    * @param context
    * @param alloc
    */
-  constructor(context, alloc: number = 16) {
+  constructor(context: any, alloc: number = 16) {
     this._listeners = new Bag<T>()
     this._context = context
     this._alloc = alloc

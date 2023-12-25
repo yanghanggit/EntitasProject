@@ -13,9 +13,9 @@ export class Stopwatch {
   }
 
   public static isHighRes: boolean = false
-  private _elapsed: number
-  private _startTimeStamp: number
-  private _isRunning: boolean
+  private _elapsed: number = 0;
+  private _startTimeStamp: number = 0;
+  private _isRunning: boolean = false;
 
   constructor() {
 

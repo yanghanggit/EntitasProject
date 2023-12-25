@@ -29,7 +29,7 @@ export class SystemObserver {
    *
    * @param _systems
    */
-  constructor(protected _systems) { }
+  constructor(protected _systems: any) { }
 }
 
 

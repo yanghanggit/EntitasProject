@@ -23,7 +23,7 @@ import { TriggerOnEvent } from "./TriggerOnEvent"
  * @param method
  * @returns Object
  */
-function as(object, method: string) {
+function as(object: any, method: string): any {
   return method in object ? object : null
 }
 
@@ -37,8 +37,8 @@ export class ReactiveSystem implements IExecuteSystem {
 
   private _subsystem: IReactiveExecuteSystem
   public _observer: GroupObserver
-  public _ensureComponents: IMatcher
-  public _excludeComponents: IMatcher
+  public _ensureComponents: IMatcher | null = null;
+  public _excludeComponents: IMatcher | null = null;
   public _clearAfterExecute: boolean
   public _buffer: Array<Entity>
 
@@ -50,7 +50,7 @@ export class ReactiveSystem implements IExecuteSystem {
    */
   constructor(pool: Pool, subSystem: IReactiveSystem | IMultiReactiveSystem) {
 
-    const triggers: Array<TriggerOnEvent> = 'triggers' in subSystem ? subSystem['triggers'] : [subSystem['trigger']]
+    const triggers: Array<TriggerOnEvent> = ('triggers' in subSystem ? subSystem['triggers'] : [subSystem['trigger']]) as Array<TriggerOnEvent>;
     this._subsystem = subSystem
 
     const ensureComponents = as(subSystem, 'ensureComponents')

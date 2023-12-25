@@ -3,8 +3,8 @@
  */
 //module entitas.viewer {
 
-declare var dat
-declare var example
+declare var dat: any;
+declare var example: any;
 
 
 
@@ -19,22 +19,22 @@ import { PoolObserver } from "./PoolObserver"//import PoolObserver = entitas.vie
 import { Entity } from "../Entity"
 
 
-export var gui
+export var gui: any;
 /**
  * @class VisualDebugging
  */
 export class VisualDebugging {
-  public static _controllers
-  public static _entities
-  public static _pools
-  public static _systems
+  public static _controllers: any;
+  public static _entities: any;
+  public static _pools: any;
+  public static _systems: any;
 
   /**
    *
    * @param pool
    */
   public static init(pool: Pool) {
-    if ((pool._debug || location.search === "?debug=true") && window['dat']) {
+    if ((pool._debug || location.search === "?debug=true") && (window as any)['dat']) {
       gui = new dat.GUI({ height: 5 * 32 - 1, width: 300 })
 
       const observer = new PoolObserver(pool)
@@ -51,12 +51,12 @@ export class VisualDebugging {
       VisualDebugging._pools.add(observer, 'entities').listen()
       VisualDebugging._pools.add(observer, 'reusable').listen()
 
-      pool.onEntityCreated.add((pool, entity: Entity) => {
+      pool.onEntityCreated?.add((pool, entity: Entity) => {
         const proxy = new EntityBehavior(entity)
         VisualDebugging._controllers[entity.id] = VisualDebugging._entities.add(proxy, proxy.name).listen()
       })
 
-      pool.onEntityDestroyed.add((pool, entity: Entity) => {
+      pool.onEntityDestroyed?.add((pool, entity: Entity) => {
         const controller = VisualDebugging._controllers[entity.id]
         delete VisualDebugging._controllers[entity.id]
         VisualDebugging._entities.remove(controller)
@@ -82,9 +82,15 @@ export class VisualDebugging {
       Object.defineProperty(Systems.prototype, 'name', { get: () => 'Systems' })
       Object.defineProperty(Systems.prototype, 'Systems', {
         get: () => {
+          const sys = this as any; // 假设 'this' 是 'Systems' 实例
+          return "Systems " + " (" +
+            sys['_initializeSystems'].length + " init, " +
+            sys['_executeSystems'].length + " exe ";
+          /*
           return "Systems " + " (" +
             this['_initializeSystems'].length + " init, " +
             this['_executeSystems'].length + " exe "
+            */
         }
       })
     }

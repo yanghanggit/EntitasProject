@@ -76,13 +76,12 @@ export class Bag<E> extends Array implements ImmutableBag<E> {
    *
    * @return {Object} the last object in the bag, null if empty.
    */
-  removeLast(): E {
+  removeLast(): E | null {
     if (this.size_ > 0) {
       const e: E = this[--this.size_]
       this[this.size_] = null
       return e
     }
-
     return null
   }
 

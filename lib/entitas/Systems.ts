@@ -14,7 +14,7 @@ import { IInitializeSystem } from "./interfaces/IInitializeSystem"//import IInit
  * @param method
  * @returns Object
  */
-function as(object, method: string) {
+function as(object: any, method: string): any {
   return method in object ? object : null
 }
 
@@ -35,15 +35,15 @@ export class Systems implements IInitializeSystem, IExecuteSystem {
      */
   }
 
-  public add(system: ISystem)
-  public add(system: Function)
+  public add(system: ISystem): any
+  public add(system: Function): any
 
   /**
    * Add System
    * @param system
    * @returns {entitas.Systems}
    */
-  public add(system) {
+  public add(system: any): any {
 
     if ('function' === typeof system) {
       const Klass: any = system
