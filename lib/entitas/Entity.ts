@@ -113,8 +113,8 @@ export class Entity {
 
   public _creationIndex: number = 0
   public _isEnabled: boolean = true
-  public _components: Array<IComponent> | null = null
-  public _componentsCache = null
+  public _components: Array<IComponent | null> | null = null
+  public _componentsCache: Array<IComponent> | null = null
   public _componentIndicesCache: number[] | null = null
   public _toStringCache: string = ''
   public _refCount: number = 0
@@ -223,7 +223,10 @@ export class Entity {
       const errorMsg = "Cannot add component at index " + index + " to " + this
       throw new EntityAlreadyHasComponentException(errorMsg, index)
     }
-    this._components[index] = component
+    if (this._components == null) {
+      throw new Error("Components array is null");
+    }
+    this._components[index] = component;
     this._componentsCache = null
     this._componentIndicesCache = null
     this._toStringCache = ''
@@ -272,7 +275,10 @@ export class Entity {
     return this
   }
 
-  protected _replaceComponent(index: number, replacement: IComponent) {
+  protected _replaceComponent(index: number, replacement: IComponent | null) {
+    if (this._components == null) {
+      throw new Error("_components is null");
+    }
     const components = this._components
     const previousComponent = components[index]
     if (previousComponent === replacement) {
@@ -295,7 +301,6 @@ export class Entity {
         if (onComponentReplaced.active) onComponentReplaced.dispatch(this, index, previousComponent, replacement)
       }
     }
-
   }
 
   /**
@@ -309,7 +314,10 @@ export class Entity {
       const errorMsg = "Cannot get component at index " + index + " from " + this
       throw new EntityDoesNotHaveComponentException(errorMsg, index)
     }
-    return this._components[index]
+    if (this._components == null) {
+      throw new Error("_components is null");
+    }
+    return this._components[index]!;
   }
 
   /**
@@ -321,14 +329,15 @@ export class Entity {
     if (this._componentsCache == null) {
       const components = []
       const _components = this._components
-      for (let i = 0, j = 0, componentsLength = _components.length; i < componentsLength; i++) {
-        const component = _components[i]
-        if (component != null) {
-          components[j++] = component
+      if (_components !== null) {
+        for (let i = 0, j = 0, componentsLength = _components.length; i < componentsLength; i++) {
+          const component = _components[i]
+          if (component != null) {
+            components[j++] = component
+          }
         }
       }
-
-      this._componentsCache = components
+      this._componentsCache = components;
     }
 
     return this._componentsCache
@@ -344,9 +353,11 @@ export class Entity {
     if (this._componentIndicesCache == null) {
       const indices = []
       const _components = this._components
-      for (let i = 0, j = 0, componentsLength = _components.length; i < componentsLength; i++) {
-        if (_components[i] != null) {
-          indices[j++] = i
+      if (_components != null) {
+        for (let i = 0, j = 0, componentsLength = _components.length; i < componentsLength; i++) {
+          if (_components[i] != null) {
+            indices[j++] = i
+          }
         }
       }
       this._componentIndicesCache = indices
@@ -362,7 +373,10 @@ export class Entity {
    * @returns {boolean}
    */
   public hasComponent(index: number): boolean {
-    return this._components[index] != null
+    if (this._components == null) {
+      throw new Error("_components is null");
+    }
+    return this._components[index] != null;
   }
 
   /**
@@ -372,6 +386,9 @@ export class Entity {
    * @returns {boolean}
    */
   public hasComponents(indices: number[]): boolean {
+    if (this._components == null) {
+      throw new Error("_components is null");
+    }
     const _components = this._components
     for (let i = 0, indicesLength = indices.length; i < indicesLength; i++) {
       if (_components[indices[i]] == null) {
@@ -389,6 +406,9 @@ export class Entity {
    * @returns {boolean}
    */
   public hasAnyComponent(indices: number[]): boolean {
+    if (this._components == null) {
+      throw new Error("_components is null");
+    }
     const _components = this._components
     for (let i = 0, indicesLength = indices.length; i < indicesLength; i++) {
       if (_components[indices[i]] != null) {
@@ -404,6 +424,9 @@ export class Entity {
    *
    */
   public removeAllComponents() {
+    if (this._components == null) {
+      throw new Error("_components is null");
+    }
     this._toStringCache = ''
     const _components = this._components
     for (let i = 0, componentsLength = _components.length; i < componentsLength; i++) {

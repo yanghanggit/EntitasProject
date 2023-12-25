@@ -129,7 +129,7 @@ export class Pool {
   public _groups = {}
   public _groupsForIndex: Bag<Bag<Group>> = new Bag<Bag<Group>>();
   public _reusableEntities: Bag<Entity> = new Bag<Entity>()
-  public _retainedEntities = {}
+  public _retainedEntities: { [key: string]: Entity } = {};//{}
   public _componentsEnum: Object = null
   public _totalComponents: number = 0
   public _creationIndex: number = 0
@@ -393,7 +393,7 @@ export class Pool {
     if (entity._isEnabled) {
       throw new EntityIsNotDestroyedException("Cannot release entity.")
     }
-    entity.onEntityReleased.remove(this._cachedOnEntityReleased)
+    entity.onEntityReleased?.remove(this._cachedOnEntityReleased)
     delete this._retainedEntities[entity.id]
     this._reusableEntities.add(entity)
   }
