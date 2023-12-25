@@ -69,14 +69,13 @@ export class GoblinAttackSystem implements ISetPool, IReactiveSystem {
         }
         const hero__AttributesComponent = hero.GetComponent(AttributesComponent);
         console.log(`${goblin__AttributesComponent!.name} wana punch ${hero__AttributesComponent!.name}`);
-        //
         if (hero.HasComponent(MageComponent)) {
             const entities = this.group!.getEntities();
             if (entities.length > 0) {
                 const warrior = MyUtil.randomElementFromArray(entities) as MyEntity;
                 if (!warrior.HasComponent(DeadComponent)) {
-                    const randomWarrorEntity__AttributesComponent = warrior.GetComponent(AttributesComponent);
-                    console.log(`The warrior ${randomWarrorEntity__AttributesComponent!.name} blocked an attack from the ${goblin__AttributesComponent!.name} on the ${hero__AttributesComponent!.name}`)
+                    const warrior__AttributesComponent = warrior.GetComponent(AttributesComponent);
+                    console.log(`The warrior ${warrior__AttributesComponent!.name} blocked an attack from the ${goblin__AttributesComponent!.name} on the ${hero__AttributesComponent!.name}`)
                     return warrior;
                 }
             }
