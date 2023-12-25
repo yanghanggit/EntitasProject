@@ -9,10 +9,11 @@ import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
 import { CID } from "./ComponentsPreprocessing"
 import { HeroComponent, AttributesComponent, WarriorComponent, MageComponent } from "./Components";
+import { MyEntity } from "./MyEntity";
 /**
  * 
  */
-export class HeroSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
+export class MageSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
     /**
      * 
      */
@@ -22,30 +23,26 @@ export class HeroSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
      */
     group: Group | null = null;
     /**
-    * 
-    */
-    allHerosAreDeadAlert: boolean = false;
-    /**
      * 
      */
     initialize() {
-    }
-    /**
-     * 
-     */
-    execute() {
-        if (this.checkAllHerosAreDead()) {
-            if (!this.allHerosAreDeadAlert) {
-                this.allHerosAreDeadAlert = true;
-                console.log('!!!!!!!!!!!   all heros are dead!!! game over  !!!!!!!!!!!');
-            }
+        const entities = this.group!.getEntities();
+        for (let i = 0, l = entities.length; i < l; i++) {
+            const e = entities[i] as MyEntity;
+            this.sayhi(e);
         }
     }
     /**
      * 
      */
-    private checkAllHerosAreDead(): boolean {
-        return this.group?.getEntities().length === 0;
+    private sayhi(entity: MyEntity) {
+        const __AttributesComponent = entity.GetComponent(AttributesComponent);
+        console.log(`My name is ${__AttributesComponent!.name}, I'm a mage, ke~ ke~`);
+    }
+    /**
+     * 
+     */
+    execute() {
     }
     /**
      * 
@@ -53,7 +50,7 @@ export class HeroSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
     setPool(pool: Pool) {
         this.pool = pool;
         this.group = pool.getGroup(
-            Matcher.allOf(CID(HeroComponent), CID(AttributesComponent)).anyOf(CID(WarriorComponent), CID(MageComponent))
+            Matcher.allOf(CID(HeroComponent), CID(AttributesComponent), CID(MageComponent))
         );
     }
 }

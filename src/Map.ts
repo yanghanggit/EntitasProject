@@ -7,11 +7,13 @@ import { Scene } from "./Scene";
 import { HeroSystem } from "./HeroSystem";
 import { GoblinSystem } from "./GoblinSystem";
 import { DeadSystem } from "./DeadSystem";
-import { MapBuildSystem } from "./MapBuildSystem";
+import { FirstDungonBuildSystem } from "./FirstDungonBuildSystem";
 import { DestroyEntitySystem } from "./DestroyEntitySystem";
 import { GoblinAttackSystem } from "./GoblinAttackSystem";
 import { HealthSystem } from "./HealthSystem";
 import { ItemSystem } from "./ItemSystem";
+import { WarriorSystem } from "./WarriorSystem";
+import { MageSystem } from "./MageSystem";
 /**
  * 
  */
@@ -55,11 +57,13 @@ export class Map {
         // systems.add(myPool.createSystem(MyExecuteSystem));
         // systems.add(myPool.createSystem(MyReactiveSystem));
         //first system
-        let mapBuildSystem = myPool.createSystem(MapBuildSystem) as MapBuildSystem;
+        let mapBuildSystem = myPool.createSystem(FirstDungonBuildSystem) as FirstDungonBuildSystem;
         mapBuildSystem.map = this;
         systems.add(mapBuildSystem);
         //game system 
         systems.add(myPool.createSystem(HeroSystem));
+        systems.add(myPool.createSystem(WarriorSystem));
+        systems.add(myPool.createSystem(MageSystem));
         //
         systems.add(myPool.createSystem(GoblinSystem));
         systems.add(myPool.createSystem(GoblinAttackSystem));

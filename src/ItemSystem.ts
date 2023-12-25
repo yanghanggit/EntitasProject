@@ -55,6 +55,7 @@ export class ItemSystem implements ISetPool, IReactiveSystem {
      * 
      */
     private onRemoveItem(_itemEntity: MyEntity) {
+        console.log("__________________________onRemoveItem!!!!!");
     }
     /**
      * 

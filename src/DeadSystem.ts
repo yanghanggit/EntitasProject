@@ -59,19 +59,6 @@ export class DeadSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
             ++this.herosAreDeadCount;
             _en.AddComponent(DestroyComponent);
         });
-        //
-        if (this.checkAllHerosAreDead(this.herosAreDeadCount)) {
-            if (!this.allHerosAreDeadAlert) {
-                this.allHerosAreDeadAlert = true;
-                console.log('all heros are dead!!! game over!');
-            }
-        }
-    }
-    /**
-     * 
-     */
-    private checkAllHerosAreDead(deadCount: number): boolean {
-        return deadCount >= this.pool!.scene!.map!.heroNames.length;
     }
     /**
      * 

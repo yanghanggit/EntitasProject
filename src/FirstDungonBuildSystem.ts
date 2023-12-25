@@ -12,7 +12,7 @@ import { Map } from "./Map";
 /**
  * 
  */
-export class MapBuildSystem implements IInitializeSystem, ISetPool {
+export class FirstDungonBuildSystem implements IInitializeSystem, ISetPool {
     /**
      * 
      */
@@ -52,7 +52,7 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
                 if (career == '[warrior]') {
                     en.AddComponent(WarriorComponent);
                     this.initWarrior(en, ['bread', 'strawberries', 'rum']);
-                    this.testWarrior(en);
+                    //this.testWarrior(en);
                 }
                 else if (career == '[mage]') {
                     en.AddComponent(MageComponent);
