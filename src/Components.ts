@@ -34,8 +34,10 @@ export class HeroComponent implements IComponent {
 @component
 export class AttributesComponent implements IComponent {
     name: string = '';
-    health: number = 100;
-    mana: number = 50;
+    maxHealth: number = 100;
+    health: number = this.maxHealth;
+    maxMana: number = 50;
+    mana: number = this.maxMana;
     attack: number = 30;
     defense: number = 10;
 }

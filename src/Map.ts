@@ -11,6 +11,7 @@ import { MapBuildSystem } from "./MapBuildSystem";
 import { DestroyEntitySystem } from "./DestroyEntitySystem";
 import { GoblinAttackSystem } from "./GoblinAttackSystem";
 import { HealthSystem } from "./HealthSystem";
+import { ItemSystem } from "./ItemSystem";
 /**
  * 
  */
@@ -59,9 +60,12 @@ export class Map {
         systems.add(mapBuildSystem);
         //game system 
         systems.add(myPool.createSystem(HeroSystem));
+        //
         systems.add(myPool.createSystem(GoblinSystem));
         systems.add(myPool.createSystem(GoblinAttackSystem));
+        //
         systems.add(myPool.createSystem(HealthSystem));
+        systems.add(myPool.createSystem(ItemSystem));
         systems.add(myPool.createSystem(DeadSystem));
         //end sys
         systems.add(myPool.createSystem(DestroyEntitySystem));
