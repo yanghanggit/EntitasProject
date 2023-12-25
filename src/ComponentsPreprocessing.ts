@@ -6,7 +6,7 @@ import { components_collector } from "./Components";
 /**
  * 
  */
-export const COMPONENTS: Function[] = [].concat(components_collector);
+export const COMPONENTS: Function[] = [...components_collector];//[].concat(components_collector);
 Entity.initialize(COMPONENTS.length, { "entities": 200, "components": 128 });
 /**
  * 

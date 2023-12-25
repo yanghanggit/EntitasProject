@@ -37,7 +37,6 @@ function format(formatString: string) {
 function logParameter(target: any, key: string, index: number) {
     console.log('logParameter:' + key);
 }
-
 /**
  * 
  */
@@ -51,7 +50,7 @@ export class MyDecorators {
     /**
      * 
      */
-    private _name: string;
+    private _name: string = '';
     /**
      * 
      */

@@ -25,9 +25,9 @@ export class DestroyEntitySystem implements IExecuteSystem, ISetPool {
      * 
      */
     execute() {
-        const entities = this.group1.getEntities();
+        const entities = this.group1!.getEntities();
         entities.forEach((en) => {
-            this.pool.destroyEntity(en);
+            this.pool!.destroyEntity(en);
         });
     }
     /**

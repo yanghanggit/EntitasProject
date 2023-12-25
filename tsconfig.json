@@ -2,7 +2,7 @@
   "compilerOptions": {
       "target": "es2016",
       "module": "es6",
-      "strict": false,
+      "strict": true,
       "jsx": "react",
       "esModuleInterop": true,
       "skipLibCheck": true,

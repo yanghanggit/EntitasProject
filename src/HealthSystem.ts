@@ -31,7 +31,7 @@ export class HealthSystem implements IInitializeSystem, IExecuteSystem, ISetPool
      * 
      */
     execute() {
-        const entities = this.group.getEntities();
+        const entities = this.group!.getEntities();
         entities.forEach((en) => {
             const me = en as MyEntity;
             const __AttributesComponent = me.GetComponent(AttributesComponent);

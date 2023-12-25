@@ -51,7 +51,7 @@ export class DeadSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
      * 
      */
     private handleHeros() {
-        const entities = this.group1.getEntities();
+        const entities = this.group1!.getEntities();
         entities.forEach((en) => {
             const _en = (en as MyEntity);
             const __AttributesComponent = _en.GetComponent(AttributesComponent);
@@ -71,7 +71,7 @@ export class DeadSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
      * 
      */
     private checkAllHerosAreDead(deadCount: number): boolean {
-        return deadCount >= this.pool.scene.map.heroNames.length;
+        return deadCount >= this.pool!.scene!.map!.heroNames.length;
     }
     /**
      * 

@@ -50,7 +50,7 @@ export class GoblinAttackSystem implements IInitializeSystem, ISetPool, IReactiv
      */
     private handleAttack(goblin: MyEntity) {
         const __GoblinAttackComponent = goblin.GetComponent(GoblinAttackComponent);
-        const hero = this.pool.getEntity(__GoblinAttackComponent.destEntityId);
+        const hero = this.pool!.getEntity(__GoblinAttackComponent.destEntityId);
         if (hero === null || hero === undefined) {
             return;
         }
