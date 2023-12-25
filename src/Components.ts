@@ -26,6 +26,31 @@ export class DestroyComponent implements IComponent {
  */
 @component
 export class HeroComponent implements IComponent {
+    pack: string = '';
+}
+/**
+ * 
+ */
+@component
+export class AttributesComponent implements IComponent {
+    name: string = '';
+    health: number = 100;
+    mana: number = 50;
+    attack: number = 30;
+    defense: number = 10;
+}
+/**
+ * 
+ */
+@component
+export class PackComponent implements IComponent {
+    items: string[] = [];
+}
+/**
+ * 
+ */
+@component
+export class ItemComponent implements IComponent {
 }
 /**
  * 
@@ -38,6 +63,12 @@ export class WarriorComponent implements IComponent {
  */
 @component
 export class MageComponent implements IComponent {
+}
+/**
+ * 
+ */
+@component
+export class DeadComponent implements IComponent {
 }
 /**
  * 
@@ -57,29 +88,16 @@ export class GoblinComponent implements IComponent {
  * 
  */
 @component
-export class AttributesComponent implements IComponent {
-    name: string = '';
-    health: number = 100;
-    mana: number = 50;
-    attack: number = 30;
-    defense: number = 10;
-}
-/**
- * 
- */
-@component
-export class DeadComponent implements IComponent {
-}
-/**
- * 
- */
-@component
 export class GoblinAttackComponent implements IComponent {
     destEntityId: string = '';
 }
-
-
-
+/**
+ * 
+ */
+@component
+export class FoodComponent implements IComponent {
+    foodName: string = '';
+}
 
 
 

@@ -4,7 +4,7 @@
 import { ISetPool } from "../lib/entitas/interfaces/ISystem";
 import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
-import { AttributesComponent, HeroComponent, MonsterComponent, GoblinComponent, WarriorComponent, MageComponent } from "./Components";
+import { AttributesComponent, HeroComponent, MonsterComponent, GoblinComponent, WarriorComponent, MageComponent, PackComponent, FoodComponent, ItemComponent } from "./Components";
 import { MyPool } from "./MyPool";
 import { MyEntity } from "./MyEntity";
 import { MyUtil } from "./MyUtil";
@@ -25,13 +25,13 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
      * 
      */
     initialize() {
-        this.initHeros();
-        this.initMonsters();
+        this.createHeros();
+        this.createMonsters();
     }
     /**
      * 
      */
-    private initHeros() {
+    private createHeros() {
         if (this.map === null || this.pool == null) {
             return;
         }
@@ -47,22 +47,86 @@ export class MapBuildSystem implements IInitializeSystem, ISetPool {
                 const attributesComp = en.AddComponent(AttributesComponent);
                 attributesComp.name = heroNames[i];
             }
-            const career = heroCareers[i];
-            if (career == '[warrior]') {
-                en.AddComponent(WarriorComponent);
-            }
-            else if (career == '[mage]') {
-                en.AddComponent(MageComponent);
-            }
-            else {
-                console.log("unknown career = " + career)
+            {
+                const career = heroCareers[i];
+                if (career == '[warrior]') {
+                    en.AddComponent(WarriorComponent);
+                    this.initWarrior(en, ['bread', 'strawberries', 'rum']);
+                    this.testWarrior(en);
+                }
+                else if (career == '[mage]') {
+                    en.AddComponent(MageComponent);
+                }
+                else {
+                    console.log("unknown career = " + career)
+                }
             }
         }
     }
     /**
      * 
      */
-    private initMonsters() {
+    private initWarrior(warrior: MyEntity, foodNames: string[]) {
+        const packEntity = this.addPackToHero(warrior);
+        foodNames.forEach((foodName) => {
+            this.addFoodToPack(packEntity, foodName);
+        });
+    }
+    /**
+     * 
+     */
+    private addPackToHero(hero: MyEntity): MyEntity {
+        const pool = this.pool;
+        const __HeroComponent = hero.GetComponent(HeroComponent);
+        if (__HeroComponent.pack !== '') {
+            return pool!.getEntity(__HeroComponent.pack);
+        }
+        //
+        const packEntity = pool!.createEntity("pack") as MyEntity;
+        packEntity.AddComponent(PackComponent);
+        __HeroComponent.pack = packEntity.id;
+        return packEntity;
+    }
+    /**
+     * 
+     */
+    private addFoodToPack(packEntity: MyEntity, foodName: string): MyEntity {
+        const pool = this.pool;
+        const __PackComponent = packEntity.GetComponent(PackComponent);
+        const itemEntity = pool!.createEntity("item") as MyEntity;
+        itemEntity.AddComponent(ItemComponent);
+        __PackComponent.items.push(itemEntity.id);
+        //
+        const __FoodComponent = itemEntity.AddComponent(FoodComponent);
+        __FoodComponent.foodName = foodName;
+        return itemEntity;
+    }
+    /**
+     * 
+     */
+    private testWarrior(warrior: MyEntity): boolean {
+        if (!warrior.HasComponent(WarriorComponent)) {
+            throw new Error("!warrior.HasComponent(WarriorComponent)");
+        }
+        const __AttributesComponent = warrior.GetComponent(AttributesComponent);
+        console.log(`Hey,I,${__AttributesComponent!.name},a warrior,got some food!`);
+        //
+        const pool = this.pool;
+        const __HeroComponent = warrior.GetComponent(HeroComponent);
+        const __packEntity = pool!.getEntity(__HeroComponent.pack);
+        const __PackComponent = __packEntity.GetComponent(PackComponent);
+        __PackComponent.items.forEach((itemEntityId) => {
+            const itemEntity = pool!.getEntity(itemEntityId);
+            itemEntity.GetComponent(ItemComponent);
+            const __FoodComponent = itemEntity.GetComponent(FoodComponent);
+            console.log(__FoodComponent.foodName + '!');
+        });
+        return true;
+    }
+    /**
+     * 
+     */
+    private createMonsters() {
         if (this.map === null || this.pool == null) {
             return;
         }
