@@ -55,25 +55,25 @@ export class Matcher implements IAllOfMatcher, IAnyOfMatcher, INoneOfMatcher {
    * A unique sequential index number assigned to each entity at creation
    * @type {number}
    * @name entitas.Matcher#allOfIndices */
-  public get allOfIndices(): number[] { return this._allOfIndices; }
+  public get allOfIndices(): number[] { return this._allOfIndices!; }
 
   /**
    * A unique sequential index number assigned to each entity at creation
    * @type {number}
    * @name entitas.Matcher#anyOfIndices */
-  public get anyOfIndices(): number[] { return this._anyOfIndices; }
+  public get anyOfIndices(): number[] { return this._anyOfIndices!; }
 
   /**
    * A unique sequential index number assigned to each entity at creation
    * @type {number}
    * @name entitas.Matcher#noneOfIndices */
-  public get noneOfIndices(): number[] { return this._noneOfIndices; }
+  public get noneOfIndices(): number[] { return this._noneOfIndices!; }
 
-  private _indices: number[]
-  public _allOfIndices: number[]
-  public _anyOfIndices: number[]
-  public _noneOfIndices: number[]
-  private _toStringCache: string
+  private _indices: number[] | null = null;
+  public _allOfIndices: number[] | null = null;
+  public _anyOfIndices: number[] | null = null;
+  public _noneOfIndices: number[] | null = null;
+  private _toStringCache: string = '';
   private _id: number
 
   /** Extension Points */
@@ -121,7 +121,7 @@ export class Matcher implements IAllOfMatcher, IAnyOfMatcher, INoneOfMatcher {
       this._indices = null
       return this
     } else {
-      return this.noneOf.apply(this, Matcher.mergeIndices(args))
+      return this.noneOf.apply(this, Matcher.mergeIndices(args) as any)
     }
   }
 
@@ -147,7 +147,7 @@ export class Matcher implements IAllOfMatcher, IAnyOfMatcher, INoneOfMatcher {
     //  + (this._anyOfIndices != null ? this._anyOfIndices.length : 0)
     //  + (this._noneOfIndices != null ? this._noneOfIndices.length : 0)
 
-    let indicesList = []
+    let indicesList: number[] = []
     if (this._allOfIndices != null) {
       indicesList = indicesList.concat(this._allOfIndices)
     }
@@ -167,7 +167,7 @@ export class Matcher implements IAllOfMatcher, IAnyOfMatcher, INoneOfMatcher {
    * @returns {string}
    */
   public toString() {
-    if (this._toStringCache == null) {
+    if (this._toStringCache === '') {
       const sb: string[] = []
       if (this._allOfIndices != null) {
         Matcher.appendIndices(sb, "AllOf", this._allOfIndices)
@@ -241,12 +241,14 @@ export class Matcher implements IAllOfMatcher, IAnyOfMatcher, INoneOfMatcher {
    * @returns {Array<number>}
    */
   public static distinctIndices(indices: number[]): number[] {
-    const indicesSet = {}
+    const indicesSet: { [key: string]: number } = {};// = {}
     for (let i = 0, l = indices.length; i < l; i++) {
       const k = '' + indices[i]
       indicesSet[k] = i
     }
-    return [].concat(Object.keys(indicesSet))
+    // 使用 map 函数将字符串数组转换回数字数组
+    return Object.keys(indicesSet).map(key => parseInt(key));
+    //return [].concat(Object.keys(indicesSet))
   }
 
   /**
@@ -281,9 +283,8 @@ export class Matcher implements IAllOfMatcher, IAnyOfMatcher, INoneOfMatcher {
       const indices = matcher._allOfIndices = Matcher.distinctIndices(args)
       return matcher
     } else {
-      return Matcher.allOf.apply(this, Matcher.mergeIndices(args))
+      return Matcher.allOf.apply(this, Matcher.mergeIndices(args) as any)
     }
-
   }
 
   public static anyOf(...args: number[]): IAnyOfMatcher
@@ -300,7 +301,7 @@ export class Matcher implements IAllOfMatcher, IAnyOfMatcher, INoneOfMatcher {
       const indices = matcher._anyOfIndices = Matcher.distinctIndices(args)
       return matcher
     } else {
-      return Matcher.anyOf.apply(this, Matcher.mergeIndices(args))
+      return Matcher.anyOf.apply(this, Matcher.mergeIndices(args) as any)
     }
   }
 

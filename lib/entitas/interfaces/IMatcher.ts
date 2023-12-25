@@ -6,7 +6,7 @@ import { Entity } from "../Entity"
 export interface IMatcher {
   id: number
   indices: number[]
-  matches(entity: Entity)
+  matches(entity: Entity): any
 }
 export interface ICompoundMatcher extends IMatcher {
 

@@ -10,7 +10,7 @@ export class Exception {
    * @constructot
    * @param message
    */
-  constructor(message) {
+  constructor(message: string) {
     this.message = message
   }
   /** @return {string} */

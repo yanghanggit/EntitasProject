@@ -24,7 +24,7 @@ import { EntityChanged } from "./Entity"
 import { ComponentReplaced } from "./Entity"
 import { EntityReleased } from "./Entity"
 
-function as(obj, method1: string) {
+function as(obj: any, method1: string): any {
   return method1 in obj ? obj : null
 }
 
@@ -87,22 +87,22 @@ export class Pool {
   /**
    * Subscribe to Entity Created Event
    * @type {entitas.utils.ISignal} */
-  public onEntityCreated: /*Pool.*/IPoolChanged<PoolChanged> = null
+  public onEntityCreated: /*Pool.*/IPoolChanged<PoolChanged> | null = null
 
   /**
    * Subscribe to Entity Will Be Destroyed Event
    * @type {entitas.utils.ISignal} */
-  public onEntityWillBeDestroyed:  /*Pool.*/IPoolChanged<PoolChanged> = null
+  public onEntityWillBeDestroyed:  /*Pool.*/IPoolChanged<PoolChanged> | null = null
 
   /**
    * Subscribe to Entity Destroyed Event
    * @type {entitas.utils.ISignal} */
-  public onEntityDestroyed:  /*Pool.*/IPoolChanged<PoolChanged> = null
+  public onEntityDestroyed:  /*Pool.*/IPoolChanged<PoolChanged> | null = null
 
   /**
    * Subscribe to Group Created Event
    * @type {entitas.utils.ISignal} */
-  public onGroupCreated:  /*Pool.*/IGroupChanged<GroupChanged> = null
+  public onGroupCreated:  /*Pool.*/IGroupChanged<GroupChanged> | null = null
 
   /**
    * Entity name for debugging
@@ -112,7 +112,7 @@ export class Pool {
   /**
    * An enum of valid component types
    * @type {Object<string,number>} */
-  public static componentsEnum: Object = null
+  public static componentsEnum: { [key: number]: string } = {};
 
   /**
    * Count of components
@@ -122,7 +122,7 @@ export class Pool {
   /**
    * Global reference to pool instance
    * @type {entitas.Pool} */
-  public static instance: Pool = null
+  public static instance: Pool | null = null
 
   public _debug: boolean = false
   public _entities = {}
@@ -130,10 +130,10 @@ export class Pool {
   public _groupsForIndex: Bag<Bag<Group>> = new Bag<Bag<Group>>();
   public _reusableEntities: Bag<Entity> = new Bag<Entity>()
   public _retainedEntities: { [key: string]: Entity } = {};//{}
-  public _componentsEnum: Object = null
+  public _componentsEnum: { [key: number]: string } = {};
   public _totalComponents: number = 0
   public _creationIndex: number = 0
-  public _entitiesCache: Array<Entity> = null
+  public _entitiesCache: Array<Entity> | null = null
   public _cachedUpdateGroupsComponentAddedOrRemoved: /*Entity.*/EntityChanged
   public _cachedUpdateGroupsComponentReplaced: /*Entity.*/ComponentReplaced
   public _cachedOnEntityReleased: /*Entity.*/EntityReleased
@@ -152,7 +152,7 @@ export class Pool {
    */
   public static setPool(system: ISystem, pool: Pool) {
     const poolSystem = as(system, 'setPool')
-    if (poolSystem != null) {
+    if (poolSystem !== null) {
       poolSystem.setPool(pool)
     }
   }

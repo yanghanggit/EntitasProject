@@ -18,10 +18,10 @@ export class GroupObserver {
    * @name entitas.GroupObserver#collectedEntities */
   public get collectedEntities() { return this._collectedEntities; }
 
-  private _collectedEntities = {}
-  protected _groups: Array<Group> = null
-  protected _eventTypes: Array<GroupEventType> = null
-  protected _addEntityCache:  /*Group.*/GroupChanged = null
+  private _collectedEntities: { [key: string]: Entity } = {};// = {}
+  protected _groups: Array<Group> | null = null
+  protected _eventTypes: Array<GroupEventType> | null = null
+  protected _addEntityCache:  /*Group.*/GroupChanged | null = null
 
 
   /**
@@ -29,13 +29,13 @@ export class GroupObserver {
    * @param {Array<entitas.Group>} groups
    * @param {number} eventTypes
    */
-  constructor(groups, eventTypes) {
+  constructor(groups: Group[] | Group, eventTypes: GroupEventType[] | GroupEventType) {
     this._groups = Array.isArray(groups) ? groups : [groups]
     this._eventTypes = Array.isArray(eventTypes) ? eventTypes : [eventTypes]
 
-    if (groups.length !== eventTypes.length) {
-      throw new GroupObserverException("Unbalanced count with groups (" + groups.length +
-        ") and event types (" + eventTypes.length + ")")
+    if (this._groups.length !== this._eventTypes.length) {
+      throw new GroupObserverException("Unbalanced count with groups (" + this._groups.length +
+        ") and event types (" + this._eventTypes.length + ")")
     }
     this._collectedEntities = {}
     this._addEntityCache = this.addEntity
@@ -46,26 +46,32 @@ export class GroupObserver {
    * Activate events
    */
   activate() {
+    if (this._groups == null) {
+      throw new Error("_groups is null");
+    }
+    if (this._eventTypes == null) {
+      throw new Error("_groups is null");
+    }
     for (let i = 0, groupsLength = this._groups.length; i < groupsLength; i++) {
       const group: Group = this._groups[i]
       const eventType: GroupEventType = this._eventTypes[i]
 
       if (eventType === GroupEventType.OnEntityAdded) {
 
-        group.onEntityAdded.remove(this._addEntityCache)
-        group.onEntityAdded.add(this._addEntityCache)
+        group.onEntityAdded?.remove(this._addEntityCache)
+        group.onEntityAdded?.add(this._addEntityCache)
 
       } else if (eventType === GroupEventType.OnEntityRemoved) {
 
-        group.onEntityRemoved.remove(this._addEntityCache)
-        group.onEntityRemoved.add(this._addEntityCache)
+        group.onEntityRemoved?.remove(this._addEntityCache)
+        group.onEntityRemoved?.add(this._addEntityCache)
 
       } else if (eventType === GroupEventType.OnEntityAddedOrRemoved) {
 
-        group.onEntityAdded.remove(this._addEntityCache)
-        group.onEntityAdded.add(this._addEntityCache)
-        group.onEntityRemoved.remove(this._addEntityCache)
-        group.onEntityRemoved.add(this._addEntityCache)
+        group.onEntityAdded?.remove(this._addEntityCache)
+        group.onEntityAdded?.add(this._addEntityCache)
+        group.onEntityRemoved?.remove(this._addEntityCache)
+        group.onEntityRemoved?.add(this._addEntityCache)
 
       } else {
         throw `Invalid eventType [${typeof eventType}:${eventType}] in GroupObserver::activate`
@@ -77,11 +83,15 @@ export class GroupObserver {
    * Deavtivate events
    */
   deactivate() {
+    if (this._groups === null) {
+      throw new Error("this._groups === null");
+    }
+
     for (let i = 0, groupsLength = this._groups.length; i < groupsLength; i++) {
       const group: Group = this._groups[i]
 
-      group.onEntityAdded.remove(this._addEntityCache)
-      group.onEntityRemoved.remove(this._addEntityCache)
+      group.onEntityAdded?.remove(this._addEntityCache)
+      group.onEntityRemoved?.remove(this._addEntityCache)
 
       this.clearCollectedEntities()
     }

@@ -32,15 +32,15 @@ export class Group {
   /**
    * Subscribe to Entity Addded events
    * @type {entitas.utils.ISignal} */
-  public onEntityAdded: /*Group.*/IGroupChanged<GroupChanged> = null
+  public onEntityAdded: /*Group.*/IGroupChanged<GroupChanged | null> | null = null
   /**
    * Subscribe to Entity Removed events
    * @type {entitas.utils.ISignal} */
-  public onEntityRemoved:  /*Group.*/IGroupChanged<GroupChanged> = null
+  public onEntityRemoved:  /*Group.*/IGroupChanged<GroupChanged | null> | null = null
   /**
    * Subscribe to Entity Updated events
    * @type {entitas.utils.ISignal} */
-  public onEntityUpdated:  /*Group.*/IGroupUpdated<GroupUpdated> = null
+  public onEntityUpdated:  /*Group.*/IGroupUpdated<GroupUpdated | null> | null = null
 
   /**
    * Count the number of entities in this group
@@ -52,12 +52,12 @@ export class Group {
    * Get the Matcher for this group
    * @type {entitas.IMatcher}
    * @name entitas.Group#matcher */
-  public get matcher(): IMatcher { return this._matcher; }
+  public get matcher(): IMatcher | null { return this._matcher; }
 
-  private _entities = {}
-  private _matcher: IMatcher = null
-  public _entitiesCache: Array<Entity> = null
-  public _singleEntityCache: Entity = null
+  private _entities: { [key: string]: Entity } = {};// = {}
+  private _matcher: IMatcher | null = null
+  public _entitiesCache: Array<Entity> | null = null
+  public _singleEntityCache: Entity | null = null
   public _toStringCache: string = ''
 
   /**
@@ -87,7 +87,7 @@ export class Group {
    * @param entity
    */
   public handleEntitySilently(entity: Entity) {
-    if (this._matcher.matches(entity)) {
+    if (this._matcher?.matches(entity)) {
       this.addEntitySilently(entity)
     } else {
       this.removeEntitySilently(entity)
@@ -101,7 +101,7 @@ export class Group {
    * @param component
    */
   public handleEntity(entity: Entity, index: number, component: IComponent) {
-    if (this._matcher.matches(entity)) {
+    if (this._matcher?.matches(entity)) {
       this.addEntity(entity, index, component)
     } else {
       this.removeEntity(entity, index, component)
@@ -223,7 +223,7 @@ export class Group {
    *
    * @returns entitas.Entity
    */
-  public getSingleEntity(): Entity {
+  public getSingleEntity(): Entity | null {
     if (this._singleEntityCache == null) {
       const enumerator = Object.keys(this._entities)
       const c = enumerator.length
@@ -232,7 +232,7 @@ export class Group {
       } else if (c === 0) {
         return null
       } else {
-        throw new SingleEntityException(this._matcher)
+        throw new SingleEntityException(this._matcher!)
       }
     }
 

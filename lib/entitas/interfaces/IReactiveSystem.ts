@@ -6,7 +6,7 @@ import { IMatcher } from "./IMatcher"
 import { TriggerOnEvent } from "../TriggerOnEvent"
 
 export interface IReactiveExecuteSystem extends ISystem {
-  execute(entities: Array<Entity>)
+  execute(entities: Array<Entity>): void
 }
 
 export interface IMultiReactiveSystem extends IReactiveExecuteSystem {
