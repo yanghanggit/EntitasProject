@@ -3,6 +3,7 @@
  */
 import { Scene } from './Scene';
 //import { MyDecorators } from './MyDecorators';
+import { MyPromise } from './MyPromise';
 /**
  * 
  */
@@ -23,6 +24,9 @@ export class Game {
         // const dec = new MyDecorators("I'am ", "decorator");
         // dec.name = "decorator?"
         // console.log(dec.greet());
+
+        const promise = new MyPromise();
+        promise.run();
     }
     /**
      * 
