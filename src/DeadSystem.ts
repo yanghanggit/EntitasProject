@@ -6,7 +6,7 @@ import { ISetPool } from "../lib/entitas/interfaces/ISystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { CID } from "./ComponentsPreprocessing"
-import { AttributesComponent, DestroyComponent, HeroComponent, MonsterComponent } from "./Components";
+import { AttributesComponent, DestroyComponent } from "./Components";
 import { MyPool } from "./MyPool";
 import { DeadComponent } from "./Components";
 import { Matcher } from "../lib/entitas/Matcher";
