@@ -3,7 +3,6 @@
  */
 import { IExecuteSystem } from "../lib/entitas/interfaces/IExecuteSystem";
 import { ISetPool } from "../lib/entitas/interfaces/ISystem";
-import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { CID } from "./ComponentsPreprocessing"
@@ -29,14 +28,6 @@ export class DeadSystem implements IExecuteSystem, ISetPool {
     */
     group2: Group | null = null;
     /**
-    * 
-    */
-    herosAreDeadCount: number = 0;
-    /**
-     * 
-     */
-    allHerosAreDeadAlert: boolean = false;
-    /**
      * 
      */
     execute() {
@@ -51,7 +42,6 @@ export class DeadSystem implements IExecuteSystem, ISetPool {
             const _en = (en as MyEntity);
             const __AttributesComponent = _en.GetComponent(AttributesComponent);
             console.log(`${__AttributesComponent!.name} is dead!`);
-            ++this.herosAreDeadCount;
             _en.AddComponent(DestroyComponent);
         });
     }
@@ -61,7 +51,7 @@ export class DeadSystem implements IExecuteSystem, ISetPool {
     setPool(pool: Pool) {
         this.pool = pool as MyPool;
         this.group1 = pool.getGroup(
-            Matcher.allOf(CID(DeadComponent), CID(AttributesComponent)).anyOf(CID(HeroComponent), CID(MonsterComponent))
+            Matcher.allOf(CID(DeadComponent), CID(AttributesComponent))
         );
     }
 }

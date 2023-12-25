@@ -7,11 +7,11 @@ import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
 import { CID } from "./ComponentsPreprocessing"
-import { HeroComponent, AttributesComponent } from "./Components";
+import { AttributesComponent, MonsterComponent } from "./Components";
 /**
  * 
  */
-export class HeroSystem implements IExecuteSystem, ISetPool {
+export class MonsterSystem implements IExecuteSystem, ISetPool {
     /**
      * 
      */
@@ -23,22 +23,22 @@ export class HeroSystem implements IExecuteSystem, ISetPool {
     /**
     * 
     */
-    allHerosAreDeadAlert: boolean = false;
+    allMonstersAreDeadAlert: boolean = false;
     /**
      * 
      */
     execute() {
-        if (this.checkAllHerosAreDead()) {
-            if (!this.allHerosAreDeadAlert) {
-                this.allHerosAreDeadAlert = true;
-                console.log('!!!!!!!!!!!   all heros are dead   !!!!!!!!!!!');
+        if (this.checkAllMonstersAreDead()) {
+            if (!this.allMonstersAreDeadAlert) {
+                this.allMonstersAreDeadAlert = true;
+                console.log('!!!!!!!!!!!   all monsters are dead   !!!!!!!!!!!');
             }
         }
     }
     /**
      * 
      */
-    private checkAllHerosAreDead(): boolean {
+    private checkAllMonstersAreDead(): boolean {
         return this.group?.getEntities().length === 0;
     }
     /**
@@ -47,7 +47,7 @@ export class HeroSystem implements IExecuteSystem, ISetPool {
     setPool(pool: Pool) {
         this.pool = pool;
         this.group = pool.getGroup(
-            Matcher.allOf(CID(HeroComponent), CID(AttributesComponent))
+            Matcher.allOf(CID(MonsterComponent), CID(AttributesComponent))
         );
     }
 }

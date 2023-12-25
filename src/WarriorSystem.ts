@@ -8,7 +8,7 @@ import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
 import { CID } from "./ComponentsPreprocessing"
-import { HeroComponent, AttributesComponent, WarriorComponent, PackComponent, ItemComponent, FoodComponent, DestroyComponent } from "./Components";
+import { HeroComponent, AttributesComponent, WarriorComponent, ItemComponent, FoodComponent, DestroyComponent } from "./Components";
 import { MyEntity } from "./MyEntity";
 import { MyPool } from "./MyPool";
 import { MyUtil } from "./MyUtil";

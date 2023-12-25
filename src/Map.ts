@@ -14,6 +14,10 @@ import { HealthSystem } from "./HealthSystem";
 import { ItemSystem } from "./ItemSystem";
 import { WarriorSystem } from "./WarriorSystem";
 import { MageSystem } from "./MageSystem";
+import { FireBallSystem } from "./FireBallSystem";
+import { FireBallExplodeSystem } from "./FireBallExplodeSystem";
+import { DOTSystem } from "./DOTSystem";
+import { MonsterSystem } from "./MonsterSystem";
 /**
  * 
  */
@@ -64,10 +68,14 @@ export class Map {
         systems.add(myPool.createSystem(HeroSystem));
         systems.add(myPool.createSystem(WarriorSystem));
         systems.add(myPool.createSystem(MageSystem));
+        systems.add(myPool.createSystem(FireBallSystem)); //
+        systems.add(myPool.createSystem(FireBallExplodeSystem));
         //
+        systems.add(myPool.createSystem(MonsterSystem));
         systems.add(myPool.createSystem(GoblinSystem));
         systems.add(myPool.createSystem(GoblinAttackSystem));
         //
+        systems.add(myPool.createSystem(DOTSystem));
         systems.add(myPool.createSystem(HealthSystem));
         systems.add(myPool.createSystem(ItemSystem));
         systems.add(myPool.createSystem(DeadSystem));

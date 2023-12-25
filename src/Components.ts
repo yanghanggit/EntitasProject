@@ -65,6 +65,8 @@ export class WarriorComponent implements IComponent {
  */
 @component
 export class MageComponent implements IComponent {
+    spellCooldownMax: number = 3 * 60;
+    spellCooldown: number = this.spellCooldownMax;
 }
 /**
  * 
@@ -83,8 +85,8 @@ export class MonsterComponent implements IComponent {
  */
 @component
 export class GoblinComponent implements IComponent {
-    attackCooldownMax: number = 3;
-    attackCooldown: number = 0;
+    attackCooldownMax: number = 3 * 60;
+    attackCooldown: number = this.attackCooldownMax;
 }
 /**
  * 
@@ -100,6 +102,35 @@ export class GoblinAttackComponent implements IComponent {
 export class FoodComponent implements IComponent {
     foodName: string = '';
 }
-
+/**
+ * 
+ */
+@component
+export class MagicComponent implements IComponent {
+    src: string = '';
+    target: string = '';
+}
+/**
+ * 
+ */
+@component
+export class FireBallComponent implements IComponent {
+    flyingTime: number = 100;
+}
+/**
+ * 
+ */
+@component
+export class FireExplodeComponent implements IComponent {
+    damage: number = 50;
+}
+/**
+ * 
+ */
+@component
+export class FireBurningComponent implements IComponent {
+    burningCooldownMax: number = 3 * 60;
+    burningCooldown: number = this.burningCooldownMax;
+}
 
 

@@ -48,14 +48,14 @@ export class ItemSystem implements ISetPool, IReactiveSystem {
     private onAddItem(_itemEntity: MyEntity) {
         if (_itemEntity.HasComponent(FoodComponent)) {
             const __FoodComponent = _itemEntity.GetComponent(FoodComponent);
-            console.log("add food = " + __FoodComponent.foodName);
+            //console.log("add food = " + __FoodComponent.foodName);
         }
     }
     /**
      * 
      */
     private onRemoveItem(_itemEntity: MyEntity) {
-        console.log("__________________________onRemoveItem!!!!!");
+        //console.log("__________________________onRemoveItem!!!!!");
     }
     /**
      * 
