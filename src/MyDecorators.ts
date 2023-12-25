@@ -57,7 +57,7 @@ export class MyDecorators {
     constructor(greeting: string, name: string) {
         this.greeting = greeting;
         this.name = name;
-        this._privateCall("_privateCall");
+        //this._privateCall("_privateCall");
     }
     /**
      * 

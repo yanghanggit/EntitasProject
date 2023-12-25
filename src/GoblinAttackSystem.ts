@@ -7,13 +7,14 @@ import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
 import { CID } from "./ComponentsPreprocessing"
-import { AttributesComponent, GoblinAttackComponent, GoblinComponent } from "./Components";
+import { AttributesComponent, DeadComponent, GoblinAttackComponent, GoblinComponent, HeroComponent, MageComponent, WarriorComponent } from "./Components";
 import { IReactiveSystem } from "../lib/entitas/interfaces/IReactiveSystem";
 import { TriggerOnEvent } from "../lib/entitas/TriggerOnEvent";
 import { Entity } from "../lib/entitas/Entity";
 import { GroupEventType } from "../lib/entitas/Matcher";
 import { MyEntity } from "./MyEntity";
 import { MyPool } from "./MyPool";
+import { MyUtil } from "./MyUtil";
 /**
  * 
  */
@@ -49,18 +50,44 @@ export class GoblinAttackSystem implements IInitializeSystem, ISetPool, IReactiv
      * 
      */
     private handleAttack(goblin: MyEntity) {
-        const __GoblinAttackComponent = goblin.GetComponent(GoblinAttackComponent);
-        const hero = this.pool!.getEntity(__GoblinAttackComponent.destEntityId);
-        if (hero === null || hero === undefined) {
+        const attackTarget = this.decideTarget(goblin);
+        if (attackTarget === null) {
             return;
         }
-        const hero__AttributesComponent = hero.GetComponent(AttributesComponent);
+        const hero__AttributesComponent = attackTarget.GetComponent(AttributesComponent);
         const goblin__AttributesComponent = goblin.GetComponent(AttributesComponent);
-        console.log(`${goblin__AttributesComponent!.name} wana punch ${hero__AttributesComponent!.name}.`);
         //
         const damage = Math.max(0, goblin__AttributesComponent.attack - hero__AttributesComponent.defense);
         hero__AttributesComponent.health -= damage;
         hero__AttributesComponent.health = Math.max(0, hero__AttributesComponent.health);
+        //
+        console.log(`${goblin__AttributesComponent!.name} caused damage to the ${hero__AttributesComponent!.name}, and the ${hero__AttributesComponent!.name}'s remaining health is  ${hero__AttributesComponent.health}`);
+    }
+    /**
+     * 
+     */
+    private decideTarget(goblin: MyEntity): MyEntity | null {
+        const goblin__AttributesComponent = goblin.GetComponent(AttributesComponent);
+        const goblin__GoblinAttackComponent = goblin.GetComponent(GoblinAttackComponent);
+        const hero = this.pool!.getEntity(goblin__GoblinAttackComponent.destEntityId);
+        if (hero === null || hero === undefined) {
+            return null;
+        }
+        const hero__AttributesComponent = hero.GetComponent(AttributesComponent);
+        console.log(`${goblin__AttributesComponent!.name} wana punch ${hero__AttributesComponent!.name}`);
+        //
+        if (hero.HasComponent(MageComponent)) {
+            const entities = this.group!.getEntities();
+            if (entities.length > 0) {
+                const warrior = MyUtil.randomElementFromArray(entities) as MyEntity;
+                if (!warrior.HasComponent(DeadComponent)) {
+                    const randomWarrorEntity__AttributesComponent = warrior.GetComponent(AttributesComponent);
+                    console.log(`The warrior ${randomWarrorEntity__AttributesComponent!.name} blocked an attack from the ${goblin__AttributesComponent!.name} on the ${hero__AttributesComponent!.name}`)
+                    return warrior;
+                }
+            }
+        }
+        return hero;
     }
     /**
      * 
@@ -68,5 +95,8 @@ export class GoblinAttackSystem implements IInitializeSystem, ISetPool, IReactiv
     setPool(pool: Pool) {
         this.pool = pool as MyPool;
         this.trigger = new TriggerOnEvent(Matcher.allOf(CID(GoblinAttackComponent)), GroupEventType.OnEntityAdded);
+        this.group = pool.getGroup(Matcher.allOf(
+            CID(HeroComponent), CID(AttributesComponent), CID(WarriorComponent)
+        ));
     }
 }

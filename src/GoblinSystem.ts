@@ -53,13 +53,13 @@ export class GoblinSystem implements IInitializeSystem, IExecuteSystem, ISetPool
         const entities = this.group1!.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
             const e = entities[i] as MyEntity;
-            this.attack(e, this.group2!.getEntities());
+            this.randomAttack(e, this.group2!.getEntities());
         }
     }
     /**
      * 
      */
-    private attack(goblin: MyEntity, heros: Array<Entity>) {
+    private randomAttack(goblin: MyEntity, heros: Array<Entity>) {
         if (!this.checkAttackCooldown(goblin, true)) {
             return;
         }
