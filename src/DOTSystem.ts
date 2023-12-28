@@ -16,46 +16,64 @@ export class DOTSystem implements IExecuteSystem, ISetPool {
     /**
      * 
      */
-    pool: Pool | null = null;
+    private pool: Pool | null = null;
     /**
      * 
      */
-    group1: Group | null = null;
+    private group1: Group | null = null;
     /**
      * 
      */
-    execute() {
+    public execute(): void {
         this.burning();
     }
     /**
      * 
      */
-    private burning() {
-        const entities = this.group1!.getEntities();
-        for (let i = 0, l = entities.length; i < l; i++) {
-            const me = entities[i] as MyEntity;
-            //
-            const __FireBurningComponent = me.GetComponent(FireBurningComponent);
-            --__FireBurningComponent.burningCooldown;
-            __FireBurningComponent.burningCooldown = Math.max(0, __FireBurningComponent.burningCooldown);
-            if (__FireBurningComponent.burningCooldown > 0) {
-                continue;
-            }
-            __FireBurningComponent.burningCooldown = __FireBurningComponent.burningCooldownMax;
-            //
-            const __AttributesComponent = me.GetComponent(AttributesComponent);
-            __AttributesComponent.health -= 10;
-            __AttributesComponent.health = Math.max(0, __AttributesComponent.health);
-            console.log(`${__AttributesComponent!.name} shouted: It’s so hot!!!, health ${__AttributesComponent!.health}`);
-        }
-    }
-    /**
-     * 
-     */
-    setPool(pool: Pool) {
+    public setPool(pool: Pool): void {
         this.pool = pool;
         this.group1 = pool.getGroup(
             Matcher.allOf(COMP_ID(FireBurningComponent), COMP_ID(AttributesComponent))
         );
+    }
+    /**
+     * 
+     */
+    private burning(): void {
+        const entities = this.group1?.getEntities();
+        entities?.forEach(en => {
+            const me = en as MyEntity;
+            this.applyBurningDamage(me);
+        });
+    }
+    /**
+     * 
+     */
+    private applyBurningDamage(entity: MyEntity): void {
+        const fireBurningComponent = entity.GetComponent(FireBurningComponent);
+        if (!fireBurningComponent) return;
+
+        fireBurningComponent.burningCooldown--;
+        fireBurningComponent.burningCooldown = Math.max(0, fireBurningComponent.burningCooldown);
+
+        if (fireBurningComponent.burningCooldown === 0) {
+            fireBurningComponent.burningCooldown = fireBurningComponent.burningCooldownMax;
+            this.reduceHealth(entity);
+        }
+    }
+    /**
+     * 
+     * @param entity 
+     * @returns 
+     */
+    private reduceHealth(entity: MyEntity): void {
+        const attributesComponent = entity.GetComponent(AttributesComponent);
+        if (!attributesComponent) return;
+
+        if (attributesComponent.health > 0) {
+            attributesComponent.health -= 10;
+            attributesComponent.health = Math.max(0, attributesComponent.health);
+            console.log(`${attributesComponent.name} feels the scorching pain of the burns and yells out in agony. Remaining health: ${attributesComponent.health}`);
+        }
     }
 }
