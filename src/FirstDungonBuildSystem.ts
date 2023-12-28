@@ -16,141 +16,131 @@ export class FirstDungonBuildSystem implements IInitializeSystem, ISetPool {
     /**
      * 
      */
-    pool: MyPool | null = null;
+    private pool: MyPool | null = null;
     /**
      * 
      */
-    map: Map | null = null;
+    public map: Map | null = null;
     /**
      * 
      */
-    initialize() {
+    public initialize(): void {
         this.createHeros();
-        this.createMonsters();
+        this.createGoblins();
     }
     /**
      * 
      */
-    private createHeros() {
-        if (this.map === null || this.pool == null) {
+    public setPool(pool: Pool): void {
+        this.pool = pool as MyPool;
+    }
+    /**
+     * 
+     */
+    private createHeros(): void {
+        if (this.map === null || this.pool === null) {
             return;
         }
-        const pool = this.pool;
         const heroNames = this.map.heroNames;
         const heroCareers = this.map.heroCareers;
-        for (let i = 0; i < heroNames.length; ++i) {
-            const en = pool.createEntity("hero") as MyEntity;
-            {
-                en.AddComponent(HeroComponent);
-            }
-            {
-                const attributesComp = en.AddComponent(AttributesComponent);
-                attributesComp.name = heroNames[i];
-            }
-            {
-                const career = heroCareers[i];
-                if (career == '[warrior]') {
-                    en.AddComponent(WarriorComponent);
-                    this.initWarrior(en, ['bread', 'strawberries', 'rum']);
-                    //this.testWarrior(en);
-                }
-                else if (career == '[mage]') {
-                    en.AddComponent(MageComponent);
-                }
-                else {
-                    console.log("unknown career = " + career)
-                }
-            }
-        }
+        const warriorsFood = this.map.warriorsFood;
+        heroNames.forEach((name, i) => this.createHero(name, heroCareers[i], warriorsFood));
     }
     /**
      * 
      */
-    private initWarrior(warrior: MyEntity, foodNames: string[]) {
-        const packEntity = this.addPackToHero(warrior);
+    private createHero(herosName: string, herosCareer: string, items: Array<string>): MyEntity {
+        const heroEntity = this.pool!.createEntity("hero") as MyEntity;
+        heroEntity.AddComponent(HeroComponent);
+
+        const attributesComponent = heroEntity.AddComponent(AttributesComponent);
+        attributesComponent.name = herosName;
+
+        const career = herosCareer;
+        if (career === '[warrior]') {
+            heroEntity.AddComponent(WarriorComponent);
+            this.initWarrior(heroEntity, items);
+        }
+        else if (career === '[mage]') {
+            heroEntity.AddComponent(MageComponent);
+        }
+        else {
+            throw new Error("unknown hero's career!!!!");
+        }
+        return heroEntity;
+    }
+    /**
+     * 
+     */
+    private initWarrior(warrior: MyEntity, foodNames: string[]): void {
+        const herosPackEntity = this.addPackToHero(warrior);
         foodNames.forEach((foodName) => {
-            this.addFoodToPack(packEntity, foodName);
+            this.createFoodAndAddToPack(herosPackEntity, foodName);
         });
+    }
+    /**
+     * 
+     */
+    private getPackFromHero(hero: MyEntity): MyEntity | null {
+        const heroComponent = hero.GetComponent(HeroComponent);
+        if (heroComponent.pack !== '') {
+            return this.pool!.getEntity(heroComponent.pack);
+        }
+        return null;
     }
     /**
      * 
      */
     private addPackToHero(hero: MyEntity): MyEntity {
-        const pool = this.pool;
-        const __HeroComponent = hero.GetComponent(HeroComponent);
-        if (__HeroComponent.pack !== '') {
-            return pool!.getEntity(__HeroComponent.pack);
+        let herosPackEntity = this.getPackFromHero(hero);
+        if (herosPackEntity === null) {
+
+            herosPackEntity = this.pool!.createEntity("pack") as MyEntity;
+            herosPackEntity.AddComponent(PackComponent);
+
+            const heroComponent = hero.GetComponent(HeroComponent);
+            heroComponent.pack = herosPackEntity.id;
         }
-        //
-        const packEntity = pool!.createEntity("pack") as MyEntity;
-        packEntity.AddComponent(PackComponent);
-        __HeroComponent.pack = packEntity.id;
-        return packEntity;
+        return herosPackEntity;
     }
     /**
      * 
      */
-    private addFoodToPack(packEntity: MyEntity, foodName: string): MyEntity {
-        const pool = this.pool;
-        const __PackComponent = packEntity.GetComponent(PackComponent);
-        const itemEntity = pool!.createEntity("item") as MyEntity;
-        itemEntity.AddComponent(ItemComponent);
-        __PackComponent.items.push(itemEntity.id);
-        //
-        const __FoodComponent = itemEntity.AddComponent(FoodComponent);
-        __FoodComponent.foodName = foodName;
-        return itemEntity;
-    }
-    /**
-     * 
-     */
-    private testWarrior(warrior: MyEntity): boolean {
-        if (!warrior.HasComponent(WarriorComponent)) {
-            throw new Error("!warrior.HasComponent(WarriorComponent)");
+    private createFoodAndAddToPack(herosPackEntity: MyEntity, foodName: string): void {
+        const itemAsFoodEntity = this.createFood(foodName);
+        if (itemAsFoodEntity !== null) {
+            const packComponent = herosPackEntity.GetComponent(PackComponent);
+            packComponent.items.push(itemAsFoodEntity.id);
         }
-        const __AttributesComponent = warrior.GetComponent(AttributesComponent);
-        console.log(`Hey,I,${__AttributesComponent!.name},a warrior,got some food!`);
-        //
-        const pool = this.pool;
-        const __HeroComponent = warrior.GetComponent(HeroComponent);
-        const __packEntity = pool!.getEntity(__HeroComponent.pack);
-        const __PackComponent = __packEntity.GetComponent(PackComponent);
-        __PackComponent.items.forEach((itemEntityId) => {
-            const itemEntity = pool!.getEntity(itemEntityId);
-            itemEntity.GetComponent(ItemComponent);
-            const __FoodComponent = itemEntity.GetComponent(FoodComponent);
-            console.log(__FoodComponent.foodName + '!');
-        });
-        return true;
     }
     /**
      * 
      */
-    private createMonsters() {
+    private createFood(foodName: string): MyEntity {
+        const itemAsFoodEntity = this.pool!.createEntity("item") as MyEntity;
+        itemAsFoodEntity.AddComponent(ItemComponent);
+        const foodComponent = itemAsFoodEntity.AddComponent(FoodComponent);
+        foodComponent.foodName = foodName;
+        return itemAsFoodEntity;
+    }
+    /**
+     * 
+     */
+    private createGoblins(): void {
         if (this.map === null || this.pool == null) {
             return;
         }
         const pool = this.pool;
         const goblinNames = this.map.goblinNames;
-        for (let i = 0; i < goblinNames.length; ++i) {
-            const en = pool.createEntity("monster") as MyEntity;
-            {
-                en.AddComponent(MonsterComponent);
-            }
-            {
-                const attributesComp = en.AddComponent(AttributesComponent);
-                attributesComp.name = goblinNames[i];
-            }
-            {
-                const __GoblinComponent = en.AddComponent(GoblinComponent);
-                __GoblinComponent.attackCooldown = __GoblinComponent.attackCooldownMax = MyUtil.randomRange(3, 5) * 60;
-            }
-        }
-    }
-    /**
-     * 
-     */
-    setPool(pool: Pool) {
-        this.pool = pool as MyPool;
+        goblinNames?.forEach(goblinsName => {
+            const goblinEntity = pool.createEntity("monster") as MyEntity;
+            goblinEntity.AddComponent(MonsterComponent);
+
+            const attributesComponent = goblinEntity.AddComponent(AttributesComponent);
+            attributesComponent.name = goblinsName;
+
+            const goblinComponent = goblinEntity.AddComponent(GoblinComponent);
+            goblinComponent.attackCooldown = goblinComponent.attackCooldownMax = MyUtil.randomRange(3, 5) * 60;
+        });
     }
 }

@@ -29,8 +29,9 @@ export class Map {
     /**
      * 
      */
-    heroNames: Array<string> = ['[Tom]', '[Lily]'];
-    heroCareers: Array<string> = ['[warrior]', '[mage]'];
+    readonly heroNames: Array<string> = ['[Tom]', '[Lily]'];
+    readonly heroCareers: Array<string> = ['[warrior]', '[mage]'];
+    readonly warriorsFood: Array<string> = ['bread', 'strawberries', 'rum'];
     /**
      * 
      */
