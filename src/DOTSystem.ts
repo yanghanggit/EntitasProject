@@ -6,7 +6,7 @@ import { ISetPool } from "../lib/entitas/interfaces/ISystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { CID } from "./ComponentsPreprocessing"
+import { COMP_ID } from "./ComponentsPreprocessing"
 import { AttributesComponent, FireBurningComponent } from "./Components";
 import { MyEntity } from "./MyEntity";
 /**
@@ -55,7 +55,7 @@ export class DOTSystem implements IExecuteSystem, ISetPool {
     setPool(pool: Pool) {
         this.pool = pool;
         this.group1 = pool.getGroup(
-            Matcher.allOf(CID(FireBurningComponent), CID(AttributesComponent))
+            Matcher.allOf(COMP_ID(FireBurningComponent), COMP_ID(AttributesComponent))
         );
     }
 }

@@ -6,7 +6,7 @@ import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { CID } from "./ComponentsPreprocessing"
+import { COMP_ID } from "./ComponentsPreprocessing"
 import { EmptyComponent } from "./Components";
 import { IReactiveSystem } from "../lib/entitas/interfaces/IReactiveSystem";
 import { TriggerOnEvent } from "../lib/entitas/TriggerOnEvent";
@@ -42,6 +42,6 @@ export class MyReactiveSystem implements IInitializeSystem, ISetPool, IReactiveS
      * 
      */
     setPool(pool: Pool) {
-        this.trigger = new TriggerOnEvent(Matcher.allOf(CID(EmptyComponent)), GroupEventType.OnEntityAdded);
+        this.trigger = new TriggerOnEvent(Matcher.allOf(COMP_ID(EmptyComponent)), GroupEventType.OnEntityAdded);
     }
 }

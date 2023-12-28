@@ -6,7 +6,7 @@ import { ISetPool } from "../lib/entitas/interfaces/ISystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { CID } from "./ComponentsPreprocessing"
+import { COMP_ID } from "./ComponentsPreprocessing"
 import { HeroComponent, AttributesComponent } from "./Components";
 /**
  * 
@@ -47,7 +47,7 @@ export class HeroSystem implements IExecuteSystem, ISetPool {
     setPool(pool: Pool) {
         this.pool = pool;
         this.group = pool.getGroup(
-            Matcher.allOf(CID(HeroComponent), CID(AttributesComponent))
+            Matcher.allOf(COMP_ID(HeroComponent), COMP_ID(AttributesComponent))
         );
     }
 }

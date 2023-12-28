@@ -5,7 +5,7 @@ import { ISetPool } from "../lib/entitas/interfaces/ISystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { CID } from "./ComponentsPreprocessing"
+import { COMP_ID } from "./ComponentsPreprocessing"
 import { AttributesComponent, FireBurningComponent, FireExplodeComponent, MonsterComponent } from "./Components";
 import { IReactiveSystem } from "../lib/entitas/interfaces/IReactiveSystem";
 import { TriggerOnEvent } from "../lib/entitas/TriggerOnEvent";
@@ -46,9 +46,9 @@ export class FireBallExplodeSystem implements ISetPool, IReactiveSystem {
      */
     setPool(pool: Pool) {
         this.pool = pool as MyPool;
-        this.trigger = new TriggerOnEvent(Matcher.allOf(CID(FireExplodeComponent)), GroupEventType.OnEntityAdded);
+        this.trigger = new TriggerOnEvent(Matcher.allOf(COMP_ID(FireExplodeComponent)), GroupEventType.OnEntityAdded);
         this.group = pool.getGroup(Matcher.allOf(
-            CID(MonsterComponent)
+            COMP_ID(MonsterComponent)
         ));
     }
     /**

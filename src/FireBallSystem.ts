@@ -6,7 +6,7 @@ import { ISetPool } from "../lib/entitas/interfaces/ISystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { CID } from "./ComponentsPreprocessing"
+import { COMP_ID } from "./ComponentsPreprocessing"
 import { MagicComponent, FireBallComponent, FireExplodeComponent, DestroyComponent, AttributesComponent } from "./Components";
 import { MyEntity } from "./MyEntity";
 import { MyPool } from "./MyPool";
@@ -44,7 +44,7 @@ export class FireBallSystem implements IExecuteSystem, ISetPool {
     setPool(pool: Pool) {
         this.pool = pool as MyPool;
         this.group1 = pool.getGroup(
-            Matcher.allOf(CID(MagicComponent), CID(FireBallComponent))
+            Matcher.allOf(COMP_ID(MagicComponent), COMP_ID(FireBallComponent))
         );
     }
     /**

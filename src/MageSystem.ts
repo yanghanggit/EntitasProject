@@ -7,7 +7,7 @@ import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { CID } from "./ComponentsPreprocessing"
+import { COMP_ID } from "./ComponentsPreprocessing"
 import { HeroComponent, AttributesComponent, MageComponent, MonsterComponent, MagicComponent, FireBallComponent } from "./Components";
 import { MyEntity } from "./MyEntity";
 import { MyPool } from "./MyPool";
@@ -55,10 +55,10 @@ export class MageSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
     setPool(pool: Pool) {
         this.pool = pool as MyPool;
         this.group1 = pool.getGroup(
-            Matcher.allOf(CID(HeroComponent), CID(AttributesComponent), CID(MageComponent))
+            Matcher.allOf(COMP_ID(HeroComponent), COMP_ID(AttributesComponent), COMP_ID(MageComponent))
         );
         this.group2 = pool.getGroup(Matcher.allOf(
-            CID(MonsterComponent), CID(AttributesComponent)
+            COMP_ID(MonsterComponent), COMP_ID(AttributesComponent)
         ));
     }
     /**

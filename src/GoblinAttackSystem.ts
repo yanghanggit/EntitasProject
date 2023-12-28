@@ -5,7 +5,7 @@ import { ISetPool } from "../lib/entitas/interfaces/ISystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { CID } from "./ComponentsPreprocessing"
+import { COMP_ID } from "./ComponentsPreprocessing"
 import { AttributesComponent, DeadComponent, GoblinAttackComponent, HeroComponent, MageComponent, WarriorComponent } from "./Components";
 import { IReactiveSystem } from "../lib/entitas/interfaces/IReactiveSystem";
 import { TriggerOnEvent } from "../lib/entitas/TriggerOnEvent";
@@ -87,9 +87,9 @@ export class GoblinAttackSystem implements ISetPool, IReactiveSystem {
      */
     setPool(pool: Pool) {
         this.pool = pool as MyPool;
-        this.trigger = new TriggerOnEvent(Matcher.allOf(CID(GoblinAttackComponent)), GroupEventType.OnEntityAdded);
+        this.trigger = new TriggerOnEvent(Matcher.allOf(COMP_ID(GoblinAttackComponent)), GroupEventType.OnEntityAdded);
         this.group = pool.getGroup(Matcher.allOf(
-            CID(HeroComponent), CID(AttributesComponent), CID(WarriorComponent)
+            COMP_ID(HeroComponent), COMP_ID(AttributesComponent), COMP_ID(WarriorComponent)
         ));
     }
 }

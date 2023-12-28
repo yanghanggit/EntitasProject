@@ -7,7 +7,7 @@ import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { CID } from "./ComponentsPreprocessing"
+import { COMP_ID } from "./ComponentsPreprocessing"
 import { HeroComponent, AttributesComponent, WarriorComponent, ItemComponent, FoodComponent, DestroyComponent } from "./Components";
 import { MyEntity } from "./MyEntity";
 import { MyPool } from "./MyPool";
@@ -54,10 +54,10 @@ export class WarriorSystem implements IInitializeSystem, IExecuteSystem, ISetPoo
     setPool(pool: Pool) {
         this.pool = pool as MyPool;
         this.group1 = pool.getGroup(
-            Matcher.allOf(CID(HeroComponent), CID(AttributesComponent), CID(WarriorComponent))
+            Matcher.allOf(COMP_ID(HeroComponent), COMP_ID(AttributesComponent), COMP_ID(WarriorComponent))
         );
         this.group2 = pool.getGroup(
-            Matcher.allOf(CID(ItemComponent), CID(FoodComponent))
+            Matcher.allOf(COMP_ID(ItemComponent), COMP_ID(FoodComponent))
         );
     }
     /**

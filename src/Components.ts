@@ -5,8 +5,8 @@ import { IComponent } from "../lib/entitas/interfaces/IComponent";
 /**
  * 
  */
-export const components_collector: Array<Function> = [];
-function component(constructor: Function) {
+export const components_collector: Array<new () => IComponent> = [];
+function component<T extends IComponent>(constructor: new () => T) {
     components_collector.push(constructor);
 }
 /**
@@ -46,7 +46,7 @@ export class AttributesComponent implements IComponent {
  */
 @component
 export class PackComponent implements IComponent {
-    items: string[] = [];
+    readonly items: string[] = [];
 }
 /**
  * 

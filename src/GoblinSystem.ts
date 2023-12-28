@@ -7,7 +7,7 @@ import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { CID } from "./ComponentsPreprocessing"
+import { COMP_ID } from "./ComponentsPreprocessing"
 import { HeroComponent, MonsterComponent, GoblinComponent, AttributesComponent, GoblinAttackComponent } from "./Components";
 import { MyEntity } from "./MyEntity";
 import { MyUtil } from "./MyUtil";
@@ -88,11 +88,11 @@ export class GoblinSystem implements IInitializeSystem, IExecuteSystem, ISetPool
     setPool(pool: Pool) {
         this.pool = pool;
         this.group1 = pool.getGroup(Matcher.allOf(
-            CID(MonsterComponent), CID(GoblinComponent), CID(AttributesComponent)
+            COMP_ID(MonsterComponent), COMP_ID(GoblinComponent), COMP_ID(AttributesComponent)
         ));
 
         this.group2 = pool.getGroup(Matcher.allOf(
-            CID(HeroComponent), CID(AttributesComponent)
+            COMP_ID(HeroComponent), COMP_ID(AttributesComponent)
         ));
     }
 }

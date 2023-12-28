@@ -6,7 +6,7 @@ import { ISetPool } from "../lib/entitas/interfaces/ISystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { CID } from "./ComponentsPreprocessing"
+import { COMP_ID } from "./ComponentsPreprocessing"
 import { AttributesComponent, DeadComponent } from "./Components";
 import { MyEntity } from "./MyEntity";
 /**
@@ -40,7 +40,7 @@ export class HealthSystem implements IExecuteSystem, ISetPool {
     setPool(pool: Pool) {
         this.pool = pool;
         this.group = pool.getGroup(
-            Matcher.allOf(CID(AttributesComponent)).noneOf(CID(DeadComponent))
+            Matcher.allOf(COMP_ID(AttributesComponent)).noneOf(COMP_ID(DeadComponent))
         );
     }
 }

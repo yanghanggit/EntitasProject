@@ -7,7 +7,7 @@ import { IInitializeSystem } from "../lib/entitas/interfaces/IInitializeSystem";
 import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
-import { CID } from "./ComponentsPreprocessing"
+import { COMP_ID } from "./ComponentsPreprocessing"
 import { EmptyComponent } from "./Components";
 import { MyEntity } from "./MyEntity";
 /**
@@ -52,7 +52,7 @@ export class MyExecuteSystem implements IInitializeSystem, IExecuteSystem, ISetP
     setPool(pool: Pool) {
         this.pool = pool;
         this.group = pool.getGroup(Matcher.allOf(
-            CID(EmptyComponent)
+            COMP_ID(EmptyComponent)
         ));
     }
 }
