@@ -21,75 +21,99 @@ export class GoblinAttackSystem implements ISetPool, IReactiveSystem {
     /**
      * 
      */
-    pool: MyPool | null = null;
+    private pool: MyPool | null = null;
     /**
      * 
      */
-    group: Group | null = null;
+    private group: Group | null = null;
     /**
      * 
      */
-    trigger?: TriggerOnEvent;
+    public trigger?: TriggerOnEvent;
     /**
      * 
      */
-    execute(entities: Array<Entity>) {
+    public execute(entities: Array<Entity>): void {
         entities.forEach((en) => {
-            const me = (en as MyEntity);
-            this.handleAttack(me);
-            me.RemoveComponent(GoblinAttackComponent);
+            const goblin = (en as MyEntity);
+            const targetEntity = this.goblinFinallyDecidedTarget(goblin);
+            if (targetEntity !== null) {
+                this.goblinCauseDamages(goblin, targetEntity);
+            }
+            goblin.RemoveComponent(GoblinAttackComponent);
         });
     }
     /**
      * 
      */
-    private handleAttack(goblin: MyEntity) {
-        const attackTarget = this.decideTarget(goblin);
-        if (attackTarget === null) {
-            return;
-        }
-        const hero__AttributesComponent = attackTarget.GetComponent(AttributesComponent);
-        const goblin__AttributesComponent = goblin.GetComponent(AttributesComponent);
+    private goblinCauseDamages(goblin: MyEntity, hero: MyEntity): void {
+        const heroAttributesComponent = hero.GetComponent(AttributesComponent);
+        const goblinAttributesComponent = goblin.GetComponent(AttributesComponent);
         //
-        const damage = Math.max(0, goblin__AttributesComponent.attack - hero__AttributesComponent.defense);
-        hero__AttributesComponent.health -= damage;
-        hero__AttributesComponent.health = Math.max(0, hero__AttributesComponent.health);
-        //
-        console.log(`${goblin__AttributesComponent!.name} caused damage to the ${hero__AttributesComponent!.name}, and the ${hero__AttributesComponent!.name}'s remaining health is  ${hero__AttributesComponent.health}`);
+        const damage = Math.max(0, goblinAttributesComponent.attack - heroAttributesComponent.defense);
+        heroAttributesComponent.health -= damage;
+        heroAttributesComponent.health = Math.max(0, heroAttributesComponent.health);
+        console.log(`Snarling with glee, ${goblinAttributesComponent!.name} strikes ${heroAttributesComponent!.name}, dealing a hefty blow! Alas, ${heroAttributesComponent!.name} is left with just ${heroAttributesComponent.health} health points!`);
     }
     /**
      * 
      */
-    private decideTarget(goblin: MyEntity): MyEntity | null {
-        const goblin__AttributesComponent = goblin.GetComponent(AttributesComponent);
-        const goblin__GoblinAttackComponent = goblin.GetComponent(GoblinAttackComponent);
-        const hero = this.pool!.getEntity(goblin__GoblinAttackComponent.destEntityId);
-        if (hero === null || hero === undefined) {
+    private goblinFinallyDecidedTarget(goblin: MyEntity): MyEntity | null {
+        const heroAsTargetEntity = this.goblinDefaultTarget(goblin);
+        if (heroAsTargetEntity === null) {
             return null;
         }
-        const hero__AttributesComponent = hero.GetComponent(AttributesComponent);
-        console.log(`${goblin__AttributesComponent!.name} wana punch ${hero__AttributesComponent!.name}`);
-        if (hero.HasComponent(MageComponent)) {
-            const entities = this.group!.getEntities();
-            if (entities.length > 0) {
-                const warrior = MyUtil.randomElementFromArray(entities) as MyEntity;
-                if (!warrior.HasComponent(DeadComponent)) {
-                    const warrior__AttributesComponent = warrior.GetComponent(AttributesComponent);
-                    console.log(`The warrior ${warrior__AttributesComponent!.name} blocked an attack from the ${goblin__AttributesComponent!.name} on the ${hero__AttributesComponent!.name}`)
-                    return warrior;
-                }
+        //
+        this.goblinYelled(goblin, heroAsTargetEntity);
+        //
+        const heroAttackedIsMage = heroAsTargetEntity.HasComponent(MageComponent);
+        if (heroAttackedIsMage) {
+            const warrior = this.heroWarriorArrived();
+            if (warrior !== null) {
+                const heroAsTargetAttributesComponent = heroAsTargetEntity.GetComponent(AttributesComponent);
+                const goblinAttributesComponent = goblin.GetComponent(AttributesComponent);
+                const warriorAttributesComponent = warrior.GetComponent(AttributesComponent);
+                console.log(`In a heroic feat, ${warriorAttributesComponent!.name} dashes in, shielding ${heroAsTargetAttributesComponent!.name} from ${goblinAttributesComponent!.name}'s vicious attack! The day is saved, for now...`);
+                return warrior;
             }
         }
-        return hero;
+        return heroAsTargetEntity;
+    }
+    /**
+     *
+     */
+    private goblinYelled(goblin: MyEntity, hero: MyEntity): void {
+        const goblinAttributesComponent = goblin.GetComponent(AttributesComponent);
+        const heroAttributesComponent = hero.GetComponent(AttributesComponent);
+        console.log(`The goblin ${goblinAttributesComponent!.name} bellows with a menacing grin: "I shall vanquish you, ${heroAttributesComponent!.name}!"`);
     }
     /**
      * 
      */
-    setPool(pool: Pool) {
+    private heroWarriorArrived(): MyEntity | null {
+        const entities = this.group!.getEntities();
+        if (entities.length > 0) {
+            return MyUtil.randomElementFromArray(entities) as MyEntity;
+        }
+        return null;
+    }
+    /**
+     * 
+     */
+    private goblinDefaultTarget(goblin: MyEntity): MyEntity | null {
+        const goblinAttackComponent = goblin.GetComponent(GoblinAttackComponent);
+        return this.pool!.getEntity(goblinAttackComponent.destEntityId);
+    }
+    /**
+     * 
+     */
+    public setPool(pool: Pool): void {
         this.pool = pool as MyPool;
         this.trigger = new TriggerOnEvent(Matcher.allOf(COMP_ID(GoblinAttackComponent)), GroupEventType.OnEntityAdded);
         this.group = pool.getGroup(Matcher.allOf(
             COMP_ID(HeroComponent), COMP_ID(AttributesComponent), COMP_ID(WarriorComponent)
+        ).noneOf(
+            COMP_ID(DeadComponent)
         ));
     }
 }
