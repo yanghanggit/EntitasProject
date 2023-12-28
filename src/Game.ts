@@ -3,7 +3,7 @@
  */
 import { Scene } from './Scene';
 //import { MyDecorators } from './MyDecorators';
-import { MyPromise } from './MyPromise';
+//import { MyPromise } from './MyPromise';
 /**
  * 
  */
@@ -11,27 +11,30 @@ export class Game {
     /**
      * 
      */
-    name: string = '';
+    private name: string = '';
     /**
      * 
      */
-    scene: Scene | null = null;
+    private scene: Scene | null = null;
     /**
      * 
      */
     constructor(name: string) {
         this.name = name;
+        
+        //测试
         // const dec = new MyDecorators("I'am ", "decorator");
         // dec.name = "decorator?"
         // console.log(dec.greet());
 
-        const promise = new MyPromise();
-        promise.run();
+        // 测试
+        // const promise = new MyPromise();
+        // promise.run();
     }
     /**
      * 
      */
-    startWithScene(scene: Scene) {
+    public startWithScene(scene: Scene): void {
         console.log("start:" + this.name);
         this.scene = scene;
         this.scene.start();
@@ -39,13 +42,13 @@ export class Game {
     /**
      * 
      */
-    update(dt: number) {
+    public update(dt: number): void {
         this.scene?.update(dt);
     }
     /**
      * 
      */
-    stop() {
+    public stop(): void {
         if (this.scene !== null) {
             this.scene.stop();
             this.scene.tearDown();
