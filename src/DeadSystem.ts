@@ -18,37 +18,35 @@ export class DeadSystem implements IExecuteSystem, ISetPool {
     /**
      * 
      */
-    pool: MyPool | null = null;
+    private pool: MyPool | null = null;
     /**
      * 
      */
-    group1: Group | null = null;
-    /**
-    * 
-    */
-    group2: Group | null = null;
+    private group1: Group | null = null;
     /**
      * 
      */
-    execute() {
-        this.handleHeros();
+    public execute(): void {
+        this.checkAndHandleIfHeroIsDead(true);
     }
     /**
      * 
      */
-    private handleHeros() {
-        const entities = this.group1!.getEntities();
-        entities.forEach((en) => {
-            const _en = (en as MyEntity);
-            const __AttributesComponent = _en.GetComponent(AttributesComponent);
-            console.log(`${__AttributesComponent!.name} is dead!`);
-            _en.AddComponent(DestroyComponent);
+    private checkAndHandleIfHeroIsDead(needDestroyEntity: boolean = true): void {
+        const entities = this.group1?.getEntities();
+        entities?.forEach((en) => {
+            const entity = (en as MyEntity);
+            const attributesComponent = entity.GetComponent(AttributesComponent);
+            console.log(`oh! ${attributesComponent!.name} is dead!`);
+            if (needDestroyEntity) {
+                entity.AddComponent(DestroyComponent);
+            }
         });
     }
     /**
      * 
      */
-    setPool(pool: Pool) {
+    public setPool(pool: Pool): void {
         this.pool = pool as MyPool;
         this.group1 = pool.getGroup(
             Matcher.allOf(COMP_ID(DeadComponent), COMP_ID(AttributesComponent))

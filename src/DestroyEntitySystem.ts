@@ -16,24 +16,24 @@ export class DestroyEntitySystem implements IExecuteSystem, ISetPool {
     /**
      * 
      */
-    pool: MyPool | null = null;
+    private pool: MyPool | null = null;
     /**
      * 
      */
-    group1: Group | null = null;
+    private group1: Group | null = null;
     /**
      * 
      */
-    execute() {
-        const entities = this.group1!.getEntities();
-        entities.forEach((en) => {
+    public execute(): void {
+        const entities = this.group1?.getEntities();
+        entities?.forEach((en) => {
             this.pool!.destroyEntity(en);
         });
     }
     /**
      * 
      */
-    setPool(pool: Pool) {
+    public setPool(pool: Pool): void {
         this.pool = pool as MyPool;
         this.group1 = pool.getGroup(
             Matcher.anyOf(COMP_ID(DestroyComponent))
