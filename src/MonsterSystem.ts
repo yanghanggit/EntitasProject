@@ -15,36 +15,42 @@ export class MonsterSystem implements IExecuteSystem, ISetPool {
     /**
      * 
      */
-    pool: Pool | null = null;
+    private pool: Pool | null = null;
     /**
      * 
      */
-    group: Group | null = null;
+    private group: Group | null = null;
     /**
     * 
     */
-    allMonstersAreDeadAlert: boolean = false;
+    private sayAlert: boolean = false;
     /**
      * 
      */
-    execute() {
-        if (this.checkAllMonstersAreDead()) {
-            if (!this.allMonstersAreDeadAlert) {
-                this.allMonstersAreDeadAlert = true;
-                console.log('!!!!!!!!!!!   all monsters are dead   !!!!!!!!!!!');
-            }
+    public execute(): void {
+        if (this.allDead()) {
+            this.alert();
         }
     }
     /**
      * 
      */
-    private checkAllMonstersAreDead(): boolean {
+    private allDead(): boolean {
         return this.group?.getEntities().length === 0;
     }
     /**
      * 
      */
-    setPool(pool: Pool) {
+    private alert(): void {
+        if (!this.sayAlert) {
+            this.sayAlert = true;
+            console.log('Eureka! The echoing halls of the dungeon grow silent, as the last goblin falls. A triumphant moment for adventurers, the shadowy corridors are now free of menace... until the next threat emerges!');
+        }
+    }
+    /**
+     * 
+     */
+    public setPool(pool: Pool): void {
         this.pool = pool;
         this.group = pool.getGroup(
             Matcher.allOf(COMP_ID(MonsterComponent), COMP_ID(AttributesComponent))

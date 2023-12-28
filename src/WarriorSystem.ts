@@ -19,19 +19,19 @@ export class WarriorSystem implements IInitializeSystem, IExecuteSystem, ISetPoo
     /**
      * 
      */
-    pool: MyPool | null = null;
+    private pool: MyPool | null = null;
     /**
      * 
      */
-    group1: Group | null = null;
+    private group1: Group | null = null;
     /**
     * 
     */
-    group2: Group | null = null;
+    private group2: Group | null = null;
     /**
      * 
      */
-    initialize() {
+    public initialize(): void {
         const entities = this.group1!.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
             const e = entities[i] as MyEntity;
@@ -41,17 +41,18 @@ export class WarriorSystem implements IInitializeSystem, IExecuteSystem, ISetPoo
     /**
      * 
      */
-    execute() {
+    public execute(): void {
         const entities = this.group1!.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
             const e = entities[i] as MyEntity;
-            this.autoEatFoodRestoreHealth(e, 0.6);
+            const warriorComponent = e.GetComponent(WarriorComponent);
+            this.autoEatFoodRestoreHealth(e, warriorComponent.autoEatFoodRestoreHealthCheckPoint);
         }
     }
     /**
      * 
      */
-    setPool(pool: Pool) {
+    public setPool(pool: Pool): void {
         this.pool = pool as MyPool;
         this.group1 = pool.getGroup(
             Matcher.allOf(COMP_ID(HeroComponent), COMP_ID(AttributesComponent), COMP_ID(WarriorComponent))
@@ -63,9 +64,9 @@ export class WarriorSystem implements IInitializeSystem, IExecuteSystem, ISetPoo
     /**
     * 
     */
-    private sayhi(entity: MyEntity) {
-        const __AttributesComponent = entity.GetComponent(AttributesComponent);
-        console.log(`My name is ${__AttributesComponent!.name}, I'm a warrior, he!ya!`);
+    private sayhi(entity: MyEntity): void {
+        const attributesComponent = entity.GetComponent(AttributesComponent);
+        console.log(`"Stand aside! I am ${attributesComponent!.name}, the indomitable warrior! He! Ya!" roars the valiant fighter, brandishing their weapon.`);
     }
     /**
      * 
@@ -74,27 +75,43 @@ export class WarriorSystem implements IInitializeSystem, IExecuteSystem, ISetPoo
         if (this.checkHealth(warrior) >= healthCheckPoint) {
             return false;
         }
-        const foodEntities = this.group2!.getEntities();
-        if (foodEntities.length > 0) {
-            const foodEntity = MyUtil.randomElementFromArray(foodEntities) as MyEntity;
-            const __FoodComponent = foodEntity.GetComponent(FoodComponent);
-            const __AttributesComponent = warrior.GetComponent(AttributesComponent);
-            //
-            const beforeEatFood = __AttributesComponent.health;
-            __AttributesComponent.health += 30;
-            __AttributesComponent.health = Math.min(__AttributesComponent.health, __AttributesComponent.maxHealth);
-            console.log(`${__AttributesComponent!.name}, eat [${__FoodComponent.foodName}], health! from ${beforeEatFood} to ${__AttributesComponent.health}`);
-            //
-            foodEntity.AddComponent(DestroyComponent);
+        const foodEntity = this.getFood();
+        if (foodEntity === null) {
+            return false;
         }
+        this.warriorEatFood(warrior, foodEntity);
         return true;
     }
     /**
      * 
      */
     private checkHealth(warrior: MyEntity): number {
-        const _AttributesComponent = warrior.GetComponent(AttributesComponent);
-        const healthPercent = _AttributesComponent.health / _AttributesComponent.maxHealth;
+        const attributesComponent = warrior.GetComponent(AttributesComponent);
+        const healthPercent = attributesComponent.health / attributesComponent.maxHealth;
         return healthPercent;
+    }
+    /**
+     * 
+     */
+    private getFood(): MyEntity | null {
+        const foodEntities = this.group2!.getEntities();
+        if (foodEntities.length > 0) {
+            return MyUtil.randomElementFromArray(foodEntities) as MyEntity;
+        }
+        return null;
+    }
+    /**
+     * 
+     */
+    private warriorEatFood(warrior: MyEntity, food: MyEntity): void {
+        const foodComponent = food.GetComponent(FoodComponent);
+        const attributesComponent = warrior.GetComponent(AttributesComponent);
+        //
+        const beforeEat = attributesComponent.health;
+        attributesComponent.health += 30;
+        attributesComponent.health = Math.min(attributesComponent.health, attributesComponent.maxHealth);
+        console.log(`${attributesComponent!.name} devours [${foodComponent.foodName}], feeling their strength surge! Health restored from ${beforeEat} to ${attributesComponent.health}. "Ah, that hit the spot!" they exclaim.`);
+        //
+        food.AddComponent(DestroyComponent);
     }
 }

@@ -7,7 +7,7 @@ import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
 import { COMP_ID } from "./ComponentsPreprocessing"
-import { MagicComponent, FireBallComponent, FireExplodeComponent, DestroyComponent, AttributesComponent } from "./Components";
+import { MagicComponent, FireBallComponent, FireExplodeComponent, DestroyComponent, AttributesComponent, MageComponent } from "./Components";
 import { MyEntity } from "./MyEntity";
 import { MyPool } from "./MyPool";
 /**
@@ -29,8 +29,8 @@ export class MageFireBallSystem implements IExecuteSystem, ISetPool {
         const entities = this.group1?.getEntities();
         entities?.forEach(en => {
             const fireballEntity = en as MyEntity;
-            if (this.fireballIsFlying(fireballEntity, 1)) {
-                this.fireballHitTarget(fireballEntity, 10000);
+            if (this.fireballIsFlying(fireballEntity)) {
+                this.fireballHitTarget(fireballEntity);
                 fireballEntity.AddComponent(DestroyComponent);
             }
             else {
@@ -49,9 +49,9 @@ export class MageFireBallSystem implements IExecuteSystem, ISetPool {
     /**
      * 
      */
-    private fireballIsFlying(fireball: MyEntity, speed: number): boolean {
+    private fireballIsFlying(fireball: MyEntity): boolean {
         const fireBallComponent = fireball.GetComponent(FireBallComponent);
-        fireBallComponent.flyingTime -= speed;
+        fireBallComponent.flyingTime -= fireBallComponent.speed;
         fireBallComponent.flyingTime = Math.max(0, fireBallComponent.flyingTime);
         return fireBallComponent.flyingTime <= 0;
     }
@@ -74,7 +74,7 @@ export class MageFireBallSystem implements IExecuteSystem, ISetPool {
     /**
      * 
      */
-    private fireballHitTarget(fireball: MyEntity, amplifiesDamageByFireball: number): boolean {
+    private fireballHitTarget(fireball: MyEntity): boolean {
         const targetEntity = this.getFireballsTarget(fireball);
         if (targetEntity === null) {
             return false;
@@ -88,7 +88,8 @@ export class MageFireBallSystem implements IExecuteSystem, ISetPool {
         if (whoReleasedFireball !== null) {
             //传递法师的伤害
             const attributesComponent = whoReleasedFireball.GetComponent(AttributesComponent);
-            fireExplodeComponent.damage = attributesComponent.attack * amplifiesDamageByFireball;
+            const mageComponent = whoReleasedFireball.GetComponent(MageComponent);
+            fireExplodeComponent.damage = attributesComponent.attack * mageComponent.magicDamageamplify;
         }
         else {
             //法师可能死了，保留原始的伤害

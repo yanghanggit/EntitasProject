@@ -11,7 +11,6 @@ import { COMP_ID } from "./ComponentsPreprocessing"
 import { HeroComponent, AttributesComponent, MageComponent, MonsterComponent, MagicComponent, FireBallComponent } from "./Components";
 import { MyEntity } from "./MyEntity";
 import { MyPool } from "./MyPool";
-import { Entity } from "../lib/entitas/Entity";
 import { MyUtil } from "./MyUtil";
 /**
  * 
@@ -20,29 +19,29 @@ export class MageSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
     /**
      * 
      */
-    pool: MyPool | null = null;
+    private pool: MyPool | null = null;
     /**
      * 
      */
-    group1: Group | null = null;
+    private group1: Group | null = null;
     /**
     * 
     */
-    group2: Group | null = null;
+    private group2: Group | null = null;
     /**
      * 
      */
-    initialize() {
+    public initialize(): void {
         const entities = this.group1!.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
             const e = entities[i] as MyEntity;
-            this.sayhi(e);
+            this.sayHi(e);
         }
     }
     /**
      * 
      */
-    execute() {
+    public execute(): void {
         const entities = this.group1!.getEntities();
         for (let i = 0, l = entities.length; i < l; i++) {
             const e = entities[i] as MyEntity;
@@ -52,7 +51,7 @@ export class MageSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
     /**
      * 
      */
-    setPool(pool: Pool) {
+    public setPool(pool: Pool): void {
         this.pool = pool as MyPool;
         this.group1 = pool.getGroup(
             Matcher.allOf(COMP_ID(HeroComponent), COMP_ID(AttributesComponent), COMP_ID(MageComponent))
@@ -64,37 +63,37 @@ export class MageSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
     /**
      * 
      */
-    private sayhi(entity: MyEntity) {
-        const __AttributesComponent = entity.GetComponent(AttributesComponent);
-        console.log(`My name is ${__AttributesComponent!.name}, I'm a mage, ke~ ke~`);
+    private sayHi(entity: MyEntity): void {
+        const attributesComponent = entity.GetComponent(AttributesComponent);
+        console.log(`"Behold! I am ${attributesComponent!.name}, master of the mystic arts, a mage like no other! Ke~ ke~" cackles the wizard with a twinkle in their eye.`);
     }
     /**
      * 
      */
-    private spell(entity: MyEntity) {
-        this.randomSpell(entity, this.group2!.getEntities());
-    }
-    /**
-     * 
-     */
-    private randomSpell(mage: MyEntity, monsters: Array<Entity>) {
-        if (!this.checkSpellCooldown(mage, true)) {
+    private spell(mage: MyEntity): void {
+        if (!this.spellCooldown(mage, true)) {
             return;
         }
-        const monster = MyUtil.randomElementFromArray(monsters) as MyEntity;
-        if (monster === undefined) {
-            return;
+        const monster = MyUtil.randomElementFromArray(this.group2!.getEntities()) as MyEntity;
+        if (monster) {
+            const mageComponent = mage.GetComponent(MageComponent);
+            if (this.spendMana(mage, mageComponent.spendMana)) {
+                this.createFireBall(mage, monster);
+                //
+                const mageAttributesComponent = mage.GetComponent(AttributesComponent);
+                const monsterAttributesComponent = monster.GetComponent(AttributesComponent);
+                console.log(`With a flourish and a chant, ${mageAttributesComponent!.name} conjures a blazing fireball, hurling it towards ${monsterAttributesComponent!.name} with a fierce battle cry!`);
+            }
         }
-        this.releaseFireBall(mage, monster, 40);
     }
     /**
      * 
      */
-    private checkSpellCooldown(mage: MyEntity, resetCooldown: boolean = true): boolean {
-        const __MageComponent = mage.GetComponent(MageComponent);
-        --__MageComponent.spellCooldown;
-        if (__MageComponent.spellCooldown <= 0) {
-            __MageComponent.spellCooldown = resetCooldown ? __MageComponent.spellCooldownMax : 0;
+    private spellCooldown(mage: MyEntity, resetCooldown: boolean = true): boolean {
+        const mageComponent = mage.GetComponent(MageComponent);
+        --mageComponent.spellCooldown;
+        if (mageComponent.spellCooldown <= 0) {
+            mageComponent.spellCooldown = resetCooldown ? mageComponent.spellCooldownMax : 0;
             return true;
         }
         return false;
@@ -102,20 +101,27 @@ export class MageSystem implements IInitializeSystem, IExecuteSystem, ISetPool {
     /**
      * 
      */
-    private releaseFireBall(mage: MyEntity, monster: MyEntity, spendMana: number): MyEntity | null {
-        const __AttributesComponent = mage.GetComponent(AttributesComponent);
-        if (__AttributesComponent.mana < spendMana) {
-            return null;
+    private spendMana(mage: MyEntity, spendMana: number): boolean {
+        const attributesComponent = mage.GetComponent(AttributesComponent);
+        if (attributesComponent.mana < spendMana) {
+            return false;
         }
-        __AttributesComponent.mana -= spendMana;
-        __AttributesComponent.mana = Math.max(0, __AttributesComponent.mana);
+        attributesComponent.mana -= spendMana;
+        attributesComponent.mana = Math.max(0, attributesComponent.mana);
+        return true;
+    }
+    /**
+     * 
+     */
+    private createFireBall(mage: MyEntity, monster: MyEntity): MyEntity | null {
         //
-        const pool = this.pool;
-        const magicEntity = pool!.createEntity("magic") as MyEntity;
-        const __MagicComponent = magicEntity.AddComponent(MagicComponent);
-        __MagicComponent.src = mage.id;
-        __MagicComponent.target = monster.id;
-        const __FireBallComponent = magicEntity.AddComponent(FireBallComponent);
-        return magicEntity;
+        const fireballEntity = this.pool!.createEntity("magic") as MyEntity;
+        const magicComponent = fireballEntity.AddComponent(MagicComponent);
+        magicComponent.src = mage.id;
+        magicComponent.target = monster.id;
+        //
+        fireballEntity.AddComponent(FireBallComponent);
+        //
+        return fireballEntity;
     }
 }

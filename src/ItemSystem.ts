@@ -6,7 +6,7 @@ import { Pool } from "../lib/entitas/Pool";
 import { Group } from "../lib/entitas/Group";
 import { Matcher } from "../lib/entitas/Matcher";
 import { COMP_ID } from "./ComponentsPreprocessing"
-import { FoodComponent, ItemComponent } from "./Components";
+import { ItemComponent } from "./Components";
 import { IReactiveSystem } from "../lib/entitas/interfaces/IReactiveSystem";
 import { TriggerOnEvent } from "../lib/entitas/TriggerOnEvent";
 import { Entity } from "../lib/entitas/Entity";
@@ -19,48 +19,43 @@ export class ItemSystem implements ISetPool, IReactiveSystem {
     /**
      * 
      */
-    pool: Pool | null = null;
+    private pool: Pool | null = null;
     /**
      * 
      */
-    group: Group | null = null;
+    private group: Group | null = null;
     /**
      * 
      */
-    trigger?: TriggerOnEvent;
+    public trigger?: TriggerOnEvent;
     /**
      * 
      */
-    execute(entities: Array<Entity>) {
-        entities.forEach((itemEntity) => {
-            const _itemEntity = itemEntity as MyEntity;
-            if (_itemEntity.HasComponent(ItemComponent)) {
-                this.onAddItem(_itemEntity);
+    public execute(entities: Array<Entity>): void {
+        entities.forEach((en) => {
+            const itemEntity = en as MyEntity;
+            if (itemEntity.HasComponent(ItemComponent)) {
+                this.onAddItem(itemEntity);
             }
             else {
-                this.onRemoveItem(_itemEntity);
+                this.onRemoveItem(itemEntity);
             }
         });
     }
     /**
      * 
      */
-    private onAddItem(_itemEntity: MyEntity) {
-        if (_itemEntity.HasComponent(FoodComponent)) {
-            const __FoodComponent = _itemEntity.GetComponent(FoodComponent);
-            //console.log("add food = " + __FoodComponent.foodName);
-        }
+    private onAddItem(_itemEntity: MyEntity): void {
     }
     /**
      * 
      */
-    private onRemoveItem(_itemEntity: MyEntity) {
-        //console.log("__________________________onRemoveItem!!!!!");
+    private onRemoveItem(_itemEntity: MyEntity): void {
     }
     /**
      * 
      */
-    setPool(pool: Pool) {
+    public setPool(pool: Pool): void {
         this.trigger = new TriggerOnEvent(Matcher.allOf(COMP_ID(ItemComponent)), GroupEventType.OnEntityAdded);
     }
 }

@@ -59,6 +59,7 @@ export class ItemComponent implements IComponent {
  */
 @component
 export class WarriorComponent implements IComponent {
+    autoEatFoodRestoreHealthCheckPoint: number = 0.6;
 }
 /**
  * 
@@ -67,6 +68,8 @@ export class WarriorComponent implements IComponent {
 export class MageComponent implements IComponent {
     spellCooldownMax: number = 3 * 60;
     spellCooldown: number = this.spellCooldownMax;
+    spendMana: number = 40;
+    magicDamageamplify: number = 10000;
 }
 /**
  * 
@@ -116,6 +119,7 @@ export class MagicComponent implements IComponent {
 @component
 export class FireBallComponent implements IComponent {
     flyingTime: number = 100;
+    speed: number = 1;
 }
 /**
  * 

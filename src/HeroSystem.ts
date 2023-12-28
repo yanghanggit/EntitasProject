@@ -15,36 +15,42 @@ export class HeroSystem implements IExecuteSystem, ISetPool {
     /**
      * 
      */
-    pool: Pool | null = null;
+    private pool: Pool | null = null;
     /**
      * 
      */
-    group: Group | null = null;
+    private group: Group | null = null;
     /**
     * 
     */
-    allHerosAreDeadAlert: boolean = false;
+    private sayAlert: boolean = false;
     /**
      * 
      */
-    execute() {
-        if (this.checkAllHerosAreDead()) {
-            if (!this.allHerosAreDeadAlert) {
-                this.allHerosAreDeadAlert = true;
-                console.log('!!!!!!!!!!!   all heros are dead   !!!!!!!!!!!');
-            }
+    public execute(): void {
+        if (this.allDead()) {
+            this.alert();
+        }
+    }
+    /**
+      * 
+      */
+    private alert(): void {
+        if (!this.sayAlert) {
+            this.sayAlert = true;
+            console.log('Alas, tragedy strikes! The echoes of despair resonate as all our valiant heroes meet their untimely end... The realm mourns!');
         }
     }
     /**
      * 
      */
-    private checkAllHerosAreDead(): boolean {
+    private allDead(): boolean {
         return this.group?.getEntities().length === 0;
     }
     /**
      * 
      */
-    setPool(pool: Pool) {
+    public setPool(pool: Pool): void {
         this.pool = pool;
         this.group = pool.getGroup(
             Matcher.allOf(COMP_ID(HeroComponent), COMP_ID(AttributesComponent))

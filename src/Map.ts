@@ -25,17 +25,17 @@ export class Map {
     /**
      * 
      */
-    name: string = '';
+    private name: string = '';
     /**
      * 
      */
-    readonly heroNames: Array<string> = ['[Tom]', '[Lily]'];
-    readonly heroCareers: Array<string> = ['[warrior]', '[mage]'];
-    readonly warriorsFood: Array<string> = ['bread', 'strawberries', 'rum'];
+    public readonly heroNames: Array<string> = ['[Tom]', '[Lily]'];
+    public readonly heroCareers: Array<string> = ['[warrior]', '[mage]'];
+    public readonly warriorsFood: Array<string> = ['bread', 'strawberries', 'rum'];
     /**
      * 
      */
-    goblinNames: Array<string> = ['[Guru]', '[Waga]', '[One-eyed]'];
+    public readonly goblinNames: Array<string> = ['[Guru]', '[Waga]', '[One-eyed]'];
     /**
      * 
      */
@@ -45,14 +45,14 @@ export class Map {
     /**
      * 
      */
-    build(scene: Scene) {
+    public build(scene: Scene): void {
         console.log("build:" + this.name);
         this.buildSystems(scene);
     }
     /**
      * 
      */
-    buildSystems(scene: Scene) {
+    private buildSystems(scene: Scene): void {
         if (scene.systems === null || scene.myPool === null) {
             return;
         }
@@ -62,14 +62,14 @@ export class Map {
         // systems.add(myPool.createSystem(MyExecuteSystem));
         // systems.add(myPool.createSystem(MyReactiveSystem));
         //first system
-        let mapBuildSystem = myPool.createSystem(FirstDungonBuildSystem) as FirstDungonBuildSystem;
+        const mapBuildSystem = myPool.createSystem(FirstDungonBuildSystem) as FirstDungonBuildSystem;
         mapBuildSystem.map = this;
         systems.add(mapBuildSystem);
         //game system 
         systems.add(myPool.createSystem(HeroSystem));
         systems.add(myPool.createSystem(WarriorSystem));
         systems.add(myPool.createSystem(MageSystem));
-        systems.add(myPool.createSystem(MageFireBallSystem)); //
+        systems.add(myPool.createSystem(MageFireBallSystem)); 
         systems.add(myPool.createSystem(MageFireBallExplodeSystem));
         //
         systems.add(myPool.createSystem(MonsterSystem));
