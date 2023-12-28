@@ -35,15 +35,15 @@ export class GoblinSystem implements IInitializeSystem, IExecuteSystem, ISetPool
         const goblinEntities = this.group1!.getEntities();
         goblinEntities.forEach(en => {
             const me = en as MyEntity;
-            this.sayhi(me);
+            this.sayHi(me);
         });
     }
     /**
      * 
      */
-    private sayhi(entity: MyEntity): void {
+    private sayHi(entity: MyEntity): void {
         const attributesComponent = entity.GetComponent(AttributesComponent);
-        console.log("yaha!, I'm a " + entity.name + "-goblin" + ", my name is " + attributesComponent!.name + ", woooo!");
+        console.log(`Yaha! I'm a mighty goblin! they call me ${attributesComponent!.name}! Watch out, here I come, woooo!`);
     }
     /**
      * 
@@ -64,11 +64,10 @@ export class GoblinSystem implements IInitializeSystem, IExecuteSystem, ISetPool
             return;
         }
         const hero = MyUtil.randomElementFromArray(heros) as MyEntity;
-        if (hero === undefined) {
-            return;
+        if (hero) {
+            const goblinAttackComponent = goblin.AddComponent(GoblinAttackComponent);
+            goblinAttackComponent.destEntityId = hero.id;
         }
-        const goblinAttackComponent = goblin.AddComponent(GoblinAttackComponent);
-        goblinAttackComponent.destEntityId = hero.id;
     }
     /**
      * 
