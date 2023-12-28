@@ -19,65 +19,65 @@ export class GoblinSystem implements IInitializeSystem, IExecuteSystem, ISetPool
     /**
      * 
      */
-    pool: Pool | null = null;
+    private pool: Pool | null = null;
     /**
      * 
      */
-    group1: Group | null = null;
+    private group1: Group | null = null;
     /**
      * 
      */
-    group2: Group | null = null;
+    private group2: Group | null = null;
     /**
      * 
      */
-    initialize() {
-        const entities = this.group1!.getEntities();
-        for (let i = 0, l = entities.length; i < l; i++) {
-            const e = entities[i] as MyEntity;
-            this.sayhi(e);
-        }
+    public initialize(): void {
+        const goblinEntities = this.group1!.getEntities();
+        goblinEntities.forEach(en => {
+            const me = en as MyEntity;
+            this.sayhi(me);
+        });
     }
     /**
      * 
      */
-    private sayhi(entity: MyEntity) {
-        const e = entity as MyEntity;
-        const attributesComp = e.GetComponent(AttributesComponent);
-        console.log("yaha!, I'm a " + e.name + "-goblin" + ", my name is " + attributesComp!.name + ", woooo!");
+    private sayhi(entity: MyEntity): void {
+        const attributesComponent = entity.GetComponent(AttributesComponent);
+        console.log("yaha!, I'm a " + entity.name + "-goblin" + ", my name is " + attributesComponent!.name + ", woooo!");
     }
     /**
      * 
      */
-    execute() {
-        const entities = this.group1!.getEntities();
-        for (let i = 0, l = entities.length; i < l; i++) {
-            const e = entities[i] as MyEntity;
-            this.randomAttack(e, this.group2!.getEntities());
-        }
+    public execute(): void {
+        const monsterEntities = this.group1!.getEntities();
+        const heroEntities = this.group2!.getEntities();
+        monsterEntities.forEach(e => {
+            const me = e as MyEntity;
+            this.goblinAttack(me, heroEntities);
+        });
     }
     /**
      * 
      */
-    private randomAttack(goblin: MyEntity, heros: Array<Entity>) {
-        if (!this.checkAttackCooldown(goblin, true)) {
+    private goblinAttack(goblin: MyEntity, heros: Array<Entity>): void {
+        if (!this.attackCooldown(goblin, true)) {
             return;
         }
         const hero = MyUtil.randomElementFromArray(heros) as MyEntity;
         if (hero === undefined) {
             return;
         }
-        const __GoblinAttackComponent = goblin.AddComponent(GoblinAttackComponent);
-        __GoblinAttackComponent.destEntityId = hero.id;
+        const goblinAttackComponent = goblin.AddComponent(GoblinAttackComponent);
+        goblinAttackComponent.destEntityId = hero.id;
     }
     /**
      * 
      */
-    private checkAttackCooldown(goblin: MyEntity, resetCooldown: boolean = true): boolean {
-        const __GoblinComponent = goblin.GetComponent(GoblinComponent);
-        --__GoblinComponent.attackCooldown;
-        if (__GoblinComponent.attackCooldown <= 0) {
-            __GoblinComponent.attackCooldown = resetCooldown ? __GoblinComponent.attackCooldownMax : 0;
+    private attackCooldown(goblin: MyEntity, resetCooldown: boolean = true): boolean {
+        const goblinComponent = goblin.GetComponent(GoblinComponent);
+        --goblinComponent.attackCooldown;
+        if (goblinComponent.attackCooldown <= 0) {
+            goblinComponent.attackCooldown = resetCooldown ? goblinComponent.attackCooldownMax : 0;
             return true;
         }
         return false;
@@ -85,12 +85,11 @@ export class GoblinSystem implements IInitializeSystem, IExecuteSystem, ISetPool
     /**
      * 
      */
-    setPool(pool: Pool) {
+    public setPool(pool: Pool): void {
         this.pool = pool;
         this.group1 = pool.getGroup(Matcher.allOf(
             COMP_ID(MonsterComponent), COMP_ID(GoblinComponent), COMP_ID(AttributesComponent)
         ));
-
         this.group2 = pool.getGroup(Matcher.allOf(
             COMP_ID(HeroComponent), COMP_ID(AttributesComponent)
         ));
