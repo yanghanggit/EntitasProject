@@ -37,7 +37,7 @@ export class DeadSystem implements IExecuteSystem, ISetPool {
         entities?.forEach((en) => {
             const entity = (en as MyEntity);
             const attributesComponent = entity.GetComponent(AttributesComponent);
-            console.log(`oh! ${attributesComponent!.name} is dead!`);
+            console.log(`Alas! Poor ${attributesComponent!.name} has met their untimely demise! Another soul departs from our realm...`);
             if (needDestroyEntity) {
                 entity.AddComponent(DestroyComponent);
             }

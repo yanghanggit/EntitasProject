@@ -15,7 +15,7 @@ import { ItemSystem } from "./ItemSystem";
 import { WarriorSystem } from "./WarriorSystem";
 import { MageSystem } from "./MageSystem";
 import { FireBallSystem } from "./FireBallSystem";
-import { FireBallExplodeSystem } from "./FireBallExplodeSystem";
+import { MageFireBallExplodeSystem } from "./MageFireBallExplodeSystem";
 import { DOTSystem } from "./DOTSystem";
 import { MonsterSystem } from "./MonsterSystem";
 /**
@@ -69,7 +69,7 @@ export class Map {
         systems.add(myPool.createSystem(WarriorSystem));
         systems.add(myPool.createSystem(MageSystem));
         systems.add(myPool.createSystem(FireBallSystem)); //
-        systems.add(myPool.createSystem(FireBallExplodeSystem));
+        systems.add(myPool.createSystem(MageFireBallExplodeSystem));
         //
         systems.add(myPool.createSystem(MonsterSystem));
         systems.add(myPool.createSystem(GoblinSystem));
