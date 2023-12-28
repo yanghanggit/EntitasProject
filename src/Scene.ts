@@ -11,35 +11,35 @@ export class Scene {
     /**
      * 
      */
-    name: string = '';
+    private name: string = '';
     /**
      * 
      */
-    map: Map | null = null;
+    public map: Map | null = null;
     /**
      * 
      */
-    systems: Systems | null = null;
+    public systems: Systems | null = null;
     /**
      * 
      */
-    myPool: MyPool | null = null;
+    public myPool: MyPool | null = null;
     /**
      * 
      */
-    initialized: boolean = false;
+    private initialized: boolean = false;
     /**
      * 
      */
-    startTime: number = 0;
+    private startTime: number = 0;
     /**
      * 
      */
-    lastTime: number = 0;
+    private lastTime: number = 0;
     /**
      * 
      */
-    dt: number = 0;
+    private dt: number = 0;
     /**
      * 
      */
@@ -50,7 +50,7 @@ export class Scene {
     /**
      * 
      */
-    start() {
+    public start(): void {
         console.log("start:" + this.name);
         //
         this.myPool = new MyPool(this.name + "'s Pool", this);
@@ -64,7 +64,7 @@ export class Scene {
     /**
      * 
      */
-    update(dt: number) {
+    public update(dt: number): void {
         //
         this.dt = dt;
         this.lastTime += dt;
@@ -75,18 +75,17 @@ export class Scene {
             }
             this.systems.execute();
         }
-
     }
     /**
      * 
      */
-    stop() {
+    public stop(): void {
         console.log("stop:" + this.name);
     }
     /**
      * 
      */
-    tearDown() {
+    public tearDown(): void {
         console.log("tearDown:" + this.name);
     }
 }

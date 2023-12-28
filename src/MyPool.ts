@@ -13,16 +13,15 @@ export class MyPool extends Pool {
     /**
      * 
      */
-    name: string = '';
+    public name: string = '';
     /**
      * 
      */
-    scene: Scene | null = null;
+    public scene: Scene | null = null;
     /**
      * 
-     * @param name 
      */
-    override impl(_componentsEnum: {}, _totalComponents: number): Entity {
+    public override impl(_componentsEnum: {}, _totalComponents: number): Entity {
         return new MyEntity(_componentsEnum, _totalComponents) as Entity;
     }
     /**
