@@ -4,6 +4,31 @@ import { Scene } from './Scene';
 import { Map } from './Map';
 import { MSDeltaTiming } from "./MSDeltaTiming";
 
+/**
+ * 
+ */
+var w: any;
+function startWorker() {
+    if (typeof (Worker) !== "undefined") {
+        if (typeof (w) == "undefined") {
+            w = new Worker("demo_workers.js");
+        }
+        w.onmessage = function (event: any) {
+            //document.getElementById("result").innerHTML = event.data;
+            console.log("event.data = " + event.data);
+        };
+    } else {
+        console.log("Sorry! No Web Worker support.");
+    }
+}
+function stopWorker() {
+    w.terminate();
+    w = undefined;
+}
+
+/**
+ * 
+ */
 let requestAnimId = 0;
 let game: Game | null = null;
 const _MSDeltaTiming = new MSDeltaTiming(1000 / 60, 1000);
@@ -29,6 +54,10 @@ buttonStart.addEventListener('click', () => {
         requestAnimId = requestAnimationFrame(gameLoop);
     }
     requestAnimId = requestAnimationFrame(gameLoop);
+
+    //
+    //startWorker();
+
 });
 document.body.appendChild(buttonStart);
 //
@@ -41,8 +70,19 @@ buttonStop.addEventListener('click', () => {
     game.stop();
     game = null;
     cancelAnimationFrame(requestAnimId);
+
+    //
+    //stopWorker();
 });
 document.body.appendChild(buttonStop);
+
+
+
+
+
+
+
+
 
 
 
